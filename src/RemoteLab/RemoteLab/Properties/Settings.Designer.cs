@@ -49,5 +49,14 @@ namespace RemoteLab.Properties {
                 return ((string)(this["AuthenticationDomain"]));
             }
         }
+        
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("0")]
+        public int RemoteDesktopPort {
+            get {
+                return ((int)(this["RemoteDesktopPort"]));
+            }
+        }
     }
 }

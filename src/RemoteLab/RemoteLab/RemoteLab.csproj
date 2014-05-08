@@ -186,7 +186,23 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201405081925325_Initial.cs" />
+    <Compile Include="Migrations\201405081925325_Initial.Designer.cs">
+      <DependentUpon>201405081925325_Initial.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201405081938027_StoredProcs.cs" />
+    <Compile Include="Migrations\201405081938027_StoredProcs.Designer.cs">
+      <DependentUpon>201405081938027_StoredProcs.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201405082025196_FixComputerTable.cs" />
+    <Compile Include="Migrations\201405082025196_FixComputerTable.Designer.cs">
+      <DependentUpon>201405082025196_FixComputerTable.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
+    <Compile Include="Models\Computer.cs" />
+    <Compile Include="Models\Event.cs" />
+    <Compile Include="Models\RemoteLabContext.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Properties\Resources.Designer.cs">
       <AutoGen>True</AutoGen>
@@ -201,6 +217,10 @@
     <Compile Include="Startup.cs" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="App_Data\aspnet-RemoteLab-20140507044750.mdf" />
+    <Content Include="App_Data\aspnet-RemoteLab-20140507044750_log.ldf">
+      <DependentUpon>aspnet-RemoteLab-20140507044750.mdf</DependentUpon>
+    </Content>
     <Content Include="Content\bootstrap-theme.css" />
     <Content Include="Content\bootstrap-theme.min.css" />
     <Content Include="Content\bootstrap.css" />
@@ -255,7 +275,7 @@
     <Content Include="Views\Shared\_LoginPartial.cshtml" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="App_Data\" />
+    <Folder Include="Views\ControllerBase\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="packages.config" />
@@ -268,6 +288,15 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <EmbeddedResource Include="Migrations\201405081925325_Initial.resx">
+      <DependentUpon>201405081925325_Initial.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201405081938027_StoredProcs.resx">
+      <DependentUpon>201405081938027_StoredProcs.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201405082025196_FixComputerTable.resx">
+      <DependentUpon>201405082025196_FixComputerTable.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>

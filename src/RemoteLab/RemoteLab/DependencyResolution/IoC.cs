@@ -17,8 +17,10 @@
 
 
 using RemoteLab.Authentication;
+using RemoteLab.Models;
 using StructureMap;
 using StructureMap.Graph;
+using System.Data.Entity;
 namespace RemoteLab.DependencyResolution {
     public static class IoC {
         public static IContainer Initialize() {
@@ -30,6 +32,7 @@ namespace RemoteLab.DependencyResolution {
                                         scan.WithDefaultConventions();
                                     });
                             x.For<IAuthentication>().Use( ctx => new ActiveDirectoryAuthentication(Properties.Settings.Default.AuthenticationDomain));
+                            x.For<RemoteLabContext>().Use(ctx => new RemoteLabContext("RemoteLabContext"));
                         });
             return ObjectFactory.Container;
         }
