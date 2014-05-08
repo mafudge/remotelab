@@ -1,0 +1,16 @@
+﻿<?xml version='1.0' encoding='utf-8'?>
+<SettingsFile xmlns="http://schemas.microsoft.com/VisualStudio/2004/01/settings" CurrentProfile="(Default)" GeneratedClassNamespace="RemoteLab.Properties" GeneratedClassName="Settings">
+  <Profiles />
+  <Settings>
+    <Setting Name="Database" Type="(Connection string)" Scope="Application">
+      <DesignTimeValue Profile="(Default)" />
+      <Value Profile="(Default)" />
+    </Setting>
+    <Setting Name="Administrators" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">mjschug mafudge</Value>
+    </Setting>
+    <Setting Name="AuthenticationDomain" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">ad.syr.edu</Value>
+    </Setting>
+  </Settings>
+</SettingsFile>

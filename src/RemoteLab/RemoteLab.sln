@@ -5,6 +5,8 @@ VisualStudioVersion = 12.0.30110.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RemoteLab", "RemoteLab\RemoteLab.csproj", "{2A1E52E9-88EF-4C6C-8C25-8A87BF9F1DF6}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RemoteLab.Authentication", "RemoteLab.Authentication\RemoteLab.Authentication.csproj", "{4F9FD602-625D-401B-8B15-944361EF36DE}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -15,6 +17,10 @@ Global
 		{2A1E52E9-88EF-4C6C-8C25-8A87BF9F1DF6}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{2A1E52E9-88EF-4C6C-8C25-8A87BF9F1DF6}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{2A1E52E9-88EF-4C6C-8C25-8A87BF9F1DF6}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4F9FD602-625D-401B-8B15-944361EF36DE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4F9FD602-625D-401B-8B15-944361EF36DE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4F9FD602-625D-401B-8B15-944361EF36DE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4F9FD602-625D-401B-8B15-944361EF36DE}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
