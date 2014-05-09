@@ -125,4 +125,12 @@
     <value>Invalid username or password.</value>
     <comment>Invalid Username or password</comment>
   </data>
+  <data name="LabPoolIsFullEmailMessage" xml:space="preserve">
+    <value>REMOTELAB: Lab pool {0} is full. There are not more available computers.</value>
+    <comment>Email when the lab pool is full</comment>
+  </data>
+  <data name="RebootFailedEmailMessage" xml:space="preserve">
+    <value>REMOTELAB: Reboot of computer {0} failed</value>
+    <comment>Reboot Failed Message Email</comment>
+  </data>
 </root>

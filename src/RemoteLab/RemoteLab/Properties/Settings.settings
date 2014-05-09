@@ -9,8 +9,35 @@
     <Setting Name="Administrators" Type="System.String" Scope="Application">
       <Value Profile="(Default)">mjschug mafudge</Value>
     </Setting>
-    <Setting Name="AuthenticationDomain" Type="System.String" Scope="Application">
+    <Setting Name="ActiveDirectoryFqdn" Type="System.String" Scope="Application">
       <Value Profile="(Default)">ad.syr.edu</Value>
+    </Setting>
+    <Setting Name="RemoteDesktopProtocolTcpPort" Type="System.Int32" Scope="Application">
+      <Value Profile="(Default)">3389</Value>
+    </Setting>
+    <Setting Name="CleanupInMinutes" Type="System.Int32" Scope="Application">
+      <Value Profile="(Default)">30</Value>
+    </Setting>
+    <Setting Name="SmtpServer" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">smtp-host.syr.edu</Value>
+    </Setting>
+    <Setting Name="SmtpMessageFromAddress" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">remotelabadmin@syr.edu</Value>
+    </Setting>
+    <Setting Name="DefaultPool" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">Prod</Value>
+    </Setting>
+    <Setting Name="RemotePowershellUser" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">w-ist-labsetup</Value>
+    </Setting>
+    <Setting Name="RemotePowershellPassword" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">6f1HMkW1dB</Value>
+    </Setting>
+    <Setting Name="RemotePoweshellUserDomain" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">AD</Value>
+    </Setting>
+    <Setting Name="SmtpMessageToAddress" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">mjschug@syr.edu</Value>
     </Setting>
   </Settings>
 </SettingsFile>

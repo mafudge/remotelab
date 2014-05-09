@@ -44,18 +44,90 @@ namespace RemoteLab.Properties {
         [global::System.Configuration.ApplicationScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("ad.syr.edu")]
-        public string AuthenticationDomain {
+        public string ActiveDirectoryFqdn {
             get {
-                return ((string)(this["AuthenticationDomain"]));
+                return ((string)(this["ActiveDirectoryFqdn"]));
             }
         }
         
         [global::System.Configuration.ApplicationScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("0")]
-        public int RemoteDesktopPort {
+        [global::System.Configuration.DefaultSettingValueAttribute("3389")]
+        public int RemoteDesktopProtocolTcpPort {
             get {
-                return ((int)(this["RemoteDesktopPort"]));
+                return ((int)(this["RemoteDesktopProtocolTcpPort"]));
+            }
+        }
+        
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("30")]
+        public int CleanupInMinutes {
+            get {
+                return ((int)(this["CleanupInMinutes"]));
+            }
+        }
+        
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("smtp-host.syr.edu")]
+        public string SmtpServer {
+            get {
+                return ((string)(this["SmtpServer"]));
+            }
+        }
+        
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("remotelabadmin@syr.edu")]
+        public string SmtpMessageFromAddress {
+            get {
+                return ((string)(this["SmtpMessageFromAddress"]));
+            }
+        }
+        
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("Dev")]
+        public string DefaultPool {
+            get {
+                return ((string)(this["DefaultPool"]));
+            }
+        }
+        
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("w-ist-labsetup")]
+        public string RemotePowershellUser {
+            get {
+                return ((string)(this["RemotePowershellUser"]));
+            }
+        }
+        
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("6f1HMkW1dB")]
+        public string RemotePowershellPassword {
+            get {
+                return ((string)(this["RemotePowershellPassword"]));
+            }
+        }
+        
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("AD")]
+        public string RemotePoweshellUserDomain {
+            get {
+                return ((string)(this["RemotePoweshellUserDomain"]));
+            }
+        }
+        
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("mjschug@syr.edu")]
+        public string SmtpMessageToAddress {
+            get {
+                return ((string)(this["SmtpMessageToAddress"]));
             }
         }
     }

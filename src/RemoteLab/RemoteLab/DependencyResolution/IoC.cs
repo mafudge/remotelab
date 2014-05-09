@@ -18,6 +18,8 @@
 
 using RemoteLab.Authentication;
 using RemoteLab.Models;
+using RemoteLab.Services;
+using RemoteLab.Utilities;
 using StructureMap;
 using StructureMap.Graph;
 using System.Data.Entity;
@@ -31,8 +33,15 @@ namespace RemoteLab.DependencyResolution {
                                         scan.TheCallingAssembly();
                                         scan.WithDefaultConventions();
                                     });
-                            x.For<IAuthentication>().Use( ctx => new ActiveDirectoryAuthentication(Properties.Settings.Default.AuthenticationDomain));
-                            x.For<RemoteLabContext>().Use(ctx => new RemoteLabContext("RemoteLabContext"));
+                            x.For<IAuthentication>().Use( ctx => new ActiveDirectoryAuthentication(Properties.Settings.Default.ActiveDirectoryFqdn));
+                            x.For<RemoteLabContext>().Use( ctx => new RemoteLabContext("RemoteLabContext"));
+                            x.For<ComputerManagement>().Use( ctx => new ComputerManagement()); 
+                            x.For<SmtpEmail>().Use( ctx => new SmtpEmail());
+                            x.For<RemoteLabService>().Use(ctx => new RemoteLabService(
+                                ctx.GetInstance<RemoteLabContext>(), 
+                                ctx.GetInstance<ComputerManagement>(), 
+                                ctx.GetInstance<SmtpEmail>() 
+                                ));
                         });
             return ObjectFactory.Container;
         }

@@ -77,5 +77,23 @@ namespace RemoteLab.Properties {
                 return ResourceManager.GetString("InvalidUserNameOrPassword", resourceCulture);
             }
         }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to REMOTELAB: Lab pool {0} is full. There are not more available computers..
+        /// </summary>
+        internal static string LabPoolIsFullEmailMessage {
+            get {
+                return ResourceManager.GetString("LabPoolIsFullEmailMessage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to REMOTELAB: Reboot of computer {0} failed.
+        /// </summary>
+        internal static string RebootFailedEmailMessage {
+            get {
+                return ResourceManager.GetString("RebootFailedEmailMessage", resourceCulture);
+            }
+        }
     }
 }

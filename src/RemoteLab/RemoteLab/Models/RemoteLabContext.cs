@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Data.Entity;
 using System.Linq;
+using System.Threading.Tasks;
 using System.Web;
 
 namespace RemoteLab.Models
@@ -13,5 +15,6 @@ namespace RemoteLab.Models
 
         public DbSet<Computer> Computers { get; set; }
         public DbSet<Event> Events { get; set; }
+
     }
 }

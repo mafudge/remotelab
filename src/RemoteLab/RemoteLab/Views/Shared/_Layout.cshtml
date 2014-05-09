@@ -3,10 +3,9 @@
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>@ViewBag.Title - My ASP.NET Application</title>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <title>Remote Lab</title>
     @Styles.Render("~/Content/css")
-    @Scripts.Render("~/bundles/modernizr")
-
 </head>
 <body>
     <div class="navbar navbar-inverse navbar-fixed-top">
@@ -17,13 +16,12 @@
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button>
-                @Html.ActionLink("Application name", "Index", "Home", null, new { @class = "navbar-brand" })
+                @Html.ActionLink("Remote Lab", "Index", "Home", null, new { @class = "navbar-brand" })
             </div>
             <div class="navbar-collapse collapse">
                 <ul class="nav navbar-nav">
                     <li>@Html.ActionLink("Home", "Index", "Home")</li>
                     <li>@Html.ActionLink("About", "About", "Home")</li>
-                    <li>@Html.ActionLink("Contact", "Contact", "Home")</li>
                 </ul>
                 @Html.Partial("_LoginPartial")
             </div>
@@ -33,12 +31,26 @@
         @RenderBody()
         <hr />
         <footer>
-            <p>&copy; @DateTime.Now.Year - My ASP.NET Application</p>
+            <p>&copy; @DateTime.Now.Year - The School of Information Studies at Syracuse University</p>
         </footer>
     </div>
 
     @Scripts.Render("~/bundles/jquery")
     @Scripts.Render("~/bundles/bootstrap")
+    @Scripts.Render("~/bundles/browserdetect")
     @RenderSection("scripts", required: false)
+    <script type="text/javascript">
+        $(document).ready(function () {
+            var text = "";
+            if (BrowserDetect.OS == 'Mac' && BrowserDetect.browser != 'Firefox') {
+                text += "<b><i class='glyphicon glyphicon-warning-sign'></i> IMPORTANT </b> We noticed you're using " + BrowserDetect.browser + " version " + BrowserDetect.version + " on " + BrowserDetect.OS + ".";
+                text += " This is not compatible with Remotelab. Please <a href='http://getfirefox.com' target='_newfirefox'>download Firefox</a> instead.";
+                $("#browser").html(text);
+                $("#browser").show();
+                $("#remoteLabBody").hide();
+            }
+            $("a#youtube").fancybox();
+        });
+    </script>
 </body>
 </html>
