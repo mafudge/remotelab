@@ -6,6 +6,8 @@ using System.Threading.Tasks;
 using System.Web;
 using System.Data.Entity;
 using RemoteLab.Utilities;
+using System.IO;
+using System.Text;
 
 namespace RemoteLab.Services
 {
@@ -85,10 +87,8 @@ namespace RemoteLab.Services
                 await this.LogFailedRdpTcpPortCheckAsync(ComputerName, UserName);
                 result = await this.RebootComputerAsync(ComputerName, UserName, System.DateTime.Now);
             }
-            //TODO: FOR NOW ALWARE RETURN TRUE
-            return true;
 
-            //return result && success;
+            return success;
         }
 
 
@@ -124,6 +124,16 @@ namespace RemoteLab.Services
                 ).OrderBy(c => c.ComputerName).FirstOrDefaultAsync();
         }
 
+        public async Task<int> GetAvailableComputerCountAsync( String Pool) 
+        {
+            return await this.Db.Computers.Where( c => c.Pool.Equals(Pool, StringComparison.InvariantCultureIgnoreCase) && c.UserName == null).CountAsync();
+        }
+
+        public async Task<int> GetTotalComputerCountAsync( String Pool )
+        {
+            return await this.Db.Computers.Where( c => c.Pool.Equals(Pool, StringComparison.InvariantCultureIgnoreCase)).CountAsync();
+        }
+
         public async Task<Computer> GetNewReservationAsync(RemoteLabViewModel rvm)
         {
             return await this.Db.Computers.Where(c =>
@@ -132,6 +142,10 @@ namespace RemoteLab.Services
                 ).OrderBy(c => c.ComputerName).FirstOrDefaultAsync();
         }
 
+        public String GenerateRdpFileContents(string rdpFileSettings, string computer, string username,  int width = 1920, int height = 1200)
+        {
+            return String.Format(rdpFileSettings,width,height,computer,username);
+        }
            
     }
 }

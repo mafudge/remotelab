@@ -8,7 +8,7 @@
     @Styles.Render("~/Content/css")
 </head>
 <body>
-    <div class="navbar navbar-inverse navbar-fixed-top">
+    <div class="navbar navbar-inverse">
         <div class="container">
             <div class="navbar-header">
                 <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
@@ -27,12 +27,48 @@
             </div>
         </div>
     </div>
+
     <div class="container body-content">
-        @RenderBody()
-        <hr />
-        <footer>
-            <p>&copy; @DateTime.Now.Year - The School of Information Studies at Syracuse University</p>
-        </footer>
+        <h1>
+            <i class="glyphicon glyphicon-new-window"></i> Remote Lab 2.0
+            @if (HttpContext.Current.Request.IsAuthenticated) {
+            <button type="button" class="btn btn-lg  btn-primary" disabled="disabled">Total Seats: @ViewBag.Total</button>
+            <button type="button" class="btn btn-lg btn-success" disabled="disabled">Available:@ViewBag.Available</button>
+            <button type="button" class="btn btn-lg btn-danger" disabled="disabled">In Use: @ViewBag.InUse</button>
+            }
+        </h1>
+        <div class="row">
+            <div class="col-sm-8">
+                <div class="container">
+                    <div class="col-sm-8">
+                        <div id="browser" class="alert alert-danger" style="display:none;"></div>
+                    </div>
+                    <div id="remoteLabBody" class="col-sm-8">
+                        @RenderBody()
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm-4">
+                <div class="panel panel-info">
+                    <div class="panel-heading">
+                        <h3 class="panel-title">Need Help?</h3>
+                    </div>
+                    <div class="panel-body">
+                        <h4><i class="glyphicon glyphicon-book"></i> Documentation</h4>
+                        <ul>
+                            <li><a id="youtube" href="https://www.youtube.com/embed/fyM2OHUS6O4?autoplay=1" class="various fancybox.iframe"><i class="glyphicon glyphicon-facetime-video"></i> What is Remote Lab?</a></li>
+                            <li><a target="_RemoteLabDocs" href="https://answers.syr.edu/display/ischool/iSchool+Remote+Lab"><i class="fa fa-file-text"></i> Official Documentation</a></li>
+                        </ul>
+                        <h4><i class="glyphicon glyphicon-download-alt"></i> Download - Remote Desktop Client</h4>
+                        <ul>
+                            <li><a target="_RemoteLabDownload" href="http://support.microsoft.com/kb/2592687"><i class="fa fa-windows"></i> Windows </a></li>
+                            <li><a target="_RemoteLabDownload" href="https://itunes.apple.com/us/app/microsoft-remote-desktop/id715768417?mt=12"><i class="fa fa-apple"></i> Mac OSX</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+        @Html.Partial("_Footer")
     </div>
 
     @Scripts.Render("~/bundles/jquery")

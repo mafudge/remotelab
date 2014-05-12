@@ -22,7 +22,7 @@ namespace RemoteLab.Properties {
     [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "4.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-    internal class Resources {
+    public class Resources {
         
         private static global::System.Resources.ResourceManager resourceMan;
         
@@ -36,7 +36,7 @@ namespace RemoteLab.Properties {
         ///   Returns the cached ResourceManager instance used by this class.
         /// </summary>
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Advanced)]
-        internal static global::System.Resources.ResourceManager ResourceManager {
+        public static global::System.Resources.ResourceManager ResourceManager {
             get {
                 if (object.ReferenceEquals(resourceMan, null)) {
                     global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("RemoteLab.Properties.Resources", typeof(Resources).Assembly);
@@ -51,7 +51,7 @@ namespace RemoteLab.Properties {
         ///   resource lookups using this strongly typed resource class.
         /// </summary>
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Advanced)]
-        internal static global::System.Globalization.CultureInfo Culture {
+        public static global::System.Globalization.CultureInfo Culture {
             get {
                 return resourceCulture;
             }
@@ -63,7 +63,7 @@ namespace RemoteLab.Properties {
         /// <summary>
         ///   Looks up a localized string similar to Administrator.
         /// </summary>
-        internal static string Administrator {
+        public static string Administrator {
             get {
                 return ResourceManager.GetString("Administrator", resourceCulture);
             }
@@ -72,7 +72,7 @@ namespace RemoteLab.Properties {
         /// <summary>
         ///   Looks up a localized string similar to Invalid username or password..
         /// </summary>
-        internal static string InvalidUserNameOrPassword {
+        public static string InvalidUserNameOrPassword {
             get {
                 return ResourceManager.GetString("InvalidUserNameOrPassword", resourceCulture);
             }
@@ -81,16 +81,74 @@ namespace RemoteLab.Properties {
         /// <summary>
         ///   Looks up a localized string similar to REMOTELAB: Lab pool {0} is full. There are not more available computers..
         /// </summary>
-        internal static string LabPoolIsFullEmailMessage {
+        public static string LabPoolIsFullEmailMessage {
             get {
                 return ResourceManager.GetString("LabPoolIsFullEmailMessage", resourceCulture);
             }
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Password:.
+        /// </summary>
+        public static string LoginFormPassword {
+            get {
+                return ResourceManager.GetString("LoginFormPassword", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Remember Me?.
+        /// </summary>
+        public static string LoginFormRememberMe {
+            get {
+                return ResourceManager.GetString("LoginFormRememberMe", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to User Name:.
+        /// </summary>
+        public static string LoginFormUserName {
+            get {
+                return ResourceManager.GetString("LoginFormUserName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to screen mode id:i:2
+        ///desktopwidth:i: {0} 
+        ///desktopheight:i: {1}
+        ///session bpp:i:32
+        ///winposstr:s:0,1,614,156,1654,963
+        ///full address:s: {2}
+        ///username:s: {3}
+        ///compression:i:1
+        ///keyboardhook:i:2
+        ///audiomode:i:0
+        ///redirectprinters:i:1
+        ///redirectcomports:i:0
+        ///redirectsmartcards:i:0
+        ///redirectclipboard:i:1
+        ///redirectposdevices:i:0
+        ///redirectdrives:i:1
+        ///drivestoredirect: s()
+        ///displayconnectionbar:i:1
+        ///pinconnectionbar:i:1
+        ///autoreconnection enabled:i:1
+        ///authentication level:i:0
+        ///prompt for credentials:i:0
+        ///negotiate security [rest of string was truncated]&quot;;.
+        /// </summary>
+        public static string RdpFileSettings {
+            get {
+                return ResourceManager.GetString("RdpFileSettings", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to REMOTELAB: Reboot of computer {0} failed.
         /// </summary>
-        internal static string RebootFailedEmailMessage {
+        public static string RebootFailedEmailMessage {
             get {
                 return ResourceManager.GetString("RebootFailedEmailMessage", resourceCulture);
             }

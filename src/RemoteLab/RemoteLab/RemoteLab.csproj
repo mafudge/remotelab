@@ -310,6 +310,8 @@
     <Content Include="Views\Home\NewRez.cshtml" />
     <Content Include="Views\Home\PoolFull.cshtml" />
     <Content Include="Views\Home\ExistingRez.cshtml" />
+    <Content Include="Views\Home\Stats.cshtml" />
+    <Content Include="Views\Shared\_Footer.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Views\ControllerBase\" />
@@ -335,7 +337,7 @@
       <DependentUpon>201405082025196_FixComputerTable.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
-      <Generator>ResXFileCodeGenerator</Generator>
+      <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
   </ItemGroup>

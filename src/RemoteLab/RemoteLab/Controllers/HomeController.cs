@@ -14,6 +14,9 @@ namespace RemoteLab.Controllers
     public class HomeController : Controller
     {
         private const string REZ_CLEARED_ONCE = "CLEARED-ONCE";
+        private const string RVM = "rvm";
+        private const string COMPUTER_RESERVATION = "ComputerReservation";
+
 
         private readonly RemoteLabService Svc;
 
@@ -29,7 +32,7 @@ namespace RemoteLab.Controllers
         public async Task<ActionResult> Index()
         {
             var rvm = await Svc.PopulateRemoteLabViewModelAsync(Properties.Settings.Default.DefaultPool, HttpContext.User.Identity.Name, Properties.Settings.Default.CleanupInMinutes);
-            TempData["rvm"] = rvm;
+            TempData[RVM] = rvm;
             switch (rvm.ReservationStatus)
             {
                 case ReservationStatus.ExistingReservation:
@@ -55,17 +58,19 @@ namespace RemoteLab.Controllers
         [Authorize]
         public async Task<ActionResult> ExistingRez() 
         {
-            var rvm = (RemoteLabViewModel)TempData["rvm"];
+            var rvm = (RemoteLabViewModel)TempData[RVM];
             if (rvm == null || rvm.ReservationStatus != ReservationStatus.ExistingReservation) return RedirectToAction("Index");
 
-            TempData["computerReservation"] = rvm.RemoteLabComputer.ComputerName;
+            TempData[COMPUTER_RESERVATION] = rvm.RemoteLabComputer.ComputerName;
 
             ViewBag.ClearedOnce = (HttpContext.Session[REZ_CLEARED_ONCE] != null);
+
+            await CalcStatsToViewBagAsync();
 
             return View(rvm);
         }
 
-        // GET /ExistingRez
+        // POST /ExistingRez (you clicked clear reservation)
         [HttpPost]
         [Authorize]
         [ValidateAntiForgeryToken]
@@ -86,24 +91,27 @@ namespace RemoteLab.Controllers
             return RedirectToAction("Index");
         }
 
+        // GET /NewRez
         [HttpGet]
         [Authorize]
         public async Task<ActionResult> NewRez() 
         {
-            RemoteLabViewModel rvm = (RemoteLabViewModel) TempData["rvm"];
+            RemoteLabViewModel rvm = (RemoteLabViewModel) TempData[RVM];
 
             if (rvm == null || rvm.ReservationStatus != ReservationStatus.NewReservation) return RedirectToAction("Index");
+
+            await CalcStatsToViewBagAsync();
 
             return View();
         }
 
+        // POST /NewRez (You clicked I agree)
         [HttpPost]
         [Authorize]
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> NewRez(FormCollection form) 
         {
             bool success = false;
-            int result = 0;
             bool rebootResult = false;
             RemoteLabViewModel rvm = new RemoteLabViewModel();
             do {
@@ -119,21 +127,49 @@ namespace RemoteLab.Controllers
             // when you make it here, you have a valid computer, so make the reservation
             await Svc.MakeReservationAsync(rvm.RemoteLabComputer.ComputerName, rvm.CurrentUser);
 
-            return View();
+            return RedirectToAction("Index");
         }
 
+        // GET / PoolFull
         public async Task<ActionResult> PoolFull() 
         {
-            RemoteLabViewModel rvm = (RemoteLabViewModel) TempData["rvm"];
+            RemoteLabViewModel rvm = (RemoteLabViewModel) TempData[RVM];
             
             if (rvm == null || rvm.ReservationStatus != ReservationStatus.PoolFull) return RedirectToAction("Index");
 
             await Svc.LogAndEmailPoolFullEventAsync(rvm.Pool.ToLowerInvariant(), "N/A", rvm.CurrentUser, System.DateTime.Now);
 
+            await CalcStatsToViewBagAsync();
+
             return View();
             
         }
 
+        // GET / RDPFile returns reservation for valid user
+        [HttpGet]
+        [Authorize]
+        public async Task<ActionResult> RdpFile() 
+        {
+            var rezComputer = (String) TempData[COMPUTER_RESERVATION];
+            if (rezComputer == null)  return RedirectToAction("Index");
+            var rdpComputer = String.Format("{0}.{1}",rezComputer, Properties.Settings.Default.ActiveDirectoryFqdn).ToLowerInvariant();
+            var userName = String.Format("{0}@{1}",HttpContext.User.Identity.Name, Properties.Settings.Default.ActiveDirectoryFqdn).ToLowerInvariant();
+            var contentType = "application/rdp";
+            var buff = Svc.GenerateRdpFileContents(Properties.Resources.RdpFileSettings, rdpComputer, userName);
+
+            Response.AddHeader("Content-Disposition", "attachment; filename=RemoteLabReservation.rdp");
+            
+            return Content(buff, contentType, System.Text.Encoding.UTF8);
+                
+        }
+
+
+        public async Task CalcStatsToViewBagAsync() 
+        {
+            ViewBag.Available = await this.Svc.GetAvailableComputerCountAsync( Properties.Settings.Default.DefaultPool);   
+            ViewBag.Total = await this.Svc.GetTotalComputerCountAsync(Properties.Settings.Default.DefaultPool);
+            ViewBag.InUse = ViewBag.Total - ViewBag.Available;
+        }
 
     }
 }

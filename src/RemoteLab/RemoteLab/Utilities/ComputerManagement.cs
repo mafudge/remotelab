@@ -14,6 +14,9 @@ namespace RemoteLab.Utilities
 
         public async Task<bool> RebootComputerAsync( String ComputerName, String ComputerDomain, String AdminUser, String AdminPassword, String AdminDomain)
         {
+            //TODO: Mock this. For now, return true
+            return true;
+
             var ManagementPath = new ManagementPath(String.Format(@"\\{0}.{1}\root\cimv2",ComputerName,ComputerDomain));
             var Options = new ConnectionOptions() {
                 EnablePrivileges = true,
@@ -47,6 +50,9 @@ namespace RemoteLab.Utilities
 
         public async Task<bool> ConnectToTcpPortAsync(String ComputerName, String ComputerDomain, int TcpPort)
         {
+            //TODO: Mock this. For now, return true
+            return true;
+
             var Hostname = String.Format(@"{0}.{1}",ComputerName, ComputerDomain);
             var TcpClient = new TcpClient();
             try 
