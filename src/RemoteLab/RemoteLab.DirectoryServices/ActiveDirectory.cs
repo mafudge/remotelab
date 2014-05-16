@@ -27,9 +27,11 @@ namespace RemoteLab.Authentication
             bool authenticated = false;
             try
             {
-                DirectoryEntry entry = new DirectoryEntry(this.Path,UserName,Password);
-                object result = entry.NativeObject;
-                authenticated = true;
+                using(DirectoryEntry entry = new DirectoryEntry(this.Path,UserName,Password))
+                {
+                    object result = entry.NativeObject;
+                    authenticated = true;
+                }
             }
             catch (DirectoryServicesCOMException e) 
             { 
@@ -44,7 +46,7 @@ namespace RemoteLab.Authentication
                 using (var user = UserPrincipal.FindByIdentity(context, UserName))
                 using (var group = GroupPrincipal.FindByIdentity(context, GroupName))
                 {
-                    return user.IsMemberOf(group);
+                    return (group != null && user.IsMemberOf(group));
                 }
         }
 

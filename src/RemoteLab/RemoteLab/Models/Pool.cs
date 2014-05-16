@@ -11,8 +11,7 @@ namespace RemoteLab.Models
         [Key]
         [MaxLength(50)]
         public String PoolName {get; set;}
-        
-        
+                
         public String ActiveDirectoryUserGroup { get; set; }
 
         [Url]

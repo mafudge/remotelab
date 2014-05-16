@@ -21,11 +21,10 @@
             <div class="navbar-collapse collapse">
                 <ul class="nav navbar-nav">
                     <li><a href="@Url.Action("Index","Home")"><i class="fa fa-desktop"></i> Connect</a></li>
-                    <li><a href="@Url.Action("About","Home")"><i class="fa fa-dashboard"></i> @RemoteLab.Properties.Settings.Default.DefaultPool</a></li>
                     <li class="dropdown">
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown"><i class="fa fa-gears"></i>  Admin <b class="caret"></b></a>
                         <ul class="dropdown-menu">
-                            <li><a href="#"><i class="fa fa-dashboard"></i> Pools</a></li>
+                            <li><a href="@Url.Action("Index","Pools")"><i class="fa fa-dashboard"></i> Pools</a></li>
                             <li><a href="#"><i class="fa fa-gear"></i> Settings</a></li>
                         </ul>
                     </li>

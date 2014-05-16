@@ -27,12 +27,14 @@ namespace RemoteLab.Migrations
             DropColumn("dbo.Computers", "Pool");
             Sql(@"create view dbo.PoolSummary
                     as
-                    select p.PoolName,
+                   select p.PoolName, p.ActiveDirectoryUserGroup, p.ActiveDirectoryAdminGroup,
+                        p.Logo, p.EmailNotifyList, p.RdpTcpPort, p.CleanupInMinutes,
 	                    count(*) as PoolCount, 
 	                    count(c.UserName) as PoolInUse,
 	                    count(*) - count(c.UserName) as PoolAvailable
 	                    from Pools p join Computers c on c.Pool_PoolName=p.PoolName
-	                    group by p.PoolName");
+	                    group by p.PoolName, p.ActiveDirectoryUserGroup, p.ActiveDirectoryAdminGroup,
+                        p.Logo, p.EmailNotifyList, p.RdpTcpPort, p.CleanupInMinutes");
         }
         
         public override void Down()

@@ -9,6 +9,7 @@ using Microsoft.AspNet.Identity;
 using Microsoft.Owin.Security;
 using RemoteLab.Models;
 using RemoteLab.Authentication;
+using RemoteLab.Services;
 
 
 namespace RemoteLab.Controllers
@@ -17,11 +18,13 @@ namespace RemoteLab.Controllers
     public class AccountController : Controller
     {
 
-        private IDirectoryServices Auth;
+        private readonly IDirectoryServices Auth;
+        private readonly RemoteLabService Svc;
 
-        public AccountController(IDirectoryServices Auth) 
+        public AccountController(IDirectoryServices Auth, RemoteLabService Svc) 
         {
             this.Auth = Auth;
+            this.Svc = Svc;
         }
 
         //
@@ -44,34 +47,9 @@ namespace RemoteLab.Controllers
             {   
                 if (Auth.Authenticate(model.UserName, model.Password) )
                 {
-                    // Create the identity 
-                    var identity = new ClaimsIdentity( new [] { new Claim(ClaimTypes.Name, model.UserName) }, 
-                            DefaultAuthenticationTypes.ApplicationCookie,
-                            ClaimTypes.Name, 
-                            ClaimTypes.Role);
-                    /* 
-                     * Logon should be re-written to use unique url's for each pool.
-                     * for example: http://remotelab/Auth/ischool ==> ischool pool.
-                     * When user authenticates look up 3 AD groups for roles:
-                     * 1) Remote Lab AdministratorGroup (Admin of the entire system)
-                     * 2) Pool Administrator Group  (You can get this from Database Row for pool)
-                     * 3) Pool Users Group (You can get this also from Database row for pool) 
-                     * 
-                     * Set each of these 3 roles as claims like this:
-                     * identity.AddClaim(new Claim(ClaimTypes.Role, "IST-RemoteLab-Users")); 
-                     * 
-                     * Then in code you can verify with User.IsInRole("IST-RemoteLab-Users")
-                     * 
-                     * 
-                     * Implement a view for when user is not in pool /notallowed or something.
-                    */
-
-                    // Admin group check 
-                    if (Auth.UserIsInGroup(model.UserName, Properties.Settings.Default.AdministratorGroup)) {
-                        identity.AddClaim( new Claim(ClaimTypes.Role, Properties.Resources.Administrator));
-                    }
-
-
+                    // Build the set of claims for the authenticated user for the various Pools & application administrator
+                    var identity = BuildClaimsIdentity(Auth, model.UserName, Properties.Settings.Default.AdministratorADGroup, await this.Svc.GetPoolsAsync());
+                   
                     await SignInAsync(identity, false);
                     return RedirectToLocal(returnUrl);
 
@@ -103,6 +81,48 @@ namespace RemoteLab.Controllers
         }
 
         #region Helpers
+
+        //TODO:Refactor into its own class for unit testing
+        private ClaimsIdentity BuildClaimsIdentity(IDirectoryServices Auth, string UserName, string AdminGroup, IEnumerable<Pool> pools)
+        {
+            var identity = new ClaimsIdentity( new [] { new Claim(ClaimTypes.Name, UserName) }, 
+                    DefaultAuthenticationTypes.ApplicationCookie,
+                    ClaimTypes.Name, 
+                    ClaimTypes.Role);
+
+            var claims = new List<Claim>();
+
+            // Admin claim check
+            if (Auth.UserIsInGroup(UserName, AdminGroup)) 
+            {
+                claims.Add(new Claim(ClaimTypes.Role, AdminGroup));
+            }
+
+            // Build claims for Pool Users and Admins
+            foreach(Pool p in pools)
+            {
+                var group = p.ActiveDirectoryAdminGroup;
+                if (group != null && 
+                    !claims.Exists( c=>c.Value.Equals(group,StringComparison.InvariantCultureIgnoreCase)) && 
+                    Auth.UserIsInGroup(UserName, group))
+                {
+                            
+                    claims.Add(new Claim( ClaimTypes.Role, group));
+                }
+
+                group = p.ActiveDirectoryUserGroup;
+                if (group != null &&
+                    !claims.Exists(c => c.Value.Equals(group, StringComparison.InvariantCultureIgnoreCase)) && 
+                    Auth.UserIsInGroup(UserName, group))
+                {
+                    claims.Add(new Claim(ClaimTypes.Role, group));
+                }
+            }
+
+            identity.AddClaims( claims );
+
+                return identity;
+        }
    
         private IAuthenticationManager AuthenticationManager
         {
@@ -113,7 +133,7 @@ namespace RemoteLab.Controllers
         }
 
         private bool IsAdministrator(string UserName) {
-            return Properties.Settings.Default.AdministratorGroup.ToLowerInvariant().Contains(UserName.ToLowerInvariant());
+            return Properties.Settings.Default.AdministratorADGroup.ToLowerInvariant().Contains(UserName.ToLowerInvariant());
         }
 
         private async Task SignInAsync(ClaimsIdentity identity, bool isPersistent)

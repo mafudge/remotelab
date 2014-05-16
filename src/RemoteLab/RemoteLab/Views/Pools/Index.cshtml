@@ -1,0 +1,69 @@
+﻿@model IEnumerable<RemoteLab.Models.PoolSummary>
+
+@{
+    ViewBag.Title = "Index";
+}
+
+<h2>Index</h2>
+
+<p>
+    @Html.ActionLink("Create New", "Create")
+</p>
+<table class="table" >
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.PoolName)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.ActiveDirectoryUserGroup)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Logo)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.ActiveDirectoryAdminGroup)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.EmailNotifyList)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.RdpTcpPort)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.CleanupInMinutes)
+        </th>
+        <th></th>
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.PoolName)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.ActiveDirectoryUserGroup)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Logo)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.ActiveDirectoryAdminGroup)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.EmailNotifyList)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.RdpTcpPort)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.CleanupInMinutes)
+        </td>
+        <td>
+            @Html.ActionLink("Edit", "Edit", new { id=item.PoolName }) |
+            @Html.ActionLink("Dashboard", "Dashboard", new { id=item.PoolName }) |
+            @Html.ActionLink("Delete", "Delete", new { id=item.PoolName })
+        </td>
+    </tr>
+}
+
+</table>

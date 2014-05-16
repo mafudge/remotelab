@@ -31,12 +31,15 @@ namespace RemoteLab.Utilities
 	        {	        
 		        var Scope = new ManagementScope(ManagementPath, Options);
                 Scope.Connect();
-                var Query = new SelectQuery("Win32_OperatingSystem");
-                var Searcher = new ManagementObjectSearcher(Scope, Query);
-                ManagementObject OS = (ManagementObject) Searcher.Get().GetEnumerator().Current;
-                ManagementBaseObject InParams = OS.GetMethodParameters("Win32Shutdown");
-                InParams["Flags"] = 6;
-                ManagementBaseObject OutParams = await Task.Run( () => OS.InvokeMethod("Win32Shutdown", InParams, null));
+                var Query = new SelectQuery("Win32_OperatingSystem");                
+                using(var Searcher = new ManagementObjectSearcher(Scope, Query))
+                using(ManagementObject OS = (ManagementObject) Searcher.Get().GetEnumerator().Current)
+                using(ManagementBaseObject InParams = OS.GetMethodParameters("Win32Shutdown"))
+                {
+                    InParams["Flags"] = 6;
+                    ManagementBaseObject OutParams = await Task.Run( () => OS.InvokeMethod("Win32Shutdown", InParams, null));
+                    OutParams.Dispose();
+                }
 
 	        }
 	        catch (Exception e)
@@ -50,7 +53,7 @@ namespace RemoteLab.Utilities
 
         public async Task<bool> ConnectToTcpPortAsync(String ComputerName, String ComputerDomain, int TcpPort)
         {
-            //TODO: Mock this. For now, return true
+            //TODO: Mock this. For now, it returns true but fix it later
             return true;
 
             var Hostname = String.Format(@"{0}.{1}",ComputerName, ComputerDomain);

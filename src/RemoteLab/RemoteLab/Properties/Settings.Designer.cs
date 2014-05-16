@@ -35,9 +35,9 @@ namespace RemoteLab.Properties {
         [global::System.Configuration.ApplicationScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("IST-Users-ITServices")]
-        public string AdministratorGroup {
+        public string AdministratorADGroup {
             get {
-                return ((string)(this["AdministratorGroup"]));
+                return ((string)(this["AdministratorADGroup"]));
             }
         }
         

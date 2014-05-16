@@ -185,6 +185,7 @@
     <Compile Include="App_Start\StructuremapMvc.cs" />
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
+    <Compile Include="Controllers\PoolsController.cs" />
     <Compile Include="DependencyResolution\IoC.cs" />
     <Compile Include="DependencyResolution\StructureMapDependencyResolver.cs" />
     <Compile Include="DependencyResolution\StructureMapDependencyScope.cs" />
@@ -226,8 +227,11 @@
     <Compile Include="Services\RemoteLabService.cs" />
     <Compile Include="Settings.cs" />
     <Compile Include="Startup.cs" />
+    <Compile Include="Utilities\AdministratorAuthorize.cs" />
     <Compile Include="Utilities\ComputerManagement.cs" />
     <Compile Include="Utilities\EnumUtils.cs" />
+    <Compile Include="Utilities\PoolAdministratorAuthorize.cs" />
+    <Compile Include="Utilities\PoolUserAuthorize.cs" />
     <Compile Include="Utilities\SmtpEmail.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -316,10 +320,13 @@
     <Content Include="Views\Home\ExistingRez.cshtml" />
     <Content Include="Views\Home\Stats.cshtml" />
     <Content Include="Views\Shared\_Footer.cshtml" />
+    <Content Include="Views\Pools\Create.cshtml" />
+    <Content Include="Views\Pools\Delete.cshtml" />
+    <Content Include="Views\Pools\Details.cshtml" />
+    <Content Include="Views\Pools\Edit.cshtml" />
+    <Content Include="Views\Pools\Index.cshtml" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Views\ControllerBase\" />
-  </ItemGroup>
+  <ItemGroup />
   <ItemGroup>
     <Content Include="packages.config" />
     <None Include="Project_Readme.html" />

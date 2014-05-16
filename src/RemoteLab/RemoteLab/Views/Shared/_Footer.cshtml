@@ -8,12 +8,14 @@
         Copyright &copy; 2014 School of Information Studies, Syracuse University
     </div>
 </footer>
-@*@{
-    var user = (System.Security.Claims.ClaimsPrincipal) User;
-    var i =0;
-    foreach ( var c in user.Claims)
-    {
-        i++;
-        <p>@i : @c.Type : @c.Value</p>
+<hr />
+<p>Claims:</p>
+<ol>
+    @{
+        var user = (System.Security.Claims.ClaimsPrincipal)User;
+        foreach (var c in user.Claims)
+        {
+            <li>@c.Type : @c.Value </li>
+        }
     }
-}*@
+</ol>

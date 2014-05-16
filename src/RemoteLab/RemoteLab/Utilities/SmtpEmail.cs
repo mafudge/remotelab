@@ -12,18 +12,22 @@ namespace RemoteLab.Utilities
     {
         public async Task SendMailAsync(String SmtpHost, String FromEmail, String ToEmail, String Subject, String Body)
         {
-            var Msg = new MailMessage() {
+            using(var Msg = new MailMessage() {
                 From = new MailAddress(FromEmail),
                 Subject = Subject,
                 Body = Body,
                 BodyEncoding = Encoding.UTF8,
                 IsBodyHtml = false 
-            };
-            Msg.To.Add(new MailAddress(ToEmail));
-
-            var Smtp = new SmtpClient(SmtpHost);
-            await Smtp.SendMailAsync(Msg);
+            })
+            {
             
+                Msg.To.Add(new MailAddress(ToEmail));
+
+                using(var Smtp = new SmtpClient(SmtpHost))
+                {
+                    await Smtp.SendMailAsync(Msg);
+                }                
+            }
         }
 
     }

@@ -8,10 +8,11 @@ using System.Data.Entity;
 using RemoteLab.Utilities;
 using System.IO;
 using System.Text;
+using System.Security.Claims;
 
 namespace RemoteLab.Services
 {
-    public class RemoteLabService
+    public class RemoteLabService : IDisposable
     {
         private readonly RemoteLabContext Db;
         private readonly ComputerManagement CompMgmt;
@@ -92,16 +93,57 @@ namespace RemoteLab.Services
             return success;
         }
 
+        public async Task<IEnumerable<Pool>> GetPoolsAsync()
+        {
+            return await this.Db.Pools.ToListAsync();
+        }
+
+        public async Task AddPoolAsync(Pool p)
+        {
+            this.Db.Pools.Add(p);
+            await this.Db.SaveChangesAsync();
+        }
+
+        public async Task<Pool> GetPoolByIdAsync(string PoolName) 
+        {
+            return await this.Db.Pools.FindAsync(PoolName);
+
+        }
+
+        public Pool GetPoolById(string PoolName)
+        {
+            return this.Db.Pools.Find(PoolName);
+        }
+
+        public async Task RemovePoolByIdAsync(String PoolName)
+        {
+            Pool p = await this.Db.Pools.FindAsync(PoolName);
+            this.Db.Pools.Remove(p);
+            await this.Db.SaveChangesAsync();
+        }
+
+        public async Task UpdatePoolAsync(Pool p)
+        {
+            this.Db.Entry(p).State = EntityState.Modified;
+            await this.Db.SaveChangesAsync();
+        }
+
+
+        public async Task<IEnumerable<PoolSummary>> GetPoolSummaryByClaimsAsync(ClaimsPrincipal user) 
+        {
+            var summarypools = this.GetPoolSummary();
+            var roles = user.Claims.Where( c=> c.Type==ClaimTypes.Role).Select(c=> c.Value);
+            return summarypools.Where( p=> roles.Contains(p.ActiveDirectoryAdminGroup));
+        }
 
         public async Task<PoolSummary> GetPoolSummaryAsync( String PoolName )
         {
             return await this.Db.Database.SqlQuery<PoolSummary>(@"SELECT * FROM PoolSummary WHERE PoolName = {0}",PoolName).FirstOrDefaultAsync();
         }
 
-        public async Task<IEnumerable<PoolSummary>> GetPoolSummaryAsync()
+        public IEnumerable<PoolSummary> GetPoolSummary()
         {
-            var result = await this.Db.Database.SqlQuery<PoolSummary>(@"SELECT * FROM PoolSummary").AsQueryable<PoolSummary>().ToListAsync<PoolSummary>();
-            return result;
+            return this.Db.Database.SqlQuery<PoolSummary>(@"SELECT * FROM PoolSummary").AsQueryable<PoolSummary>().ToList<PoolSummary>();
         }
 
         public async Task MakeReservationAsync(String ComputerName, String UserName)
@@ -158,6 +200,10 @@ namespace RemoteLab.Services
         {
             return String.Format(rdpFileSettings,width,height,computer,username);
         }
-           
+
+        public void Dispose()
+        {
+            this.Db.Dispose();
+        }
     }
 }

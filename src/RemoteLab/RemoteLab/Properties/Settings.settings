@@ -6,7 +6,7 @@
       <DesignTimeValue Profile="(Default)" />
       <Value Profile="(Default)" />
     </Setting>
-    <Setting Name="AdministratorGroup" Type="System.String" Scope="Application">
+    <Setting Name="AdministratorADGroup" Type="System.String" Scope="Application">
       <Value Profile="(Default)">IST-Users-ITServices</Value>
     </Setting>
     <Setting Name="ActiveDirectoryFqdn" Type="System.String" Scope="Application">
