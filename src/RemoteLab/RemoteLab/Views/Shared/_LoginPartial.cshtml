@@ -7,15 +7,17 @@
 
     <ul class="nav navbar-nav navbar-right">
         <li>
-            @Html.ActionLink("Welcome, " + User.Identity.GetUserName() + (User.IsInRole("Administrator") ? " (Administrator)" : "") , "Manage", "Account", routeValues: null, htmlAttributes: new { title = "Manage" })
+            @Html.ActionLink("User: " + User.Identity.GetUserName() + (User.IsInRole(RemoteLab.Properties.Resources.Administrator) ? " (Administrator)" : ""), "Manage", "Account", routeValues: null, htmlAttributes: new { title = "Manage" })
         </li>
-        <li><a href="javascript:document.getElementById('logoutForm').submit()">Log off</a></li>
+        <li><a href="javascript:document.getElementById('logoutForm').submit()"><i class="fa fa-power-off"></i> Log off</a></li>
     </ul>
     }
 }
 else
 {
     <ul class="nav navbar-nav navbar-right">
-        <li>@Html.ActionLink("Log in", "Login", "Account", routeValues: null, htmlAttributes: new { id = "loginLink" })</li>
+        <li>
+            <a href="@Url.Action("Login","Account", null)" id="loginLink"><i class="fa fa-lock"></i> Log In</a>
+        </li>
     </ul>
 }

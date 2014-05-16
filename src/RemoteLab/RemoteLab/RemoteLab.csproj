@@ -199,14 +199,16 @@
     <Compile Include="Migrations\201405081938027_StoredProcs.Designer.cs">
       <DependentUpon>201405081938027_StoredProcs.cs</DependentUpon>
     </Compile>
-    <Compile Include="Migrations\201405082025196_FixComputerTable.cs" />
-    <Compile Include="Migrations\201405082025196_FixComputerTable.Designer.cs">
-      <DependentUpon>201405082025196_FixComputerTable.cs</DependentUpon>
+    <Compile Include="Migrations\201405151859037_PoolSupport.cs" />
+    <Compile Include="Migrations\201405151859037_PoolSupport.Designer.cs">
+      <DependentUpon>201405151859037_PoolSupport.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Models\Computer.cs" />
     <Compile Include="Models\Event.cs" />
+    <Compile Include="Models\Pool.cs" />
+    <Compile Include="Models\PoolSummary.cs" />
     <Compile Include="Models\RemoteLabContext.cs" />
     <Compile Include="Models\RemoteLabViewModel.cs" />
     <Compile Include="Models\ReservationStatus.cs" />
@@ -222,6 +224,7 @@
       <DependentUpon>Settings.settings</DependentUpon>
     </Compile>
     <Compile Include="Services\RemoteLabService.cs" />
+    <Compile Include="Settings.cs" />
     <Compile Include="Startup.cs" />
     <Compile Include="Utilities\ComputerManagement.cs" />
     <Compile Include="Utilities\EnumUtils.cs" />
@@ -263,8 +266,9 @@
     <Content Include="fonts\fontawesome-webfont.ttf" />
     <Content Include="fonts\fontawesome-webfont.eot" />
     <Content Include="fonts\FontAwesome.otf" />
+    <None Include="Properties\PublishProfiles\IIS On-Premisis.pubxml" />
     <None Include="Properties\Settings.settings">
-      <Generator>SettingsSingleFileGenerator</Generator>
+      <Generator>PublicSettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
     </None>
     <None Include="Scripts\jquery-2.1.0.intellisense.js" />
@@ -321,25 +325,25 @@
     <None Include="Project_Readme.html" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\RemoteLab.Authentication\RemoteLab.Authentication.csproj">
-      <Project>{4f9fd602-625d-401b-8b15-944361ef36de}</Project>
-      <Name>RemoteLab.Authentication</Name>
-    </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
     <EmbeddedResource Include="Migrations\201405081925325_Initial.resx">
       <DependentUpon>201405081925325_Initial.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201405081938027_StoredProcs.resx">
       <DependentUpon>201405081938027_StoredProcs.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201405082025196_FixComputerTable.resx">
-      <DependentUpon>201405082025196_FixComputerTable.cs</DependentUpon>
+    <EmbeddedResource Include="Migrations\201405151859037_PoolSupport.resx">
+      <DependentUpon>201405151859037_PoolSupport.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\RemoteLab.DirectoryServices\RemoteLab.DirectoryServices.csproj">
+      <Project>{4f9fd602-625d-401b-8b15-944361ef36de}</Project>
+      <Name>RemoteLab.DirectoryServices</Name>
+    </ProjectReference>
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

@@ -22,13 +22,14 @@ namespace RemoteLab.Services
             this.Db = Db;
             this.CompMgmt = CompMgmt;
             this.Smtp = Smtp;
+
         }
 
-        public async Task<RemoteLabViewModel> PopulateRemoteLabViewModelAsync(String DefaultPool, String CurrentUser, int CleanupInMinutes)
+        public async Task<RemoteLabViewModel> PopulateRemoteLabViewModelAsync(String PoolName, String CurrentUser, int CleanupInMinutes)
         {
             var rvm = new RemoteLabViewModel()
             {
-                Pool = DefaultPool,
+                Pool = await Db.Pools.Where( p => p.PoolName.Equals(PoolName, StringComparison.InvariantCultureIgnoreCase)).FirstOrDefaultAsync(),
                 CurrentUser = CurrentUser,
                 ReservationStatus = ReservationStatus.Unknown
             };
@@ -92,6 +93,17 @@ namespace RemoteLab.Services
         }
 
 
+        public async Task<PoolSummary> GetPoolSummaryAsync( String PoolName )
+        {
+            return await this.Db.Database.SqlQuery<PoolSummary>(@"SELECT * FROM PoolSummary WHERE PoolName = {0}",PoolName).FirstOrDefaultAsync();
+        }
+
+        public async Task<IEnumerable<PoolSummary>> GetPoolSummaryAsync()
+        {
+            var result = await this.Db.Database.SqlQuery<PoolSummary>(@"SELECT * FROM PoolSummary").AsQueryable<PoolSummary>().ToListAsync<PoolSummary>();
+            return result;
+        }
+
         public async Task MakeReservationAsync(String ComputerName, String UserName)
         {
             await this.Db.Database.ExecuteSqlCommandAsync(@"EXECUTE [dbo].[P_remotelabdb_reserve] {0}, {1}",ComputerName, UserName);
@@ -119,25 +131,25 @@ namespace RemoteLab.Services
         public async Task<Computer> GetExistingReservationAsync(RemoteLabViewModel rvm)
         {
             return await this.Db.Computers.Where(c =>
-                    c.Pool.Equals(rvm.Pool, StringComparison.InvariantCultureIgnoreCase) &&
+                    c.Pool.PoolName.Equals(rvm.Pool.PoolName, StringComparison.InvariantCultureIgnoreCase) &&
                     c.UserName.Equals(rvm.CurrentUser, StringComparison.InvariantCultureIgnoreCase)
                 ).OrderBy(c => c.ComputerName).FirstOrDefaultAsync();
         }
 
-        public async Task<int> GetAvailableComputerCountAsync( String Pool) 
+        public async Task<int> GetAvailableComputerCountAsync( String PoolName ) 
         {
-            return await this.Db.Computers.Where( c => c.Pool.Equals(Pool, StringComparison.InvariantCultureIgnoreCase) && c.UserName == null).CountAsync();
+            return await this.Db.Computers.Where( c => c.Pool.PoolName.Equals(PoolName, StringComparison.InvariantCultureIgnoreCase) && c.UserName == null).CountAsync();
         }
 
-        public async Task<int> GetTotalComputerCountAsync( String Pool )
+        public async Task<int> GetTotalComputerCountAsync( String PoolName )
         {
-            return await this.Db.Computers.Where( c => c.Pool.Equals(Pool, StringComparison.InvariantCultureIgnoreCase)).CountAsync();
+            return await this.Db.Computers.Where( c => c.Pool.PoolName.Equals(PoolName, StringComparison.InvariantCultureIgnoreCase)).CountAsync();
         }
 
         public async Task<Computer> GetNewReservationAsync(RemoteLabViewModel rvm)
         {
             return await this.Db.Computers.Where(c =>
-                    c.Pool.Equals(rvm.Pool, StringComparison.InvariantCultureIgnoreCase) &&
+                    c.Pool.PoolName.Equals(rvm.Pool.PoolName, StringComparison.InvariantCultureIgnoreCase) &&
                     c.UserName == null
                 ).OrderBy(c => c.ComputerName).FirstOrDefaultAsync();
         }

@@ -13,7 +13,7 @@ namespace RemoteLab.Properties {
     
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
     [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.VisualStudio.Editors.SettingsDesigner.SettingsSingleFileGenerator", "12.0.0.0")]
-    internal sealed partial class Settings : global::System.Configuration.ApplicationSettingsBase {
+    public sealed partial class Settings : global::System.Configuration.ApplicationSettingsBase {
         
         private static Settings defaultInstance = ((Settings)(global::System.Configuration.ApplicationSettingsBase.Synchronized(new Settings())));
         
@@ -34,10 +34,10 @@ namespace RemoteLab.Properties {
         
         [global::System.Configuration.ApplicationScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("mjschug mafudge")]
-        public string Administrators {
+        [global::System.Configuration.DefaultSettingValueAttribute("IST-Users-ITServices")]
+        public string AdministratorGroup {
             get {
-                return ((string)(this["Administrators"]));
+                return ((string)(this["AdministratorGroup"]));
             }
         }
         
@@ -88,7 +88,7 @@ namespace RemoteLab.Properties {
         
         [global::System.Configuration.ApplicationScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("Dev")]
+        [global::System.Configuration.DefaultSettingValueAttribute("Prod")]
         public string DefaultPool {
             get {
                 return ((string)(this["DefaultPool"]));

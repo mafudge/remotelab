@@ -115,6 +115,24 @@ namespace RemoteLab.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to PoolAdministrator.
+        /// </summary>
+        public static string PoolAdministrator {
+            get {
+                return ResourceManager.GetString("PoolAdministrator", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to PoolUser.
+        /// </summary>
+        public static string PoolUser {
+            get {
+                return ResourceManager.GetString("PoolUser", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to screen mode id:i:2
         ///desktopwidth:i: {0} 
         ///desktopheight:i: {1}

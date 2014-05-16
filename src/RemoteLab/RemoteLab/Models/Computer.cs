@@ -19,7 +19,6 @@ namespace RemoteLab.Models
 
         public DateTime? Logon { get; set; }
 
-        [MaxLength(50)]
-        public string Pool { get; set; }
+        public Pool Pool { get; set; }
     }
 }

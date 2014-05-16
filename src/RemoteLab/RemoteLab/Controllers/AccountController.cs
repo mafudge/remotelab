@@ -17,9 +17,9 @@ namespace RemoteLab.Controllers
     public class AccountController : Controller
     {
 
-        private IAuthentication Auth;
+        private IDirectoryServices Auth;
 
-        public AccountController(IAuthentication Auth) 
+        public AccountController(IDirectoryServices Auth) 
         {
             this.Auth = Auth;
         }
@@ -49,9 +49,30 @@ namespace RemoteLab.Controllers
                             DefaultAuthenticationTypes.ApplicationCookie,
                             ClaimTypes.Name, 
                             ClaimTypes.Role);
-                    // Check if user is an administrator
-                    if (IsAdministrator(model.UserName)) { identity.AddClaim(new Claim(ClaimTypes.Role,Properties.Resources.Administrator)); }
-                    await SignInAsync(identity, model.RememberMe);
+                    /* 
+                     * Logon should be re-written to use unique url's for each pool.
+                     * for example: http://remotelab/Auth/ischool ==> ischool pool.
+                     * When user authenticates look up 3 AD groups for roles:
+                     * 1) Remote Lab AdministratorGroup (Admin of the entire system)
+                     * 2) Pool Administrator Group  (You can get this from Database Row for pool)
+                     * 3) Pool Users Group (You can get this also from Database row for pool) 
+                     * 
+                     * Set each of these 3 roles as claims like this:
+                     * identity.AddClaim(new Claim(ClaimTypes.Role, "IST-RemoteLab-Users")); 
+                     * 
+                     * Then in code you can verify with User.IsInRole("IST-RemoteLab-Users")
+                     * 
+                     * 
+                     * Implement a view for when user is not in pool /notallowed or something.
+                    */
+
+                    // Admin group check 
+                    if (Auth.UserIsInGroup(model.UserName, Properties.Settings.Default.AdministratorGroup)) {
+                        identity.AddClaim( new Claim(ClaimTypes.Role, Properties.Resources.Administrator));
+                    }
+
+
+                    await SignInAsync(identity, false);
                     return RedirectToLocal(returnUrl);
 
                 }
@@ -92,7 +113,7 @@ namespace RemoteLab.Controllers
         }
 
         private bool IsAdministrator(string UserName) {
-            return Properties.Settings.Default.Administrators.ToLowerInvariant().Contains(UserName.ToLowerInvariant());
+            return Properties.Settings.Default.AdministratorGroup.ToLowerInvariant().Contains(UserName.ToLowerInvariant());
         }
 
         private async Task SignInAsync(ClaimsIdentity identity, bool isPersistent)

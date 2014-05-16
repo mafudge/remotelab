@@ -62,10 +62,11 @@ namespace RemoteLab.Controllers
             if (rvm == null || rvm.ReservationStatus != ReservationStatus.ExistingReservation) return RedirectToAction("Index");
 
             TempData[COMPUTER_RESERVATION] = rvm.RemoteLabComputer.ComputerName;
-
+            var stats = await Svc.GetPoolSummaryAsync(rvm.Pool.PoolName);
             ViewBag.ClearedOnce = (HttpContext.Session[REZ_CLEARED_ONCE] != null);
-
-            await CalcStatsToViewBagAsync();
+            ViewBag.Available = stats.PoolAvailable;
+            ViewBag.Total = stats.PoolCount;
+            ViewBag.InUse = stats.PoolInUse;
 
             return View(rvm);
         }
@@ -74,7 +75,7 @@ namespace RemoteLab.Controllers
         [HttpPost]
         [Authorize]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> ExistingRez(FormCollection form)
+        public async Task<ActionResult> ClearRez(FormCollection form)
         {
             String ComputerReservation = form["ComputerReservation"];
             ReservationStatus RezStatus = EnumUtils.ParseEnum<ReservationStatus>(form["ReservationStatus"]);  //(ReservationStatus)(Enum.Parse(typeof(ReservationStatus),form["ReservationStatus"],true));
@@ -100,16 +101,19 @@ namespace RemoteLab.Controllers
 
             if (rvm == null || rvm.ReservationStatus != ReservationStatus.NewReservation) return RedirectToAction("Index");
 
-            await CalcStatsToViewBagAsync();
+            var stats = await Svc.GetPoolSummaryAsync(rvm.Pool.PoolName);
+            ViewBag.Available = stats.PoolAvailable;
+            ViewBag.Total = stats.PoolCount;
+            ViewBag.InUse = stats.PoolInUse;
 
             return View();
         }
 
-        // POST /NewRez (You clicked I agree)
+        // POST /NewRez (You clicked I agree, and must MakeRez)
         [HttpPost]
         [Authorize]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> NewRez(FormCollection form) 
+        public async Task<ActionResult> MakeRez(FormCollection form) 
         {
             bool success = false;
             bool rebootResult = false;
@@ -137,9 +141,13 @@ namespace RemoteLab.Controllers
             
             if (rvm == null || rvm.ReservationStatus != ReservationStatus.PoolFull) return RedirectToAction("Index");
 
-            await Svc.LogAndEmailPoolFullEventAsync(rvm.Pool.ToLowerInvariant(), "N/A", rvm.CurrentUser, System.DateTime.Now);
+            await Svc.LogAndEmailPoolFullEventAsync(rvm.Pool.PoolName.ToLowerInvariant(), "N/A", rvm.CurrentUser, System.DateTime.Now);
 
-            await CalcStatsToViewBagAsync();
+            var stats = await Svc.GetPoolSummaryAsync(rvm.Pool.PoolName); 
+            ViewBag.Available = stats.PoolAvailable;
+            ViewBag.Total = stats.PoolCount;
+            ViewBag.InUse = stats.PoolInUse;
+
 
             return View();
             
@@ -161,14 +169,6 @@ namespace RemoteLab.Controllers
             
             return Content(buff, contentType, System.Text.Encoding.UTF8);
                 
-        }
-
-
-        public async Task CalcStatsToViewBagAsync() 
-        {
-            ViewBag.Available = await this.Svc.GetAvailableComputerCountAsync( Properties.Settings.Default.DefaultPool);   
-            ViewBag.Total = await this.Svc.GetTotalComputerCountAsync(Properties.Settings.Default.DefaultPool);
-            ViewBag.InUse = ViewBag.Total - ViewBag.Available;
         }
 
     }

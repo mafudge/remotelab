@@ -100,7 +100,7 @@ namespace RemoteLab.Migrations
 	                -- log the event
 	                declare @now datetime
 	                set @now = getdate()
-	                exec dbo.[P_remotelabdb_logevent] 'LOGON',@computer, @computer, @now 
+	                exec dbo.[P_remotelabdb_logevent] 'LOGON',@username, @computer, @now 
                 END");
 
             Sql(@"CREATE PROCEDURE [dbo].[P_remotelabdb_logoff] 

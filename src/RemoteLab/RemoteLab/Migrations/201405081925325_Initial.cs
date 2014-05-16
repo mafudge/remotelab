@@ -13,8 +13,8 @@ namespace RemoteLab.Migrations
                     {
                         ComputerName = c.String(nullable: false, maxLength: 50),
                         UserName = c.String(maxLength: 50),
-                        Reserved = c.DateTime(nullable: false),
-                        Logon = c.DateTime(nullable: false),
+                        Reserved = c.DateTime(nullable: true),
+                        Logon = c.DateTime(nullable: true),
                         Pool = c.String(maxLength: 50),
                     })
                 .PrimaryKey(t => t.ComputerName);

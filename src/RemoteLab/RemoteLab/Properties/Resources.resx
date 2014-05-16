@@ -141,6 +141,14 @@
     <value>User Name:</value>
     <comment>The text which displays next to the user name</comment>
   </data>
+  <data name="PoolAdministrator" xml:space="preserve">
+    <value>PoolAdministrator</value>
+    <comment>Role Name for pool administrator</comment>
+  </data>
+  <data name="PoolUser" xml:space="preserve">
+    <value>PoolUser</value>
+    <comment>Role name for pool user</comment>
+  </data>
   <data name="RdpFileSettings" xml:space="preserve">
     <value>screen mode id:i:2
 desktopwidth:i: {0} 

@@ -33,7 +33,7 @@ namespace RemoteLab.DependencyResolution {
                                         scan.TheCallingAssembly();
                                         scan.WithDefaultConventions();
                                     });
-                            x.For<IAuthentication>().Use( ctx => new ActiveDirectoryAuthentication(Properties.Settings.Default.ActiveDirectoryFqdn));
+                            x.For<IDirectoryServices>().Use( ctx => new ActiveDirectory(Properties.Settings.Default.ActiveDirectoryFqdn));
                             x.For<RemoteLabContext>().Use( ctx => new RemoteLabContext("RemoteLabContext"));
                             x.For<ComputerManagement>().Use( ctx => new ComputerManagement()); 
                             x.For<SmtpEmail>().Use( ctx => new SmtpEmail());
