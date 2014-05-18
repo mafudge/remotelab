@@ -15,6 +15,7 @@ namespace RemoteLab.Models
         [MaxLength(50)]
         public string UserName { get; set; }
 
+        
         public DateTime? Reserved { get; set; }
 
         public DateTime? Logon { get; set; }

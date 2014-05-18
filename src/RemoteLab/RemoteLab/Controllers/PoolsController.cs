@@ -29,7 +29,7 @@ namespace RemoteLab.Controllers
         [Authorize]
         public async Task<ActionResult> Index()
         {
-            return View(await this.Svc.GetPoolSummaryByClaimsAsync((ClaimsPrincipal)HttpContext.User));
+            return View(this.Svc.GetPoolSummaryByAdminClaims((ClaimsPrincipal)HttpContext.User));
         }
 
         // GET: Pools/Dashboard/PoolName
@@ -102,7 +102,7 @@ namespace RemoteLab.Controllers
         {
             if (ModelState.IsValid)
             {
-                this.Svc.UpdatePoolAsync(pool);
+                await this.Svc.UpdatePoolAsync(pool);
                 return RedirectToAction("Index");
             }
             return View(pool);

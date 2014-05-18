@@ -1,13 +1,13 @@
 ﻿@model IEnumerable<RemoteLab.Models.PoolSummary>
 
 @{
-    ViewBag.Title = "Index";
+    ViewBag.Title = "Remote Lab - Administer Pools";
 }
 
-<h2>Index</h2>
+<h2>Administer Pools</h2>
 
 <p>
-    @Html.ActionLink("Create New", "Create")
+    <a href="@Url.Action("Create")" class="btn btn-link"><i class="fa fa-plus-circle"></i> New Pool</a>
 </p>
 <table class="table" >
     <tr>
@@ -15,53 +15,42 @@
             @Html.DisplayNameFor(model => model.PoolName)
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.ActiveDirectoryUserGroup)
+            @Html.DisplayNameFor(model => model.PoolCount)
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.Logo)
+            @Html.DisplayNameFor(model => model.PoolInUse)
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.ActiveDirectoryAdminGroup)
+            @Html.DisplayNameFor(model => model.PoolAvailable)
         </th>
-        <th>
-            @Html.DisplayNameFor(model => model.EmailNotifyList)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.RdpTcpPort)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.CleanupInMinutes)
-        </th>
-        <th></th>
     </tr>
 
-@foreach (var item in Model) {
-    <tr>
+@foreach (var item in Model)
+{
+    <tr style="font-size:1.5em;">
         <td>
-            @Html.DisplayFor(modelItem => item.PoolName)
+            <div class="btn-group">
+                <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
+                    <i class="fa fa-gear"></i> @item.PoolName <b class="caret"></b>
+                </button>
+                <ul class="dropdown-menu" role="menu">
+                    <li><a href="@Url.Action("Dashboard","Pools", new { Id = item.PoolName })"><i class="fa fa-dashboard"></i> Dashboard</a></li>
+                    <li><a href="@Url.Action("Scripts","Pools",new { Id = item.PoolName })"><i class="fa fa-download"></i> Download Scripts</a></li>
+                    <li><a href="@Url.Action("Events","Pools",new { Id = item.PoolName })"><i class="fa fa-file-text"></i> Event Logs</a></li>
+                    <li><a href="@Url.Action("Edit", "Pools", new { Id = item.PoolName })"><i class="fa fa-edit"></i> Edit Settings</a></li>
+                    <li><a href="@Url.Action("Delete","Pools", new { Id = item.PoolName } )"><i class="fa fa-trash-o"></i> Delete</a></li>
+                    @*<li><a href="#"><i class="fa fa-gear"></i> Settings</a></li>*@
+                </ul>
+            </div>
         </td>
         <td>
-            @Html.DisplayFor(modelItem => item.ActiveDirectoryUserGroup)
+            <span class="label label-primary">@item.PoolCount</span>
         </td>
         <td>
-            @Html.DisplayFor(modelItem => item.Logo)
+            <span class="label label-success">@item.PoolAvailable</span>
         </td>
         <td>
-            @Html.DisplayFor(modelItem => item.ActiveDirectoryAdminGroup)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.EmailNotifyList)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.RdpTcpPort)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.CleanupInMinutes)
-        </td>
-        <td>
-            @Html.ActionLink("Edit", "Edit", new { id=item.PoolName }) |
-            @Html.ActionLink("Dashboard", "Dashboard", new { id=item.PoolName }) |
-            @Html.ActionLink("Delete", "Delete", new { id=item.PoolName })
+            <span class="label label-danger">@item.PoolInUse</span>
         </td>
     </tr>
 }

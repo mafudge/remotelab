@@ -192,17 +192,17 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
-    <Compile Include="Migrations\201405081925325_Initial.cs" />
-    <Compile Include="Migrations\201405081925325_Initial.Designer.cs">
-      <DependentUpon>201405081925325_Initial.cs</DependentUpon>
+    <Compile Include="Migrations\201405181825319_InitialSchema.cs" />
+    <Compile Include="Migrations\201405181825319_InitialSchema.Designer.cs">
+      <DependentUpon>201405181825319_InitialSchema.cs</DependentUpon>
     </Compile>
-    <Compile Include="Migrations\201405081938027_StoredProcs.cs" />
-    <Compile Include="Migrations\201405081938027_StoredProcs.Designer.cs">
-      <DependentUpon>201405081938027_StoredProcs.cs</DependentUpon>
+    <Compile Include="Migrations\201405181828505_PoolSummaryView.cs" />
+    <Compile Include="Migrations\201405181828505_PoolSummaryView.Designer.cs">
+      <DependentUpon>201405181828505_PoolSummaryView.cs</DependentUpon>
     </Compile>
-    <Compile Include="Migrations\201405151859037_PoolSupport.cs" />
-    <Compile Include="Migrations\201405151859037_PoolSupport.Designer.cs">
-      <DependentUpon>201405151859037_PoolSupport.cs</DependentUpon>
+    <Compile Include="Migrations\201405181830174_StoredProcedures.cs" />
+    <Compile Include="Migrations\201405181830174_StoredProcedures.Designer.cs">
+      <DependentUpon>201405181830174_StoredProcedures.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
@@ -325,6 +325,8 @@
     <Content Include="Views\Pools\Details.cshtml" />
     <Content Include="Views\Pools\Edit.cshtml" />
     <Content Include="Views\Pools\Index.cshtml" />
+    <Content Include="Views\Home\ChoosePool.cshtml" />
+    <Content Include="Views\Home\NoPools.cshtml" />
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>
@@ -332,14 +334,14 @@
     <None Include="Project_Readme.html" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Migrations\201405081925325_Initial.resx">
-      <DependentUpon>201405081925325_Initial.cs</DependentUpon>
+    <EmbeddedResource Include="Migrations\201405181825319_InitialSchema.resx">
+      <DependentUpon>201405181825319_InitialSchema.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201405081938027_StoredProcs.resx">
-      <DependentUpon>201405081938027_StoredProcs.cs</DependentUpon>
+    <EmbeddedResource Include="Migrations\201405181828505_PoolSummaryView.resx">
+      <DependentUpon>201405181828505_PoolSummaryView.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201405151859037_PoolSupport.resx">
-      <DependentUpon>201405151859037_PoolSupport.cs</DependentUpon>
+    <EmbeddedResource Include="Migrations\201405181830174_StoredProcedures.resx">
+      <DependentUpon>201405181830174_StoredProcedures.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>

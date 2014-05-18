@@ -7,13 +7,13 @@ namespace RemoteLab.Migrations
     using System.Resources;
     
     [GeneratedCode("EntityFramework.Migrations", "6.1.0-30225")]
-    public sealed partial class PoolSupport : IMigrationMetadata
+    public sealed partial class InitialSchema : IMigrationMetadata
     {
-        private readonly ResourceManager Resources = new ResourceManager(typeof(PoolSupport));
+        private readonly ResourceManager Resources = new ResourceManager(typeof(InitialSchema));
         
         string IMigrationMetadata.Id
         {
-            get { return "201405151859037_PoolSupport"; }
+            get { return "201405181825319_InitialSchema"; }
         }
         
         string IMigrationMetadata.Source

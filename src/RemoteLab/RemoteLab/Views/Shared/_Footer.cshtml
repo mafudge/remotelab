@@ -2,10 +2,8 @@
 <hr />
 <footer class="bs-footer">
     <div class="container">
-        RemoteLab 2.0 - iSchool Technology Services <br />
-        002M Hinds Hall, Syracuse, New York 13244-4100<br />
-        Phone: 315-443-4490 | Fax: 315-443-6886 | Email: <a href="/gethelp.aspx">ischoolit@ot.syr.edu</a><br />
-        Copyright &copy; 2014 School of Information Studies, Syracuse University
+        @HttpContext.Current.Application["NAME"] Version @HttpContext.Current.Application["VERSION"]  Build @HttpContext.Current.Application["BUILD"]<br />
+        @HttpContext.Current.Application["COPYRIGHT"]
     </div>
 </footer>
 <hr />

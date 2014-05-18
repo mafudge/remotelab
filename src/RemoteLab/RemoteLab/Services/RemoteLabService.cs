@@ -26,34 +26,43 @@ namespace RemoteLab.Services
 
         }
 
-        public async Task<RemoteLabViewModel> PopulateRemoteLabViewModelAsync(String PoolName, String CurrentUser, int CleanupInMinutes)
+        public async Task<RemoteLabViewModel> PopulateRemoteLabViewModelAsync(String PoolName, String CurrentUser)
         {
             var rvm = new RemoteLabViewModel()
             {
-                Pool = await Db.Pools.Where( p => p.PoolName.Equals(PoolName, StringComparison.InvariantCultureIgnoreCase)).FirstOrDefaultAsync(),
                 CurrentUser = CurrentUser,
-                ReservationStatus = ReservationStatus.Unknown
+                ReservationStatus = ReservationStatus.NoPoolSelected
             };
-            await this.ReservationCleanupAsync(CleanupInMinutes);
-            rvm.RemoteLabComputer = await this.GetExistingReservationAsync(rvm);
-            if (rvm.RemoteLabComputer != null)
+            rvm.Pool = await this.GetPoolByIdAsync(PoolName ?? String.Empty); 
+            if (rvm.Pool == null)
             {
-                // we have a reservation
-                rvm.ReservationStatus = ReservationStatus.ExistingReservation;
-            }
-            else
-            {
-                // you are here fore the new reservation
-                rvm.ReservationStatus = ReservationStatus.NewReservation;
-                rvm.RemoteLabComputer = await this.GetNewReservationAsync(rvm);
-            }
+                // no pool selected
+                rvm.ReservationStatus = ReservationStatus.NoPoolSelected;
 
-            if (rvm.RemoteLabComputer == null)
-            {
-                // The pool is full
-                rvm.ReservationStatus = ReservationStatus.PoolFull;
             }
+            else // we have selected a pool, so we can continue
+            {
+                rvm.RemoteLabComputer = await this.GetExistingReservationAsync(rvm);
+                await this.ReservationCleanupAsync(rvm.Pool.PoolName, rvm.Pool.CleanupInMinutes);
+                if (rvm.RemoteLabComputer != null)
+                {
+                    // we have a reservation
+                    rvm.ReservationStatus = ReservationStatus.ExistingReservation;
+                }
+                else
+                {
+                    // you are here for the new reservation
+                    rvm.ReservationStatus = ReservationStatus.NewReservation;
+                    rvm.RemoteLabComputer = await this.GetNewReservationAsync(rvm);
+                }
 
+                if (rvm.RemoteLabComputer == null)
+                {
+                    // The pool is full
+                    rvm.ReservationStatus = ReservationStatus.PoolFull;
+                }
+
+            }
             return rvm;
 
         }
@@ -129,13 +138,19 @@ namespace RemoteLab.Services
         }
 
 
-        public async Task<IEnumerable<PoolSummary>> GetPoolSummaryByClaimsAsync(ClaimsPrincipal user) 
+        public IEnumerable<PoolSummary> GetPoolSummaryByAdminClaims(ClaimsPrincipal user) 
         {
             var summarypools = this.GetPoolSummary();
             var roles = user.Claims.Where( c=> c.Type==ClaimTypes.Role).Select(c=> c.Value);
             return summarypools.Where( p=> roles.Contains(p.ActiveDirectoryAdminGroup));
         }
 
+        public IEnumerable<PoolSummary> GetPoolSummaryByUserClaims(ClaimsPrincipal user)
+        {
+            var summarypools = this.GetPoolSummary();
+            var roles = user.Claims.Where(c => c.Type == ClaimTypes.Role).Select(c => c.Value);
+            return summarypools.Where(p => roles.Contains(p.ActiveDirectoryUserGroup));
+        }
         public async Task<PoolSummary> GetPoolSummaryAsync( String PoolName )
         {
             return await this.Db.Database.SqlQuery<PoolSummary>(@"SELECT * FROM PoolSummary WHERE PoolName = {0}",PoolName).FirstOrDefaultAsync();
@@ -155,9 +170,9 @@ namespace RemoteLab.Services
             await this.Db.Database.ExecuteSqlCommandAsync(@"EXECUTE [dbo].[P_remotelabdb_fail_tcp_check] {0}, {1}",ComputerName,UserName); 
         }
 
-        public async Task ReservationCleanupAsync(int CleanupInMinutes)
+        public async Task ReservationCleanupAsync(string PoolName, int CleanupInMinutes)
         {
-            await this.Db.Database.ExecuteSqlCommandAsync(@"EXECUTE [dbo].[P_remotelabdb_reservation_cleanup] {0}", CleanupInMinutes);
+            await this.Db.Database.ExecuteSqlCommandAsync(@"EXECUTE [dbo].[P_remotelabdb_reservation_cleanup] {0}, {1}", PoolName, CleanupInMinutes);
         }
 
         public async Task ClearReservationAsync(String ReservationComputerName)
@@ -177,7 +192,7 @@ namespace RemoteLab.Services
                     c.UserName.Equals(rvm.CurrentUser, StringComparison.InvariantCultureIgnoreCase)
                 ).OrderBy(c => c.ComputerName).FirstOrDefaultAsync();
         }
-
+        
         public async Task<int> GetAvailableComputerCountAsync( String PoolName ) 
         {
             return await this.Db.Computers.Where( c => c.Pool.PoolName.Equals(PoolName, StringComparison.InvariantCultureIgnoreCase) && c.UserName == null).CountAsync();

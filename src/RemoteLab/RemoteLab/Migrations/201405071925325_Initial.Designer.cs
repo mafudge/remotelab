@@ -13,7 +13,7 @@ namespace RemoteLab.Migrations
         
         string IMigrationMetadata.Id
         {
-            get { return "201405081925325_Initial"; }
+            get { return "201405071925325_Initial"; }
         }
         
         string IMigrationMetadata.Source

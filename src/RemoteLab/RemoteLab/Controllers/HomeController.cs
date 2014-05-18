@@ -5,6 +5,7 @@ using System;
 using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
+using System.Security.Claims;
 using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
@@ -16,6 +17,9 @@ namespace RemoteLab.Controllers
         private const string REZ_CLEARED_ONCE = "CLEARED-ONCE";
         private const string RVM = "rvm";
         private const string COMPUTER_RESERVATION = "ComputerReservation";
+        private const string CHOSEN_POOL = "CHOSEN-POOL";
+        private const string NO_POOLS = "NO-POOLS";
+        private const string POOL_COUNT = "POOL-COUNT";
 
 
         private readonly RemoteLabService Svc;
@@ -31,27 +35,127 @@ namespace RemoteLab.Controllers
         [Authorize]
         public async Task<ActionResult> Index()
         {
-            var rvm = await Svc.PopulateRemoteLabViewModelAsync(Properties.Settings.Default.DefaultPool, HttpContext.User.Identity.Name, Properties.Settings.Default.CleanupInMinutes);
+            var chosenPool = (String)HttpContext.Session[CHOSEN_POOL] ?? String.Empty;
+            var rvm = await Svc.PopulateRemoteLabViewModelAsync(chosenPool, HttpContext.User.Identity.Name);
             TempData[RVM] = rvm;
             switch (rvm.ReservationStatus)
             {
+                case ReservationStatus.NoPoolSelected:
+                    return RedirectToAction("ChoosePool");
                 case ReservationStatus.ExistingReservation:
                     return RedirectToAction("ExistingRez");
-                    break;
                 case ReservationStatus.NewReservation:
                     return RedirectToAction("NewRez");
-                    break;
                 case ReservationStatus.PoolFull:
                     return RedirectToAction("PoolFull");
-                    break;
                 case ReservationStatus.Unknown:
-                    //TODO: fix
+                    //TODO: fix? redirect to nice error page?
                     throw new NotImplementedException();
-                    break;
             }
 
             return View();
         }
+
+        // GET /ChoosePool
+        [HttpGet]
+        [Authorize]
+        public async Task<ActionResult> ChoosePool()
+        {
+            var userPools = this.Svc.GetPoolSummaryByUserClaims((ClaimsPrincipal)HttpContext.User);
+            HttpContext.Session[POOL_COUNT] = userPools.Count();
+            switch (userPools.Count())
+            {
+                case 0: // this user has no pools
+                    TempData[NO_POOLS] = NO_POOLS;
+                    return RedirectToAction("NoPools");
+                case 1: //only 1 pool, no need to select
+                    HttpContext.Session[CHOSEN_POOL] = userPools.FirstOrDefault().PoolName;
+                    return RedirectToAction("Index");
+                default: //more than one, make the user choose in the view
+                    return View(userPools);
+
+            }
+        }
+
+        // GET /ChoosePool
+        [HttpPost]
+        [Authorize]
+        [ValidateAntiForgeryToken]
+        public async Task<ActionResult> ChoosePool(FormCollection form)
+        {
+            var PoolName = (String)form["PoolName"] ?? String.Empty;
+            HttpContext.Session[CHOSEN_POOL] = PoolName;
+            return RedirectToAction("Index");
+        }
+
+        // GET /ChooseDifferentPool
+        [HttpGet]
+        [Authorize]
+        public async Task<ActionResult> ChooseDifferentPool()
+        {
+            HttpContext.Session.Remove(CHOSEN_POOL);
+            return RedirectToAction("Index");
+        }
+        [HttpGet]
+        [Authorize]
+        public async Task<ActionResult> NoPools()
+        {
+            var nopools = (string) TempData[NO_POOLS] ?? String.Empty;
+            if (String.IsNullOrEmpty(nopools))
+            {
+                return RedirectToAction("Index");
+            }
+            else
+            {
+                return View();
+            }
+        }
+
+        // GET /NewRez
+        [HttpGet]
+        [Authorize]
+        public async Task<ActionResult> NewRez()
+        {
+            RemoteLabViewModel rvm = (RemoteLabViewModel)TempData[RVM];
+
+            if (rvm == null || rvm.ReservationStatus != ReservationStatus.NewReservation) return RedirectToAction("Index");
+
+            var stats = await Svc.GetPoolSummaryAsync(rvm.Pool.PoolName);
+            ViewBag.CurrentPool = rvm.Pool.PoolName;
+            ViewBag.Available = stats.PoolAvailable;
+            ViewBag.Total = stats.PoolCount;
+            ViewBag.InUse = stats.PoolInUse;
+
+            return View();
+        }
+
+        // POST /NewRez (You clicked I agree, and must MakeRez)
+        [HttpPost]
+        [Authorize]
+        [ValidateAntiForgeryToken]
+        public async Task<ActionResult> MakeRez(FormCollection form)
+        {
+            bool success = false;
+            bool rebootResult = false;
+            string PoolName = (string)HttpContext.Session[CHOSEN_POOL];
+            RemoteLabViewModel rvm = new RemoteLabViewModel();
+            do
+            {
+                rvm = await Svc.PopulateRemoteLabViewModelAsync(PoolName, HttpContext.User.Identity.Name);
+
+                if (rvm == null || rvm.ReservationStatus != ReservationStatus.NewReservation) return RedirectToAction("Index");
+
+                success = await Svc.CheckRdpPortAndRebootIfUnresponsiveAsync(rvm.RemoteLabComputer.ComputerName, Properties.Settings.Default.ActiveDirectoryFqdn,
+                    rvm.CurrentUser, rvm.Pool.RdpTcpPort);
+
+            } while (!success);
+            // when you make it here, you have a valid computer, so make the reservation
+            await Svc.MakeReservationAsync(rvm.RemoteLabComputer.ComputerName, rvm.CurrentUser);
+
+            return RedirectToAction("Index");
+        }
+
+
 
         // GET /ExistingRez
         [HttpGet]
@@ -64,6 +168,7 @@ namespace RemoteLab.Controllers
             TempData[COMPUTER_RESERVATION] = rvm.RemoteLabComputer.ComputerName;
             var stats = await Svc.GetPoolSummaryAsync(rvm.Pool.PoolName);
             ViewBag.ClearedOnce = (HttpContext.Session[REZ_CLEARED_ONCE] != null);
+            ViewBag.CurrentPool = rvm.Pool.PoolName;
             ViewBag.Available = stats.PoolAvailable;
             ViewBag.Total = stats.PoolCount;
             ViewBag.InUse = stats.PoolInUse;
@@ -78,7 +183,7 @@ namespace RemoteLab.Controllers
         public async Task<ActionResult> ClearRez(FormCollection form)
         {
             String ComputerReservation = form["ComputerReservation"];
-            ReservationStatus RezStatus = EnumUtils.ParseEnum<ReservationStatus>(form["ReservationStatus"]);  //(ReservationStatus)(Enum.Parse(typeof(ReservationStatus),form["ReservationStatus"],true));
+            ReservationStatus RezStatus = EnumUtils.ParseEnum<ReservationStatus>(form["ReservationStatus"]); 
 
             if (RezStatus != ReservationStatus.ExistingReservation) return RedirectToAction("Index");
 
@@ -92,47 +197,6 @@ namespace RemoteLab.Controllers
             return RedirectToAction("Index");
         }
 
-        // GET /NewRez
-        [HttpGet]
-        [Authorize]
-        public async Task<ActionResult> NewRez() 
-        {
-            RemoteLabViewModel rvm = (RemoteLabViewModel) TempData[RVM];
-
-            if (rvm == null || rvm.ReservationStatus != ReservationStatus.NewReservation) return RedirectToAction("Index");
-
-            var stats = await Svc.GetPoolSummaryAsync(rvm.Pool.PoolName);
-            ViewBag.Available = stats.PoolAvailable;
-            ViewBag.Total = stats.PoolCount;
-            ViewBag.InUse = stats.PoolInUse;
-
-            return View();
-        }
-
-        // POST /NewRez (You clicked I agree, and must MakeRez)
-        [HttpPost]
-        [Authorize]
-        [ValidateAntiForgeryToken]
-        public async Task<ActionResult> MakeRez(FormCollection form) 
-        {
-            bool success = false;
-            bool rebootResult = false;
-            RemoteLabViewModel rvm = new RemoteLabViewModel();
-            do {
-
-                rvm = await Svc.PopulateRemoteLabViewModelAsync(Properties.Settings.Default.DefaultPool, HttpContext.User.Identity.Name, Properties.Settings.Default.CleanupInMinutes);
-
-                if (rvm == null || rvm.ReservationStatus != ReservationStatus.NewReservation) return RedirectToAction("Index");
-
-                success = await Svc.CheckRdpPortAndRebootIfUnresponsiveAsync(rvm.RemoteLabComputer.ComputerName, Properties.Settings.Default.ActiveDirectoryFqdn, 
-                    rvm.CurrentUser, Properties.Settings.Default.RemoteDesktopProtocolTcpPort);
-
-            } while (!success);
-            // when you make it here, you have a valid computer, so make the reservation
-            await Svc.MakeReservationAsync(rvm.RemoteLabComputer.ComputerName, rvm.CurrentUser);
-
-            return RedirectToAction("Index");
-        }
 
         // GET / PoolFull
         public async Task<ActionResult> PoolFull() 
@@ -143,7 +207,8 @@ namespace RemoteLab.Controllers
 
             await Svc.LogAndEmailPoolFullEventAsync(rvm.Pool.PoolName.ToLowerInvariant(), "N/A", rvm.CurrentUser, System.DateTime.Now);
 
-            var stats = await Svc.GetPoolSummaryAsync(rvm.Pool.PoolName); 
+            var stats = await Svc.GetPoolSummaryAsync(rvm.Pool.PoolName);
+            ViewBag.CurrentPool = rvm.Pool.PoolName;
             ViewBag.Available = stats.PoolAvailable;
             ViewBag.Total = stats.PoolCount;
             ViewBag.InUse = stats.PoolInUse;

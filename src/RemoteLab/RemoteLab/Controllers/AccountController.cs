@@ -71,6 +71,7 @@ namespace RemoteLab.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult LogOff()
         {
+            HttpContext.Session.Clear();
             AuthenticationManager.SignOut();
             return RedirectToAction("Index", "Home");
         }

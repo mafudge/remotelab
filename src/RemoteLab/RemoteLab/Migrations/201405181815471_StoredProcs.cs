@@ -2,7 +2,7 @@ namespace RemoteLab.Migrations
 {
     using System;
     using System.Data.Entity.Migrations;
-    
+
     public partial class StoredProcs : DbMigration
     {
         public override void Up()
@@ -192,17 +192,19 @@ namespace RemoteLab.Migrations
 
 
             Sql(@"CREATE procedure [dbo].[P_remotelabdb_reservation_cleanup] (
+					@poolname varchar(50),
 	                @minutes int
                 )
                 as
                 begin
+					SET NOCOUNT ON;
 	                declare @now datetime
 	                declare @compname varchar(50)
 	                declare @username varchar(50)
 	                declare cleanupCursor cursor for
 		                select ComputerName, UserName 
 			                from dbo.Computers
-				                where (Reserved IS NOT NULL) AND (Logon IS NULL) AND (UserName IS NOT NULL)
+				                where (Pool_PoolName=@poolname) AND (Reserved IS NOT NULL) AND (Logon IS NULL) AND (UserName IS NOT NULL)
 				                AND DATEDIFF(mi,reserved,GETDATE())>=@minutes
 
 	                open cleanupCursor
@@ -225,7 +227,7 @@ namespace RemoteLab.Migrations
                 end");
 
         }
-        
+
         public override void Down()
         {
             Sql(@"DROP PROCEDURE [dbo].[P_remotelabdb_startup]");

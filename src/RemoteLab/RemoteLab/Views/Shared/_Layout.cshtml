@@ -16,7 +16,7 @@
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button>
-                <a href="@Url.Action("Index","Home", null)" class="navbar-brand"><i class="glyphicon glyphicon-new-window"></i> Remote Lab</a>
+                <a href="@Url.Action("Index","Home", null)" class="navbar-brand"><i class="glyphicon glyphicon-new-window"></i> @String.Format("{0} {1}",HttpContext.Current.Application["NAME"],HttpContext.Current.Application["VERSION"]) </a>
             </div>
             <div class="navbar-collapse collapse">
                 <ul class="nav navbar-nav">
@@ -37,11 +37,15 @@
 
     <div class="container body-content">
         <h1>
-            <i class="glyphicon glyphicon-new-window"></i> Remote Lab 2.0
-            @if (HttpContext.Current.Request.IsAuthenticated) {
+            @if (HttpContext.Current.Request.IsAuthenticated && ViewBag.CurrentPool != null) {
+            <i class="glyphicon glyphicon-new-window"></i>  @String.Format("Pool: {0}",ViewBag.CurrentPool)
             <button type="button" class="btn btn-lg  btn-primary" disabled="disabled">Total Seats: @ViewBag.Total</button>
             <button type="button" class="btn btn-lg btn-success" disabled="disabled">Available:@ViewBag.Available</button>
             <button type="button" class="btn btn-lg btn-danger" disabled="disabled">In Use: @ViewBag.InUse</button>
+            }
+            else
+            { 
+            <i class="glyphicon glyphicon-new-window"></i> @:Remote Lab
             }
         </h1>
         <div class="row">

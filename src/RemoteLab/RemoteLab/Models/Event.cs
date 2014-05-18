@@ -23,8 +23,11 @@ namespace RemoteLab.Models
         [Required]
         public string ComputerName { get; set; }
 
-        [Required]
+        //[MaxLength(50)]
+        //[Required(AllowEmptyStrings=true)]
+        //public String PoolName { get; set; }        
 
+        [Required]
         public DateTime DtStamp { get; set; }
 
     }
