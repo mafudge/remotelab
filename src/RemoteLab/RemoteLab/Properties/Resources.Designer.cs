@@ -61,15 +61,6 @@ namespace RemoteLab.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Administrator.
-        /// </summary>
-        public static string Administrator {
-            get {
-                return ResourceManager.GetString("Administrator", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Invalid username or password..
         /// </summary>
         public static string InvalidUserNameOrPassword {
@@ -84,82 +75,6 @@ namespace RemoteLab.Properties {
         public static string LabPoolIsFullEmailMessage {
             get {
                 return ResourceManager.GetString("LabPoolIsFullEmailMessage", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Password:.
-        /// </summary>
-        public static string LoginFormPassword {
-            get {
-                return ResourceManager.GetString("LoginFormPassword", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Remember Me?.
-        /// </summary>
-        public static string LoginFormRememberMe {
-            get {
-                return ResourceManager.GetString("LoginFormRememberMe", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to User Name:.
-        /// </summary>
-        public static string LoginFormUserName {
-            get {
-                return ResourceManager.GetString("LoginFormUserName", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to PoolAdministrator.
-        /// </summary>
-        public static string PoolAdministrator {
-            get {
-                return ResourceManager.GetString("PoolAdministrator", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to PoolUser.
-        /// </summary>
-        public static string PoolUser {
-            get {
-                return ResourceManager.GetString("PoolUser", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to screen mode id:i:2
-        ///desktopwidth:i: {0} 
-        ///desktopheight:i: {1}
-        ///session bpp:i:32
-        ///winposstr:s:0,1,614,156,1654,963
-        ///full address:s: {2}
-        ///username:s: {3}
-        ///compression:i:1
-        ///keyboardhook:i:2
-        ///audiomode:i:0
-        ///redirectprinters:i:1
-        ///redirectcomports:i:0
-        ///redirectsmartcards:i:0
-        ///redirectclipboard:i:1
-        ///redirectposdevices:i:0
-        ///redirectdrives:i:1
-        ///drivestoredirect: s()
-        ///displayconnectionbar:i:1
-        ///pinconnectionbar:i:1
-        ///autoreconnection enabled:i:1
-        ///authentication level:i:0
-        ///prompt for credentials:i:0
-        ///negotiate security [rest of string was truncated]&quot;;.
-        /// </summary>
-        public static string RdpFileSettings {
-            get {
-                return ResourceManager.GetString("RdpFileSettings", resourceCulture);
             }
         }
         

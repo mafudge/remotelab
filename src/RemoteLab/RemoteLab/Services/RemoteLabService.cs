@@ -67,36 +67,38 @@ namespace RemoteLab.Services
 
         }
 
-        public async Task<bool> RebootComputerAsync(String ComputerName, String CurrentUser, DateTime Now)
+        public async Task<bool> RebootComputerAsync(String ComputerName, String CurrentUser, String PoolName, DateTime Now)
         {
             var RebootResult = await this.CompMgmt.RebootComputerAsync(ComputerName, Properties.Settings.Default.ActiveDirectoryFqdn, 
                 Properties.Settings.Default.RemotePowershellUser, Properties.Settings.Default.RemotePowershellPassword, Properties.Settings.Default.RemotePoweshellUserDomain);
             if (!RebootResult) 
             {
-                await this.LogEventAsync("REBOOT FAILED", CurrentUser, ComputerName, Now);
+                await this.LogEventAsync("REBOOT FAILED", CurrentUser, ComputerName, PoolName,Now);
                 var msg = String.Format(Properties.Resources.RebootFailedEmailMessage, ComputerName);
+                var pool = await this.GetPoolByIdAsync(PoolName);
                 // TODO: IOC these arguments for testability.
-                await Smtp.SendMailAsync(Properties.Settings.Default.SmtpServer, Properties.Settings.Default.SmtpMessageFromAddress, Properties.Settings.Default.SmtpMessageToAddress, msg, msg);
+                await Smtp.SendMailAsync(Properties.Settings.Default.SmtpServer, Properties.Settings.Default.SmtpMessageFromAddress, pool.EmailNotifyList, msg, msg);
             }
             return RebootResult;
         }
 
-        public async Task LogAndEmailPoolFullEventAsync(String Pool, String ComputerName, String UserName, DateTime Now)
+        public async Task LogAndEmailPoolFullEventAsync(String PoolName, String ComputerName, String UserName, DateTime Now)
         {
-            await this.LogEventAsync(String.Format("POOL {0} IS FULL",Pool), UserName, ComputerName, Now);
-            var msg = String.Format(Properties.Resources.LabPoolIsFullEmailMessage, Pool);
+            await this.LogEventAsync("POOL FULL", UserName, ComputerName, PoolName, Now);
+            var msg = String.Format(Properties.Resources.LabPoolIsFullEmailMessage, PoolName);
+            var pool = await this.GetPoolByIdAsync(PoolName);
             // TODO: IOC these arguments for testability.
-            await Smtp.SendMailAsync(Properties.Settings.Default.SmtpServer, Properties.Settings.Default.SmtpMessageFromAddress, Properties.Settings.Default.SmtpMessageToAddress, msg, msg);
+            await Smtp.SendMailAsync(Properties.Settings.Default.SmtpServer, Properties.Settings.Default.SmtpMessageFromAddress, pool.EmailNotifyList, msg, msg);
         }
 
-        public async Task<bool> CheckRdpPortAndRebootIfUnresponsiveAsync(String ComputerName, String ComputerDomain, String UserName, int RdpTcpPort)
+        public async Task<bool> CheckRdpPortAndRebootIfUnresponsiveAsync(String ComputerName, String ComputerDomain, String UserName, String PoolName, int RdpTcpPort)
         {
             bool result = false;
             bool success = await this.CompMgmt.ConnectToTcpPortAsync(ComputerName, ComputerDomain, RdpTcpPort);
             if (!success) 
             {
                 await this.LogFailedRdpTcpPortCheckAsync(ComputerName, UserName);
-                result = await this.RebootComputerAsync(ComputerName, UserName, System.DateTime.Now);
+                result = await this.RebootComputerAsync(ComputerName, UserName, PoolName, System.DateTime.Now);
             }
 
             return success;
@@ -113,6 +115,11 @@ namespace RemoteLab.Services
             await this.Db.SaveChangesAsync();
         }
 
+        public async Task<IEnumerable<Computer>> GetComputersByPoolNameAsync(String PoolName)
+        {
+            return await this.Db.Computers.Where( c => c.Pool.PoolName.Equals(PoolName, StringComparison.InvariantCultureIgnoreCase)).ToListAsync();
+        }
+
         public async Task<Pool> GetPoolByIdAsync(string PoolName) 
         {
             return await this.Db.Pools.FindAsync(PoolName);
@@ -126,23 +133,37 @@ namespace RemoteLab.Services
 
         public async Task RemovePoolByIdAsync(String PoolName)
         {
-            Pool p = await this.Db.Pools.FindAsync(PoolName);
-            this.Db.Pools.Remove(p);
-            await this.Db.SaveChangesAsync();
+            await this.Db.Database.ExecuteSqlCommandAsync(@"DELETE FROM [dbo].[Computers] WHERE [Pool_PoolName] = {0}; DELETE FROM [dbo].[Pools] WHERE [PoolName] = {0}", PoolName);
         }
 
         public async Task UpdatePoolAsync(Pool p)
         {
-            this.Db.Entry(p).State = EntityState.Modified;
-            await this.Db.SaveChangesAsync();
+            await this.Db.Database.ExecuteSqlCommandAsync(@"UPDATE [dbo].[Pools] 
+                    SET [ActiveDirectoryUserGroup] = {0},
+                    [Logo] = {1}, 
+                    [ActiveDirectoryAdminGroup] = {2}, 
+                    [EmailNotifyList] = {3}, 
+                    [RdpTcpPort] = {4}, 
+                    [CleanupInMinutes] = {5}  
+                    WHERE [PoolName] = {6}"
+                ,p.ActiveDirectoryUserGroup, p.Logo, p.ActiveDirectoryAdminGroup, p.EmailNotifyList, p.RdpTcpPort, p.CleanupInMinutes, p.PoolName);
         }
 
 
-        public IEnumerable<PoolSummary> GetPoolSummaryByAdminClaims(ClaimsPrincipal user) 
+        public IEnumerable<PoolSummary> GetPoolSummaryByAdminClaims(ClaimsPrincipal user, String AdministratorADGroup) 
         {
+
             var summarypools = this.GetPoolSummary();
-            var roles = user.Claims.Where( c=> c.Type==ClaimTypes.Role).Select(c=> c.Value);
-            return summarypools.Where( p=> roles.Contains(p.ActiveDirectoryAdminGroup));
+            //If You're the app admin return all pools
+            if (user.Claims.Any( c=> c.Type==ClaimTypes.Role && c.Value.Equals(AdministratorADGroup,StringComparison.InvariantCultureIgnoreCase)) )
+            {                
+                return summarypools;
+            }
+            else  // otherwise, return only the pools where you have claim to the Admin Group
+            {
+                var roles = user.Claims.Where( c=> c.Type==ClaimTypes.Role).Select(c=> c.Value);
+                return summarypools.Where( p=> roles.Contains(p.ActiveDirectoryAdminGroup));
+            }
         }
 
         public IEnumerable<PoolSummary> GetPoolSummaryByUserClaims(ClaimsPrincipal user)
@@ -180,9 +201,9 @@ namespace RemoteLab.Services
             await this.Db.Database.ExecuteSqlCommandAsync(@"EXECUTE [dbo].[P_remotelabdb_clear_reservation] {0}", ReservationComputerName);
         }
 
-        public async Task LogEventAsync(String EventName,  String UserName, String ComputerName, DateTime Now)
+        public async Task LogEventAsync(String EventName,  String UserName, String ComputerName, String PoolName, DateTime Now)
         {
-            await this.Db.Database.ExecuteSqlCommandAsync(@"EXECUTE [dbo].[P_remotelabdb_logevent] {0}, {1}, {2}, {3}", EventName , UserName, ComputerName, Now);
+            await this.Db.Database.ExecuteSqlCommandAsync(@"EXECUTE [dbo].[P_remotelabdb_logevent] {0}, {1}, {2}, {3}, {4}", EventName , UserName, ComputerName, PoolName, Now);
         }
 
         public async Task<Computer> GetExistingReservationAsync(RemoteLabViewModel rvm)
@@ -193,15 +214,6 @@ namespace RemoteLab.Services
                 ).OrderBy(c => c.ComputerName).FirstOrDefaultAsync();
         }
         
-        public async Task<int> GetAvailableComputerCountAsync( String PoolName ) 
-        {
-            return await this.Db.Computers.Where( c => c.Pool.PoolName.Equals(PoolName, StringComparison.InvariantCultureIgnoreCase) && c.UserName == null).CountAsync();
-        }
-
-        public async Task<int> GetTotalComputerCountAsync( String PoolName )
-        {
-            return await this.Db.Computers.Where( c => c.Pool.PoolName.Equals(PoolName, StringComparison.InvariantCultureIgnoreCase)).CountAsync();
-        }
 
         public async Task<Computer> GetNewReservationAsync(RemoteLabViewModel rvm)
         {

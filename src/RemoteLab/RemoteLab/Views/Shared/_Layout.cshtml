@@ -38,14 +38,14 @@
     <div class="container body-content">
         <h1>
             @if (HttpContext.Current.Request.IsAuthenticated && ViewBag.CurrentPool != null) {
-            <i class="glyphicon glyphicon-new-window"></i>  @String.Format("Pool: {0}",ViewBag.CurrentPool)
+            @*<i class="glyphicon glyphicon-new-window"></i>*@<button type="button" class="btn btn-lg btn-default" disabled="disabled">@String.Format("Pool: {0}",ViewBag.CurrentPool)</button>
             <button type="button" class="btn btn-lg  btn-primary" disabled="disabled">Total Seats: @ViewBag.Total</button>
             <button type="button" class="btn btn-lg btn-success" disabled="disabled">Available:@ViewBag.Available</button>
             <button type="button" class="btn btn-lg btn-danger" disabled="disabled">In Use: @ViewBag.InUse</button>
             }
             else
             { 
-            <i class="glyphicon glyphicon-new-window"></i> @:Remote Lab
+             @*<i class="glyphicon glyphicon-new-window"></i> @:Remote Lab*@
             }
         </h1>
         <div class="row">

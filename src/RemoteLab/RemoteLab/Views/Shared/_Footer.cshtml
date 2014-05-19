@@ -2,18 +2,8 @@
 <hr />
 <footer class="bs-footer">
     <div class="container">
-        @HttpContext.Current.Application["NAME"] Version @HttpContext.Current.Application["VERSION"]  Build @HttpContext.Current.Application["BUILD"]<br />
+        @HttpContext.Current.Application["NAME"] Version @HttpContext.Current.Application["VERSION"] Build @HttpContext.Current.Application["BUILD"]<br />
         @HttpContext.Current.Application["COPYRIGHT"]
     </div>
 </footer>
-<hr />
-<p>Claims:</p>
-<ol>
-    @{
-        var user = (System.Security.Claims.ClaimsPrincipal)User;
-        foreach (var c in user.Claims)
-        {
-            <li>@c.Type : @c.Value </li>
-        }
-    }
-</ol>
+

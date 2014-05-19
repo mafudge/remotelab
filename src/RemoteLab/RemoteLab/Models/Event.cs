@@ -23,9 +23,9 @@ namespace RemoteLab.Models
         [Required]
         public string ComputerName { get; set; }
 
-        //[MaxLength(50)]
-        //[Required(AllowEmptyStrings=true)]
-        //public String PoolName { get; set; }        
+        [MaxLength(50)]
+        [Required]
+        public String PoolName { get; set; }        
 
         [Required]
         public DateTime DtStamp { get; set; }

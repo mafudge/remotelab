@@ -15,7 +15,6 @@ namespace RemoteLab.Models
 
         public DbSet<Computer> Computers { get; set; }
         public DbSet<Event> Events { get; set; }
-
         public DbSet<Pool> Pools { get; set; }
 
     }

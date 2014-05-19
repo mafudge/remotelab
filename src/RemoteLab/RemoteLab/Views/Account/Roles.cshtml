@@ -1,0 +1,18 @@
+﻿@{
+    ViewBag.Title = "Remote Lab - My Roles";
+    
+}
+
+<h2><i class="fa fa-user"></i> User Information For: @User.Identity.Name</h2>
+<div>   
+    <p>Group Membership:</p>
+    <ol>
+        @{
+            var user = (System.Security.Claims.ClaimsPrincipal)User;
+            foreach (var c in user.Claims.Where( t=>t.Type == System.Security.Claims.ClaimTypes.Role))
+            {
+                <li>@c.Value </li>
+            }
+        }
+    </ol>
+</div>

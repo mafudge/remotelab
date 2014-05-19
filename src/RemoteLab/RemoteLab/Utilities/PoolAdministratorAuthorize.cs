@@ -15,13 +15,15 @@ namespace RemoteLab.Utilities
         public override void OnActionExecuting(ActionExecutingContext filterContext)
         {
             var Svc = ((RemoteLab.Controllers.PoolsController)filterContext.Controller).Svc;
-            String PoolName = filterContext.ActionParameters["Id"].ToString();
+            String PoolName = filterContext.RequestContext.HttpContext.Request.RequestType == "GET" 
+                                ? filterContext.ActionParameters["id"].ToString() 
+                                : ((Pool)filterContext.ActionParameters.Values.ToArray()[0]).PoolName;
             Pool pool = Svc.GetPoolById(PoolName);
-
-            var valid = (((ClaimsPrincipal)filterContext.HttpContext.User).Claims.Any(c => 
-                c.Value.Equals(pool.ActiveDirectoryAdminGroup, StringComparison.InvariantCultureIgnoreCase) &&
-                c.Type == ClaimTypes.Role
-                ));
+            var valid = (pool != null) && 
+                        (((ClaimsPrincipal)filterContext.HttpContext.User).Claims.Any(c => 
+                            c.Value.Equals(pool.ActiveDirectoryAdminGroup, StringComparison.InvariantCultureIgnoreCase) &&
+                            c.Type == ClaimTypes.Role
+                        ));
 
             if (!valid)  //TODO: Redirect or show unauthorize page??
             {

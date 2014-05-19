@@ -200,9 +200,13 @@
     <Compile Include="Migrations\201405181828505_PoolSummaryView.Designer.cs">
       <DependentUpon>201405181828505_PoolSummaryView.cs</DependentUpon>
     </Compile>
-    <Compile Include="Migrations\201405181830174_StoredProcedures.cs" />
-    <Compile Include="Migrations\201405181830174_StoredProcedures.Designer.cs">
-      <DependentUpon>201405181830174_StoredProcedures.cs</DependentUpon>
+    <Compile Include="Migrations\201405191425364_AddPoolToEvent.cs" />
+    <Compile Include="Migrations\201405191425364_AddPoolToEvent.Designer.cs">
+      <DependentUpon>201405191425364_AddPoolToEvent.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201405191434291_StoredProcs.cs" />
+    <Compile Include="Migrations\201405191434291_StoredProcs.Designer.cs">
+      <DependentUpon>201405191434291_StoredProcs.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
@@ -327,6 +331,7 @@
     <Content Include="Views\Pools\Index.cshtml" />
     <Content Include="Views\Home\ChoosePool.cshtml" />
     <Content Include="Views\Home\NoPools.cshtml" />
+    <Content Include="Views\Account\Roles.cshtml" />
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>
@@ -340,8 +345,11 @@
     <EmbeddedResource Include="Migrations\201405181828505_PoolSummaryView.resx">
       <DependentUpon>201405181828505_PoolSummaryView.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201405181830174_StoredProcedures.resx">
-      <DependentUpon>201405181830174_StoredProcedures.cs</DependentUpon>
+    <EmbeddedResource Include="Migrations\201405191425364_AddPoolToEvent.resx">
+      <DependentUpon>201405191425364_AddPoolToEvent.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201405191434291_StoredProcs.resx">
+      <DependentUpon>201405191434291_StoredProcs.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>

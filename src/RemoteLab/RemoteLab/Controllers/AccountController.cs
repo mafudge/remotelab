@@ -76,6 +76,13 @@ namespace RemoteLab.Controllers
             return RedirectToAction("Index", "Home");
         }
 
+        [Authorize]
+        public ActionResult Roles()
+        {
+            return View();
+        }
+
+
         protected override void Dispose(bool disposing)
         {
             base.Dispose(disposing);

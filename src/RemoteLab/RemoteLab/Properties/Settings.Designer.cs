@@ -52,24 +52,6 @@ namespace RemoteLab.Properties {
         
         [global::System.Configuration.ApplicationScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("3389")]
-        public int RemoteDesktopProtocolTcpPort {
-            get {
-                return ((int)(this["RemoteDesktopProtocolTcpPort"]));
-            }
-        }
-        
-        [global::System.Configuration.ApplicationScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("30")]
-        public int CleanupInMinutes {
-            get {
-                return ((int)(this["CleanupInMinutes"]));
-            }
-        }
-        
-        [global::System.Configuration.ApplicationScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("smtp-host.syr.edu")]
         public string SmtpServer {
             get {
@@ -83,15 +65,6 @@ namespace RemoteLab.Properties {
         public string SmtpMessageFromAddress {
             get {
                 return ((string)(this["SmtpMessageFromAddress"]));
-            }
-        }
-        
-        [global::System.Configuration.ApplicationScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("Prod")]
-        public string DefaultPool {
-            get {
-                return ((string)(this["DefaultPool"]));
             }
         }
         
@@ -124,10 +97,74 @@ namespace RemoteLab.Properties {
         
         [global::System.Configuration.ApplicationScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("mjschug@syr.edu")]
-        public string SmtpMessageToAddress {
+        [global::System.Configuration.DefaultSettingValueAttribute(@"screen mode id:i:2
+desktopwidth:i: {0} 
+desktopheight:i: {1}
+session bpp:i:32
+winposstr:s:0,1,614,156,1654,963
+full address:s: {2}
+username:s: {3}
+compression:i:1
+keyboardhook:i:2
+audiomode:i:0
+redirectprinters:i:1
+redirectcomports:i:0
+redirectsmartcards:i:0
+redirectclipboard:i:1
+redirectposdevices:i:0
+redirectdrives:i:1
+drivestoredirect: s()
+displayconnectionbar:i:1
+pinconnectionbar:i:1
+autoreconnection enabled:i:1
+authentication level:i:0
+prompt for credentials:i:0
+negotiate security layer:i:1
+remoteapplicationmode:i:0
+alternate shell:s:
+shell working directory:s:
+disable wallpaper:i:1
+disable full window drag:i:0
+allow desktop composition:i:1
+allow font smoothing:i:1
+disable menu anims:i:1
+disable themes:i:0
+disable cursor setting:i:0
+bitmapcachepersistenable:i:1
+gatewayhostname:s:
+gatewayusagemethod:i:0
+gatewaycredentialssource:i:4
+gatewayprofileusagemethod:i:0
+promptcredentialonce:i:1
+use multimon:i:0
+audiocapturemode:i:0
+videoplaybackmode:i:1
+connection type:i:6
+redirectdirectx:i:1
+use redirection server name:i:0
+devicestoredirect:s:*
+smart sizing:i:1")]
+        public string RdpFileSettings {
             get {
-                return ((string)(this["SmtpMessageToAddress"]));
+                return ((string)(this["RdpFileSettings"]));
+            }
+        }
+        
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("NetID")]
+        public string LoginFormUsernameLabel {
+            get {
+                return ((string)(this["LoginFormUsernameLabel"]));
+            }
+        }
+        
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("Password")]
+        public string LoginFormPasswordLabel {
+            get {
+                return ((string)(this["LoginFormPasswordLabel"]));
             }
         }
     }

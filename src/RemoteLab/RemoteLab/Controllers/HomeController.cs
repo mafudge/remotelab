@@ -72,7 +72,7 @@ namespace RemoteLab.Controllers
                     HttpContext.Session[CHOSEN_POOL] = userPools.FirstOrDefault().PoolName;
                     return RedirectToAction("Index");
                 default: //more than one, make the user choose in the view
-                    return View(userPools);
+                    return View(userPools.OrderBy( s => s.PoolName));
 
             }
         }
@@ -146,7 +146,7 @@ namespace RemoteLab.Controllers
                 if (rvm == null || rvm.ReservationStatus != ReservationStatus.NewReservation) return RedirectToAction("Index");
 
                 success = await Svc.CheckRdpPortAndRebootIfUnresponsiveAsync(rvm.RemoteLabComputer.ComputerName, Properties.Settings.Default.ActiveDirectoryFqdn,
-                    rvm.CurrentUser, rvm.Pool.RdpTcpPort);
+                    rvm.CurrentUser, rvm.Pool.PoolName, rvm.Pool.RdpTcpPort);
 
             } while (!success);
             // when you make it here, you have a valid computer, so make the reservation
@@ -183,13 +183,14 @@ namespace RemoteLab.Controllers
         public async Task<ActionResult> ClearRez(FormCollection form)
         {
             String ComputerReservation = form["ComputerReservation"];
+            String PoolName = (String)HttpContext.Session[CHOSEN_POOL];
             ReservationStatus RezStatus = EnumUtils.ParseEnum<ReservationStatus>(form["ReservationStatus"]); 
 
             if (RezStatus != ReservationStatus.ExistingReservation) return RedirectToAction("Index");
 
             //Clear Reservation, and reboot the computer
             await Svc.ClearReservationAsync(ComputerReservation);
-            bool RebootResult = await Svc.RebootComputerAsync(ComputerReservation, HttpContext.User.Identity.Name, System.DateTime.Now);
+            bool RebootResult = await Svc.RebootComputerAsync(ComputerReservation, HttpContext.User.Identity.Name, PoolName,  System.DateTime.Now);
 
             // Set a session cookie to avoid someone over-clearing reservations
             HttpContext.Session[REZ_CLEARED_ONCE] = REZ_CLEARED_ONCE;
@@ -225,10 +226,12 @@ namespace RemoteLab.Controllers
         {
             var rezComputer = (String) TempData[COMPUTER_RESERVATION];
             if (rezComputer == null)  return RedirectToAction("Index");
-            var rdpComputer = String.Format("{0}.{1}",rezComputer, Properties.Settings.Default.ActiveDirectoryFqdn).ToLowerInvariant();
+            var poolName = (String) HttpContext.Session[CHOSEN_POOL];
+            var pool = await Svc.GetPoolByIdAsync(poolName);
+            var rdpComputer = String.Format("{0}.{1}:{2}",rezComputer, Properties.Settings.Default.ActiveDirectoryFqdn, pool.RdpTcpPort).ToLowerInvariant();
             var userName = String.Format("{0}@{1}",HttpContext.User.Identity.Name, Properties.Settings.Default.ActiveDirectoryFqdn).ToLowerInvariant();
             var contentType = "application/rdp";
-            var buff = Svc.GenerateRdpFileContents(Properties.Resources.RdpFileSettings, rdpComputer, userName);
+            var buff = Svc.GenerateRdpFileContents(Properties.Settings.Default.RdpFileSettings, rdpComputer, userName);
 
             Response.AddHeader("Content-Disposition", "attachment; filename=RemoteLabReservation.rdp");
             

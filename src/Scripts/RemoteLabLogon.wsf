@@ -1,0 +1,4 @@
+<job id="RemoteLabLogon">
+   <script language="VBScript" src="RemoteLabSettings.vbs"/>
+   <script language="VBScript" src="RemoteLabLogon.vbs"/>
+</job>

@@ -10,7 +10,8 @@ namespace RemoteLab.Utilities
 {
     public class SmtpEmail
     {
-        public async Task SendMailAsync(String SmtpHost, String FromEmail, String ToEmail, String Subject, String Body)
+      
+        public async Task SendMailAsync(String SmtpHost, String FromEmail, String ToEmailsCommaSeparated, String Subject, String Body)
         {
             using(var Msg = new MailMessage() {
                 From = new MailAddress(FromEmail),
@@ -20,8 +21,7 @@ namespace RemoteLab.Utilities
                 IsBodyHtml = false 
             })
             {
-            
-                Msg.To.Add(new MailAddress(ToEmail));
+                Msg.To.Add(ToEmailsCommaSeparated);
 
                 using(var Smtp = new SmtpClient(SmtpHost))
                 {

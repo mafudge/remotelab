@@ -29,34 +29,33 @@ namespace RemoteLab.Controllers
         [Authorize]
         public async Task<ActionResult> Index()
         {
-            return View(this.Svc.GetPoolSummaryByAdminClaims((ClaimsPrincipal)HttpContext.User));
+            return View(this.Svc.GetPoolSummaryByAdminClaims((ClaimsPrincipal)HttpContext.User, Properties.Settings.Default.AdministratorADGroup).OrderBy( s=> s.PoolName));
         }
 
         // GET: Pools/Dashboard/PoolName
         [PoolAdministratorAuthorize]
         public async Task<ActionResult> Dashboard(string id)
         {
-            // TODO: Implement This
-            if (id == null)
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
-            throw new NotImplementedException();
-            return View();
+            if (id == null) { return new HttpStatusCodeResult(HttpStatusCode.BadRequest); }
 
-            //Pool pool = await db.Pools.FindAsync(id);
-            //if (pool == null)
-            //{
-            //    return HttpNotFound();
-            //}
-            //return View(pool);
+            var stats = await Svc.GetPoolSummaryAsync(PoolName:id);
+            if (stats == null) { return HttpNotFound(); }
+
+            var Computers = await Svc.GetComputersByPoolNameAsync(PoolName:id);
+
+            ViewBag.CurrentPool = id;
+            ViewBag.Available = stats.PoolAvailable;
+            ViewBag.Total = stats.PoolCount;
+            ViewBag.InUse = stats.PoolInUse;
+            return View(Computers.OrderBy( c=> c.ComputerName ));
+
         }
 
         // GET: Pools/Create
         [AdministratorAuthorize]
         public ActionResult Create()
-        {
-            return View();
+        {            
+            return View(new Pool() { RdpTcpPort=3389, CleanupInMinutes=30 });
         }
 
         // POST: Pools/Create
@@ -77,7 +76,7 @@ namespace RemoteLab.Controllers
         }
 
         // GET: Pools/Edit/5
-        [AdministratorAuthorize]
+        [PoolAdministratorAuthorize]
         public async Task<ActionResult> Edit(string id)
         {
             if (id == null)
@@ -97,7 +96,7 @@ namespace RemoteLab.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        [AdministratorAuthorize]
+        [PoolAdministratorAuthorize]
         public async Task<ActionResult> Edit([Bind(Include = "PoolName,ActiveDirectoryUserGroup,Logo,ActiveDirectoryAdminGroup,EmailNotifyList,RdpTcpPort,CleanupInMinutes")] Pool pool)
         {
             if (ModelState.IsValid)

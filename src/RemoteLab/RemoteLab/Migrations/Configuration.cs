@@ -84,7 +84,6 @@ namespace RemoteLab.Migrations
 
             for (int i = 11; i <= 15; i++)
             {
-
                 context.Database.ExecuteSqlCommand(@"exec [dbo].[P_remotelabdb_reserve] {0}, {1}", String.Format("MAX-{0:00}", i), String.Format("maxusr{0}", i)); ;
                 context.Database.ExecuteSqlCommand(@"exec [dbo].[P_remotelabdb_reserve] {0}, {1}", String.Format("IST-{0:00}", i), String.Format("istusr{0}", i));
                 context.Database.ExecuteSqlCommand(@"exec [dbo].[P_remotelabdb_reserve] {0}, {1}", String.Format("ECS-{0:00}", i), String.Format("ecsusr{0}", i));
