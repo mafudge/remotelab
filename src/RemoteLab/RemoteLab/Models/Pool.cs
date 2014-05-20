@@ -18,11 +18,6 @@ namespace RemoteLab.Models
         [Display(Name = "Active Directory User Group", ShortName = "AD User Grp")]
         public String ActiveDirectoryUserGroup { get; set; }
 
-        [Url]
-        [MaxLength(200)]
-        [Display(Name = "Logo Url", ShortName = "Logo")]
-        public String Logo { get; set; }
-
         [MaxLength(100)]
         [Display(Name = "Active Directory Pool Admin Group", ShortName = "AD Admin Grp")]
         public String ActiveDirectoryAdminGroup { get; set; }
@@ -39,5 +34,18 @@ namespace RemoteLab.Models
         [Required]
         public int CleanupInMinutes { get; set; }
 
+        [Required]
+        [Display( Name = "Remote Administrator User", ShortName ="Remote User")]
+        public string RemoteAdminUser { get; set;}
+
+        [Required]
+        [DataType(DataType.Password)]
+        [Display( Name = "Remote Administrator Password", ShortName = "Admin Password")]
+        public string RemoteAdminPassword { get; set; }
+
+        [Required]
+        [DataType(DataType.MultilineText)]
+        [Display( Name = "Welcome Message") ]
+        public string WelcomeMessage { get; set; }
     }
 }

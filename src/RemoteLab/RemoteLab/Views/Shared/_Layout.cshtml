@@ -25,7 +25,6 @@
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown"><i class="fa fa-gears"></i>  Admin <b class="caret"></b></a>
                         <ul class="dropdown-menu">
                             <li><a href="@Url.Action("Index","Pools")"><i class="fa fa-dashboard"></i> Pools</a></li>
-                            <li><a href="#"><i class="fa fa-gear"></i> Settings</a></li>
                         </ul>
                     </li>
                     <li><a href="@Url.Action("About","Home")"><i class="fa fa-info-circle"></i> About</a></li>
@@ -67,13 +66,13 @@
                     <div class="panel-body">
                         <h4><i class="glyphicon glyphicon-book"></i> Documentation</h4>
                         <ul>
-                            <li><a id="youtube" href="https://www.youtube.com/embed/fyM2OHUS6O4?autoplay=1" class="various fancybox.iframe"><i class="glyphicon glyphicon-facetime-video"></i> What is Remote Lab?</a></li>
-                            <li><a target="_RemoteLabDocs" href="https://answers.syr.edu/display/ischool/iSchool+Remote+Lab"><i class="fa fa-file-text"></i> Official Documentation</a></li>
+                            <li><a id="youtube" href="@RemoteLab.Properties.Settings.Default.RemoteLabIntroVideoLink" class="various fancybox.iframe"><i class="glyphicon glyphicon-facetime-video"></i> What is Remote Lab?</a></li>
+                            <li><a target="_RemoteLabDocs" href="@RemoteLab.Properties.Settings.Default.OfficialDocumentationLink"><i class="fa fa-file-text"></i> Official Documentation</a></li>
                         </ul>
                         <h4><i class="glyphicon glyphicon-download-alt"></i> Download - Remote Desktop Client</h4>
                         <ul>
-                            <li><a target="_RemoteLabDownload" href="http://support.microsoft.com/kb/2592687"><i class="fa fa-windows"></i> Windows </a></li>
-                            <li><a target="_RemoteLabDownload" href="https://itunes.apple.com/us/app/microsoft-remote-desktop/id715768417?mt=12"><i class="fa fa-apple"></i> Mac OSX</a></li>
+                            <li><a target="_RemoteLabDownload" href="@RemoteLab.Properties.Settings.Default.WindowsClientDownload"><i class="fa fa-windows"></i> Windows </a></li>
+                            <li><a target="_RemoteLabDownload" href="@RemoteLab.Properties.Settings.Default.MacClientDownload"><i class="fa fa-apple"></i> Mac OSX</a></li>
                         </ul>
                     </div>
                 </div>

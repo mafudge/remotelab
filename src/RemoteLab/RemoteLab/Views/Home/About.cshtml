@@ -1,7 +1,9 @@
 ﻿@{
-    ViewBag.Title = "About";
+    ViewBag.Title = "Remote Lab - About";
 }
-<h2>@ViewBag.Title.</h2>
-<h3>@ViewBag.Message</h3>
+<h2><i class="fa fa-info-circle"></i> About</h2>
 
-<p>Use this area to provide additional information.</p>
+<div class="container">
+    @HttpContext.Current.Application["NAME"] Version @HttpContext.Current.Application["VERSION"] Build @HttpContext.Current.Application["BUILD"]<br />
+    @HttpContext.Current.Application["COPYRIGHT"]
+</div>

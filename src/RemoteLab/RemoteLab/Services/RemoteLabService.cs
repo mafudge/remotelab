@@ -70,7 +70,7 @@ namespace RemoteLab.Services
         public async Task<bool> RebootComputerAsync(String ComputerName, String CurrentUser, String PoolName, DateTime Now)
         {
             var RebootResult = await this.CompMgmt.RebootComputerAsync(ComputerName, Properties.Settings.Default.ActiveDirectoryFqdn, 
-                Properties.Settings.Default.RemotePowershellUser, Properties.Settings.Default.RemotePowershellPassword, Properties.Settings.Default.RemotePoweshellUserDomain);
+                Properties.Settings.Default.RemotePowershellUser, Properties.Settings.Default.RemotePowershellPassword, Properties.Settings.Default.ActiveDirectoryShortName);
             if (!RebootResult) 
             {
                 await this.LogEventAsync("REBOOT FAILED", CurrentUser, ComputerName, PoolName,Now);
@@ -140,15 +140,44 @@ namespace RemoteLab.Services
         {
             await this.Db.Database.ExecuteSqlCommandAsync(@"UPDATE [dbo].[Pools] 
                     SET [ActiveDirectoryUserGroup] = {0},
-                    [Logo] = {1}, 
-                    [ActiveDirectoryAdminGroup] = {2}, 
-                    [EmailNotifyList] = {3}, 
-                    [RdpTcpPort] = {4}, 
-                    [CleanupInMinutes] = {5}  
-                    WHERE [PoolName] = {6}"
-                ,p.ActiveDirectoryUserGroup, p.Logo, p.ActiveDirectoryAdminGroup, p.EmailNotifyList, p.RdpTcpPort, p.CleanupInMinutes, p.PoolName);
+                    [ActiveDirectoryAdminGroup] = {1}, 
+                    [EmailNotifyList] = {2}, 
+                    [RdpTcpPort] = {3}, 
+                    [CleanupInMinutes] = {4},  
+                    [RemoteAdminUser] = {5},
+                    [RemoteAdminPassword] = {6} 
+                    [WelcomeMessage] {7} 
+                    WHERE [PoolName] = {8}"
+                ,p.ActiveDirectoryUserGroup, p.ActiveDirectoryAdminGroup, p.EmailNotifyList, p.RdpTcpPort, p.CleanupInMinutes, p.RemoteAdminUser, p.RemoteAdminPassword, p.WelcomeMessage, p.PoolName);
         }
 
+        public async Task<IEnumerable<Event>> GetEventsAsync(String PoolName)
+        {
+            return await this.Db.Events.Where( e => e.PoolName.Equals(PoolName,StringComparison.InvariantCultureIgnoreCase) ).ToListAsync();
+        }
+
+        public async Task<IEnumerable<Event>> GetEventsAsync(String PoolName, DateTime StartDate, DateTime EndDate)
+        {
+            return await this.Db.Events.Where(e => e.PoolName.Equals(PoolName, StringComparison.InvariantCultureIgnoreCase) && e.DtStamp>= StartDate && e.DtStamp <= EndDate).ToListAsync();
+        }
+
+        public String EventsToCsv(IEnumerable<Event> events)
+        {
+            StringBuilder sb = new StringBuilder();
+            sb.AppendFormat("{0}{1}{2}{3}{4}\n", WriteCsvValue("Event Name"), WriteCsvValue("Computer Name"), WriteCsvValue("User Name"), WriteCsvValue("Pool Name"), WriteCsvValue("DT Stamp"));
+            foreach( var e in events)
+            {
+                sb.AppendFormat("{0}{1}{2}{3}{4}\n", WriteCsvValue(e.EventName), WriteCsvValue(e.ComputerName), WriteCsvValue(e.UserName), WriteCsvValue(e.PoolName), WriteCsvValue(e.DtStamp.ToString()));
+            }
+
+            return sb.ToString();
+
+        }
+
+        private string WriteCsvValue(String value)
+        {
+            return String.Format("\"{0}\",", value.Replace("\"","\"\""));
+        }
 
         public IEnumerable<PoolSummary> GetPoolSummaryByAdminClaims(ClaimsPrincipal user, String AdministratorADGroup) 
         {

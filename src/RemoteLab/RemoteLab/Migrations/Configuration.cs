@@ -37,23 +37,23 @@ namespace RemoteLab.Migrations
         {
             var prodPool = context.Pools.Add(new Pool() 
             { 
-                PoolName = "Prod", EmailNotifyList = "mjschug@syr.edu", RdpTcpPort = 3389, CleanupInMinutes = 30, ActiveDirectoryAdminGroup="IST-Users-ITServices", ActiveDirectoryUserGroup="IST-Users-ITServices" 
+                PoolName = "Prod", EmailNotifyList = "mjschug@syr.edu", RdpTcpPort = 3389, CleanupInMinutes = 30, ActiveDirectoryAdminGroup="IST-Users-ITServices", ActiveDirectoryUserGroup="IST-Users-ITServices", RemoteAdminUser = "w-ist-labsetup", RemoteAdminPassword="6f1HMkW1dB", WelcomeMessage = "Welcome to this pool!" 
             });
             var whit = context.Pools.Add(new Pool() 
             { 
-                PoolName = "Whitman", EmailNotifyList = "mjschug@syr.edu", RdpTcpPort = 3389, CleanupInMinutes = 30, ActiveDirectoryAdminGroup = "WHIT-L4-Admins", ActiveDirectoryUserGroup = "WHIT-Users" 
+                PoolName = "Whitman", EmailNotifyList = "mjschug@syr.edu", RdpTcpPort = 3389, CleanupInMinutes = 30, ActiveDirectoryAdminGroup = "WHIT-L4-Admins", ActiveDirectoryUserGroup = "WHIT-Users" , RemoteAdminUser = "w-ist-labsetup", RemoteAdminPassword="6f1HMkW1dB", WelcomeMessage = "Welcome to this pool!" 
             });
             var ischool = context.Pools.Add(new Pool() 
             { 
-                PoolName = "iSchool", EmailNotifyList = "mjschug@syr.edu", RdpTcpPort = 3389, CleanupInMinutes = 30, ActiveDirectoryAdminGroup = "IST-Staff", ActiveDirectoryUserGroup = "IST-Users" 
+                PoolName = "iSchool", EmailNotifyList = "mjschug@syr.edu", RdpTcpPort = 3389, CleanupInMinutes = 30, ActiveDirectoryAdminGroup = "IST-Staff", ActiveDirectoryUserGroup = "IST-Users" , RemoteAdminUser = "w-ist-labsetup", RemoteAdminPassword="6f1HMkW1dB", WelcomeMessage = "Welcome to this pool!" 
             });
             var maxwell = context.Pools.Add(new Pool() 
             { 
-                PoolName = "Maxwell", EmailNotifyList = "mjschug@syr.edu", RdpTcpPort = 3389, CleanupInMinutes = 30, ActiveDirectoryAdminGroup = "MAX-Admins", ActiveDirectoryUserGroup = "MAX-Users" 
+                PoolName = "Maxwell", EmailNotifyList = "mjschug@syr.edu", RdpTcpPort = 3389, CleanupInMinutes = 30, ActiveDirectoryAdminGroup = "MAX-Admins", ActiveDirectoryUserGroup = "MAX-Users" , RemoteAdminUser = "w-ist-labsetup", RemoteAdminPassword="6f1HMkW1dB", WelcomeMessage = "Welcome to this pool!" 
             });
             var lcs = context.Pools.Add(new Pool() 
             { 
-                PoolName = "LCS", EmailNotifyList = "mjschug@syr.edu", RdpTcpPort = 3389, CleanupInMinutes = 30, ActiveDirectoryAdminGroup = "ECS-Admins", ActiveDirectoryUserGroup = "ECS-Users" 
+                PoolName = "LCS", EmailNotifyList = "mjschug@syr.edu", RdpTcpPort = 3389, CleanupInMinutes = 30, ActiveDirectoryAdminGroup = "ECS-Admins", ActiveDirectoryUserGroup = "ECS-Users" , RemoteAdminUser = "w-ist-labsetup", RemoteAdminPassword="6f1HMkW1dB", WelcomeMessage = "Welcome to this pool!" 
             });
 
             context.Computers.Add(new Computer() { ComputerName = "IST-LD-RLAB-H31", Pool = prodPool });

@@ -89,9 +89,9 @@ namespace RemoteLab.Properties {
         [global::System.Configuration.ApplicationScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("AD")]
-        public string RemotePoweshellUserDomain {
+        public string ActiveDirectoryShortName {
             get {
-                return ((string)(this["RemotePoweshellUserDomain"]));
+                return ((string)(this["ActiveDirectoryShortName"]));
             }
         }
         
@@ -165,6 +165,52 @@ smart sizing:i:1")]
         public string LoginFormPasswordLabel {
             get {
                 return ((string)(this["LoginFormPasswordLabel"]));
+            }
+        }
+        
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("on error resume next\r\ndim connstr, remotepowershelluser, poolName\r\nconnstr = \"{0}" +
+            "\"\r\nremotepowershelluser = \"{1}\"\r\npoolName = \"{2}\" ")]
+        public string RemoteLabSettingsFileContent {
+            get {
+                return ((string)(this["RemoteLabSettingsFileContent"]));
+            }
+        }
+        
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("https://www.youtube.com/embed/fyM2OHUS6O4?autoplay=1")]
+        public string RemoteLabIntroVideoLink {
+            get {
+                return ((string)(this["RemoteLabIntroVideoLink"]));
+            }
+        }
+        
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("https://answers.syr.edu/display/ischool/iSchool+Remote+Lab")]
+        public string OfficialDocumentationLink {
+            get {
+                return ((string)(this["OfficialDocumentationLink"]));
+            }
+        }
+        
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("http://support.microsoft.com/kb/2592687")]
+        public string WindowsClientDownload {
+            get {
+                return ((string)(this["WindowsClientDownload"]));
+            }
+        }
+        
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("https://itunes.apple.com/us/app/microsoft-remote-desktop/id715768417?mt=12")]
+        public string MacClientDownload {
+            get {
+                return ((string)(this["MacClientDownload"]));
             }
         }
     }

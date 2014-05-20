@@ -83,8 +83,9 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\Microsoft.Owin.Security.OAuth.2.1.0\lib\net45\Microsoft.Owin.Security.OAuth.dll</HintPath>
     </Reference>
-    <Reference Include="Microsoft.Practices.ServiceLocation">
-      <HintPath>..\packages\CommonServiceLocator.1.0\lib\NET35\Microsoft.Practices.ServiceLocation.dll</HintPath>
+    <Reference Include="Microsoft.Practices.ServiceLocation, Version=1.3.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\CommonServiceLocator.1.3\lib\portable-net4+sl5+netcore45+wpa81+wp8\Microsoft.Practices.ServiceLocation.dll</HintPath>
     </Reference>
     <Reference Include="Newtonsoft.Json, Version=6.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
@@ -208,9 +209,14 @@
     <Compile Include="Migrations\201405191434291_StoredProcs.Designer.cs">
       <DependentUpon>201405191434291_StoredProcs.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201405202007495_PoolChanges.cs" />
+    <Compile Include="Migrations\201405202007495_PoolChanges.Designer.cs">
+      <DependentUpon>201405202007495_PoolChanges.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Models\Computer.cs" />
+    <Compile Include="Models\DownloadEventsViewModel.cs" />
     <Compile Include="Models\Event.cs" />
     <Compile Include="Models\Pool.cs" />
     <Compile Include="Models\PoolSummary.cs" />
@@ -274,17 +280,19 @@
     <Content Include="fonts\fontawesome-webfont.ttf" />
     <Content Include="fonts\fontawesome-webfont.eot" />
     <Content Include="fonts\FontAwesome.otf" />
+    <Content Include="Content\Scripts.zip" />
     <None Include="Properties\PublishProfiles\IIS On-Premisis.pubxml" />
     <None Include="Properties\Settings.settings">
       <Generator>PublicSettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
     </None>
-    <None Include="Scripts\jquery-2.1.0.intellisense.js" />
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
-    <Content Include="Scripts\jquery-2.1.0.js" />
-    <Content Include="Scripts\jquery-2.1.0.min.js" />
-    <Content Include="Scripts\jquery-2.1.0.min.map" />
+    <None Include="Scripts\jquery-2.1.1.intellisense.js" />
+    <Content Include="Scripts\BrowserDetect.js" />
+    <Content Include="Scripts\jquery-2.1.1.js" />
+    <Content Include="Scripts\jquery-2.1.1.min.js" />
+    <Content Include="Scripts\jquery-2.1.1.min.map" />
     <None Include="Scripts\jquery.validate-vsdoc.js" />
     <Content Include="Scripts\jquery.fancybox-buttons.js" />
     <Content Include="Scripts\jquery.fancybox-media.js" />
@@ -315,7 +323,6 @@
     <Content Include="Views\Shared\Error.cshtml" />
     <Content Include="Views\Shared\_Layout.cshtml" />
     <Content Include="Views\Home\About.cshtml" />
-    <Content Include="Views\Home\Contact.cshtml" />
     <Content Include="Views\Home\Index.cshtml" />
     <Content Include="Views\Account\Login.cshtml" />
     <Content Include="Views\Shared\_LoginPartial.cshtml" />
@@ -326,12 +333,15 @@
     <Content Include="Views\Shared\_Footer.cshtml" />
     <Content Include="Views\Pools\Create.cshtml" />
     <Content Include="Views\Pools\Delete.cshtml" />
-    <Content Include="Views\Pools\Details.cshtml" />
+    <Content Include="Views\Pools\Dashboard.cshtml" />
     <Content Include="Views\Pools\Edit.cshtml" />
     <Content Include="Views\Pools\Index.cshtml" />
     <Content Include="Views\Home\ChoosePool.cshtml" />
     <Content Include="Views\Home\NoPools.cshtml" />
     <Content Include="Views\Account\Roles.cshtml" />
+    <Content Include="Views\Pools\Events.cshtml" />
+    <Content Include="Views\Pools\DownloadEvents.cshtml" />
+    <Content Include="Views\Pools\DownloadScripts.cshtml" />
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>
@@ -350,6 +360,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201405191434291_StoredProcs.resx">
       <DependentUpon>201405191434291_StoredProcs.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201405202007495_PoolChanges.resx">
+      <DependentUpon>201405202007495_PoolChanges.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>

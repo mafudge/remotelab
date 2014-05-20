@@ -1,4 +1,5 @@
-' Remote Lab Logon Script
+' Remote Lab Settings Script
+' Replace this default settings script with one downloaded from your web application.
 
 on error resume next
 dim connstr, remotepowershelluser, poolName

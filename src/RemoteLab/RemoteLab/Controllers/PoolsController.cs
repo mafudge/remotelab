@@ -32,6 +32,113 @@ namespace RemoteLab.Controllers
             return View(this.Svc.GetPoolSummaryByAdminClaims((ClaimsPrincipal)HttpContext.User, Properties.Settings.Default.AdministratorADGroup).OrderBy( s=> s.PoolName));
         }
 
+        // GET: Pools/Events/PoolName
+        [PoolAdministratorAuthorize]
+        public async Task<ActionResult> Events(string id, string ComputerName="", string UserName="")
+        {
+            if (id == null) { return new HttpStatusCodeResult(HttpStatusCode.BadRequest); }
+
+            var stats = await Svc.GetPoolSummaryAsync(PoolName: id);
+            if (stats == null) { return HttpNotFound(); }
+
+            var Events = await Svc.GetEventsAsync(PoolName:id);
+            if (!String.IsNullOrEmpty(ComputerName))
+            {
+                Events = Events.Where( e=> e.ComputerName.Equals(ComputerName, StringComparison.InvariantCultureIgnoreCase));
+            }
+            if (!String.IsNullOrEmpty(UserName))
+            {
+                Events = Events.Where(e => e.UserName.Equals(UserName, StringComparison.InvariantCultureIgnoreCase));
+            }
+
+            ViewBag.CurrentPool = id;
+            ViewBag.Available = stats.PoolAvailable;
+            ViewBag.Total = stats.PoolCount;
+            ViewBag.InUse = stats.PoolInUse;
+            return View(Events.OrderByDescending( e => e.DtStamp ));
+        }
+
+        // GET: Pools/DownloadEvents/PoolName
+        [PoolAdministratorAuthorize]
+        [HttpGet]
+        public async Task<ActionResult> DownloadEvents(string id)
+        {
+            if (id == null) { return new HttpStatusCodeResult(HttpStatusCode.BadRequest); }
+            TempData["id"] = id;
+            var stats = await Svc.GetPoolSummaryAsync(PoolName: id);
+            if (stats == null) { return HttpNotFound(); }
+
+            ViewBag.CurrentPool = id;
+            ViewBag.Available = stats.PoolAvailable;
+            ViewBag.Total = stats.PoolCount;
+            ViewBag.InUse = stats.PoolInUse;
+            return View();
+        }
+
+        // POST: Pools/DownloadEvents/PoolName
+        [PoolAdministratorAuthorize]
+        [HttpPost]
+        public async Task<ActionResult> DownloadEvents([Bind(Include = "PoolName,StartDate,EndDate,Format")] DownloadEventsViewModel devm)
+        {
+            
+            if (String.IsNullOrEmpty(devm.PoolName)) { return new HttpStatusCodeResult(HttpStatusCode.BadRequest); }
+
+            var stats = await Svc.GetPoolSummaryAsync(devm.PoolName);
+            if (stats == null) { return HttpNotFound(); }
+
+            var downloadEvents= await this.Svc.GetEventsAsync(devm.PoolName, devm.StartDate, devm.EndDate);
+
+            var buff = this.Svc.EventsToCsv(downloadEvents);
+   
+            var contentType = "text/csv";
+            var fileName = String.Format("events-{0}-{1:yyyyMMdd}-{2:yyyyMMdd}.csv", devm.PoolName, devm.StartDate, devm.EndDate);
+            Response.AddHeader("Content-Disposition", "attachment; filename=" + fileName );
+
+
+            return Content(buff, contentType, System.Text.Encoding.UTF8);            
+
+        }
+
+        // GET: Pools/DownloadScripts/PoolName
+        [PoolAdministratorAuthorize]
+        [HttpGet]
+        public async Task<ActionResult> DownloadScripts(string id)
+        {
+            if (id == null) { return new HttpStatusCodeResult(HttpStatusCode.BadRequest); }
+            TempData["id"] = id;
+            var stats = await Svc.GetPoolSummaryAsync(PoolName: id);
+            if (stats == null) { return HttpNotFound(); }
+
+            ViewBag.CurrentPool = id;
+            ViewBag.Available = stats.PoolAvailable;
+            ViewBag.Total = stats.PoolCount;
+            ViewBag.InUse = stats.PoolInUse;
+            return View();
+        }
+
+        // POST: Pools/DownloadScripts/PoolName
+        [PoolAdministratorAuthorize]
+        [HttpPost]
+        public async Task<ActionResult> DownloadScripts(FormCollection from)
+        {
+            String PoolName = (String)TempData["id"];
+            if (String.IsNullOrEmpty(PoolName)) { return new HttpStatusCodeResult(HttpStatusCode.BadRequest); }
+
+            var stats = await Svc.GetPoolSummaryAsync(PoolName);
+            if (stats == null) { return HttpNotFound(); }
+            
+            var buff= String.Format(Properties.Settings.Default.RemoteLabSettingsFileContent,
+                            this.db.Database.Connection.ConnectionString, 
+                            Properties.Settings.Default.RemotePowershellUser, 
+                            PoolName);
+            var contentType = "text/plain";
+            
+            Response.AddHeader("Content-Disposition", "attachment; filename=RemoteLabSettings.vbs");
+
+            return Content(buff, contentType, System.Text.Encoding.UTF8);
+
+        }
+
         // GET: Pools/Dashboard/PoolName
         [PoolAdministratorAuthorize]
         public async Task<ActionResult> Dashboard(string id)
@@ -64,7 +171,7 @@ namespace RemoteLab.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
         [AdministratorAuthorize]
-        public async Task<ActionResult> Create([Bind(Include = "PoolName,ActiveDirectoryUserGroup,Logo,ActiveDirectoryAdminGroup,EmailNotifyList,RdpTcpPort,CleanupInMinutes")] Pool pool)
+        public async Task<ActionResult> Create([Bind(Include = "PoolName,ActiveDirectoryUserGroup,Logo,ActiveDirectoryAdminGroup,EmailNotifyList,RdpTcpPort,CleanupInMinutes,RemoteAdminUser,RemoteAdminPassword,WelcomeMessage")] Pool pool)
         {
             if (ModelState.IsValid)
             {
@@ -88,6 +195,7 @@ namespace RemoteLab.Controllers
             {
                 return HttpNotFound();
             }
+            TempData["id"] = id;
             return View(pool);
         }
 
@@ -97,7 +205,7 @@ namespace RemoteLab.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
         [PoolAdministratorAuthorize]
-        public async Task<ActionResult> Edit([Bind(Include = "PoolName,ActiveDirectoryUserGroup,Logo,ActiveDirectoryAdminGroup,EmailNotifyList,RdpTcpPort,CleanupInMinutes")] Pool pool)
+        public async Task<ActionResult> Edit([Bind(Include = "PoolName,ActiveDirectoryUserGroup,Logo,ActiveDirectoryAdminGroup,EmailNotifyList,RdpTcpPort,CleanupInMinutes,RemoteAdminUser,RemoteAdminPassword,WelcomeMessage")] Pool pool)
         {
             if (ModelState.IsValid)
             {
@@ -120,6 +228,7 @@ namespace RemoteLab.Controllers
             {
                 return HttpNotFound();
             }
+            TempData["id"] = id;
             return View(pool);
         }
 

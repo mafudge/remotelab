@@ -38,8 +38,8 @@
                 </button>
                 <ul class="dropdown-menu" role="menu">
                     <li><a href="@Url.Action("Dashboard","Pools", new { Id = item.PoolName })"><i class="fa fa-dashboard"></i> Dashboard</a></li>
-                    <li><a href="@Url.Action("Scripts","Pools",new { Id = item.PoolName })"><i class="fa fa-download"></i> Download Scripts</a></li>
-                    <li><a href="@Url.Action("Events","Pools",new { Id = item.PoolName })"><i class="fa fa-file-text"></i> Event Logs</a></li>
+                    <li><a href="@Url.Action("DownloadScripts","Pools",new { Id = item.PoolName })"><i class="fa fa-download"></i> Download Scripts</a></li>
+                    <li><a href="@Url.Action("DownloadEvents","Pools",new { Id = item.PoolName })"><i class="fa fa-file-text"></i> Download Events</a></li>
                     <li><a href="@Url.Action("Edit", "Pools", new { Id = item.PoolName })"><i class="fa fa-edit"></i> Edit Settings</a></li>
                     @if (admin) {
                     <li><a href="@Url.Action("Delete","Pools", new { Id = item.PoolName } )"><i class="fa fa-trash-o"></i> Delete</a></li>

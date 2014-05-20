@@ -12,7 +12,7 @@ namespace RemoteLab
                         "~/Scripts/jquery-{version}.js",
                         "~/Scripts/jquery.validate.js",
                         "~/Scripts/jquery.validate.unobtrusive.js",
-                        "~/Scripts/jquery-fancybox.js"));
+                        "~/Scripts/jquery.fancybox.js"));
 
             bundles.Add(new ScriptBundle("~/bundles/browserdetect").Include(
                         "~/Scripts/BrowserDetect.js"));

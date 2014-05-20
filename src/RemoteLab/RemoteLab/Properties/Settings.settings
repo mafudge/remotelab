@@ -24,7 +24,7 @@
     <Setting Name="RemotePowershellPassword" Type="System.String" Scope="Application">
       <Value Profile="(Default)">6f1HMkW1dB</Value>
     </Setting>
-    <Setting Name="RemotePoweshellUserDomain" Type="System.String" Scope="Application">
+    <Setting Name="ActiveDirectoryShortName" Type="System.String" Scope="Application">
       <Value Profile="(Default)">AD</Value>
     </Setting>
     <Setting Name="RdpFileSettings" Type="System.String" Scope="Application">
@@ -81,6 +81,25 @@ smart sizing:i:1</Value>
     </Setting>
     <Setting Name="LoginFormPasswordLabel" Type="System.String" Scope="Application">
       <Value Profile="(Default)">Password</Value>
+    </Setting>
+    <Setting Name="RemoteLabSettingsFileContent" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">on error resume next
+dim connstr, remotepowershelluser, poolName
+connstr = "{0}"
+remotepowershelluser = "{1}"
+poolName = "{2}" </Value>
+    </Setting>
+    <Setting Name="RemoteLabIntroVideoLink" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">https://www.youtube.com/embed/fyM2OHUS6O4?autoplay=1</Value>
+    </Setting>
+    <Setting Name="OfficialDocumentationLink" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">https://answers.syr.edu/display/ischool/iSchool+Remote+Lab</Value>
+    </Setting>
+    <Setting Name="WindowsClientDownload" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">http://support.microsoft.com/kb/2592687</Value>
+    </Setting>
+    <Setting Name="MacClientDownload" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">https://itunes.apple.com/us/app/microsoft-remote-desktop/id715768417?mt=12</Value>
     </Setting>
   </Settings>
 </SettingsFile>

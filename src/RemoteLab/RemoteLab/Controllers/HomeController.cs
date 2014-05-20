@@ -239,5 +239,10 @@ namespace RemoteLab.Controllers
                 
         }
 
+        public async Task<ActionResult> About()
+        {
+            return View();
+        }
+
     }
 }
