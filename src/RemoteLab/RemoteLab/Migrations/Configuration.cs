@@ -11,7 +11,7 @@ namespace RemoteLab.Migrations
     using System.IO;
     using System.Text;
     using System.Data.Entity.Migrations;
-
+    using System.Data.Entity.Validation;
 
     internal sealed class Configuration : DbMigrationsConfiguration<RemoteLabContext>
     {
@@ -19,7 +19,7 @@ namespace RemoteLab.Migrations
         private readonly bool PendingMigrations;
         public Configuration()
         {
-            AutomaticMigrationsEnabled = false;            
+            AutomaticMigrationsEnabled = false;   
             var migrator = new DbMigrator(this);
             this.PendingMigrations = migrator.GetPendingMigrations().Any();
         }
@@ -35,26 +35,81 @@ namespace RemoteLab.Migrations
 
         private void DataInit( RemoteLabContext context ) 
         {
+            PasswordUtility Pass = new PasswordUtility(Properties.Settings.Default.EncryptionKeyForPasswords);
+            var stringVector = Pass.NewInitializationVector();
             var prodPool = context.Pools.Add(new Pool() 
-            { 
-                PoolName = "Prod", EmailNotifyList = "mjschug@syr.edu", RdpTcpPort = 3389, CleanupInMinutes = 30, ActiveDirectoryAdminGroup="IST-Users-ITServices", ActiveDirectoryUserGroup="IST-Users-ITServices", RemoteAdminUser = "w-ist-labsetup", RemoteAdminPassword="6f1HMkW1dB", WelcomeMessage = "Welcome to this pool!" 
+            {
+                PoolName = "Prod",
+                EmailNotifyList = "mjschug@syr.edu",
+                RdpTcpPort = 3389,
+                CleanupInMinutes = 30,
+                ActiveDirectoryAdminGroup = "IST-Users-ITServices",
+                ActiveDirectoryUserGroup = "IST-Users-ITServices",
+                RemoteAdminUser = "w-ist-labsetup",
+                RemoteAdminPassword = Pass.Encrypt("6f1HMkW1dB", stringVector),
+                WelcomeMessage = "Welcome to this pool!",
+                InitializationVector = stringVector
             });
+            stringVector = Pass.NewInitializationVector();
             var whit = context.Pools.Add(new Pool() 
-            { 
-                PoolName = "Whitman", EmailNotifyList = "mjschug@syr.edu", RdpTcpPort = 3389, CleanupInMinutes = 30, ActiveDirectoryAdminGroup = "WHIT-L4-Admins", ActiveDirectoryUserGroup = "WHIT-Users" , RemoteAdminUser = "w-ist-labsetup", RemoteAdminPassword="6f1HMkW1dB", WelcomeMessage = "Welcome to this pool!" 
+            {
+                PoolName = "Whitman",
+                EmailNotifyList = "mjschug@syr.edu",
+                RdpTcpPort = 3389,
+                CleanupInMinutes = 30,
+                ActiveDirectoryAdminGroup = "IST-Staff",
+                ActiveDirectoryUserGroup = "IST-Staff",
+                RemoteAdminUser = "w-ist-labsetup",
+                RemoteAdminPassword = Pass.Encrypt("6f1HMkW1dB", stringVector),
+                WelcomeMessage = "Welcome to this pool!",
+                InitializationVector = stringVector
             });
+            stringVector = Pass.NewInitializationVector();
             var ischool = context.Pools.Add(new Pool() 
-            { 
-                PoolName = "iSchool", EmailNotifyList = "mjschug@syr.edu", RdpTcpPort = 3389, CleanupInMinutes = 30, ActiveDirectoryAdminGroup = "IST-Staff", ActiveDirectoryUserGroup = "IST-Users" , RemoteAdminUser = "w-ist-labsetup", RemoteAdminPassword="6f1HMkW1dB", WelcomeMessage = "Welcome to this pool!" 
+            {
+                PoolName = "iSchool",
+                EmailNotifyList = "mjschug@syr.edu",
+                RdpTcpPort = 3389,
+                CleanupInMinutes = 30,
+                ActiveDirectoryAdminGroup = "IST-Staff",
+                ActiveDirectoryUserGroup = "IST-Users",
+                RemoteAdminUser = "w-ist-labsetup",
+                RemoteAdminPassword = Pass.Encrypt("6f1HMkW1dB", stringVector),
+                WelcomeMessage = "Welcome to this pool!",
+                InitializationVector = stringVector
             });
+            stringVector = Pass.NewInitializationVector();
             var maxwell = context.Pools.Add(new Pool() 
-            { 
-                PoolName = "Maxwell", EmailNotifyList = "mjschug@syr.edu", RdpTcpPort = 3389, CleanupInMinutes = 30, ActiveDirectoryAdminGroup = "MAX-Admins", ActiveDirectoryUserGroup = "MAX-Users" , RemoteAdminUser = "w-ist-labsetup", RemoteAdminPassword="6f1HMkW1dB", WelcomeMessage = "Welcome to this pool!" 
+            {
+                PoolName = "Maxwell",
+                EmailNotifyList = "mjschug@syr.edu",
+                RdpTcpPort = 3389,
+                CleanupInMinutes = 30,
+                ActiveDirectoryAdminGroup = "IST-Staff",
+                ActiveDirectoryUserGroup = "IST-Staff",
+                RemoteAdminUser = "w-ist-labsetup",
+                RemoteAdminPassword = Pass.Encrypt("6f1HMkW1dB", stringVector),
+                WelcomeMessage = "Welcome to this pool!",
+                InitializationVector = stringVector
             });
-            var lcs = context.Pools.Add(new Pool() 
-            { 
-                PoolName = "LCS", EmailNotifyList = "mjschug@syr.edu", RdpTcpPort = 3389, CleanupInMinutes = 30, ActiveDirectoryAdminGroup = "ECS-Admins", ActiveDirectoryUserGroup = "ECS-Users" , RemoteAdminUser = "w-ist-labsetup", RemoteAdminPassword="6f1HMkW1dB", WelcomeMessage = "Welcome to this pool!" 
-            });
+
+            try
+            {
+                context.SaveChanges();
+            }
+            catch (DbEntityValidationException e)
+            {
+                foreach (var eve in e.EntityValidationErrors)
+                {
+                    Console.WriteLine("Entity of type \"{0}\" in state \"{1}\" has the following validation errors:",
+                        eve.Entry.Entity.GetType().Name, eve.Entry.State);
+                    foreach (var ve in eve.ValidationErrors)
+                    {
+                        Console.WriteLine("- Property: \"{0}\", Error: \"{1}\"",
+                            ve.PropertyName, ve.ErrorMessage);
+                    }
+                }
+            }  
 
             context.Computers.Add(new Computer() { ComputerName = "IST-LD-RLAB-H31", Pool = prodPool });
             context.Computers.Add(new Computer() { ComputerName = "IST-LD-RLAB-H32", Pool = prodPool });
@@ -68,25 +123,37 @@ namespace RemoteLab.Migrations
             for (int i = 1; i <= 30; i++)
             {
                 context.Computers.Add(new Computer() { ComputerName = String.Format("IST-{0:00}", i), Pool = ischool });
-                context.Computers.Add(new Computer() { ComputerName = String.Format("ECS-{0:00}", i), Pool = lcs });
             }
 
-
-            context.SaveChanges();
+            try 
+            {
+                context.SaveChanges();
+            }
+            catch (DbEntityValidationException e)
+            {
+                foreach (var eve in e.EntityValidationErrors)
+                {
+                    Console.WriteLine("Entity of type \"{0}\" in state \"{1}\" has the following validation errors:",
+                        eve.Entry.Entity.GetType().Name, eve.Entry.State);
+                    foreach (var ve in eve.ValidationErrors)
+                    {
+                        Console.WriteLine("- Property: \"{0}\", Error: \"{1}\"",
+                            ve.PropertyName, ve.ErrorMessage);
+                    }
+                }
+            }  
 
             for (int i = 1; i <= 10; i++)
             {
                 context.Database.ExecuteSqlCommand(@"exec [dbo].[P_remotelabdb_reserve] {0}, {1}", String.Format("WHIT-{0:00}", i), String.Format("whtusr{0}", i));
                 context.Database.ExecuteSqlCommand(@"exec [dbo].[P_remotelabdb_reserve] {0}, {1}", String.Format("MAX-{0:00}", i), String.Format("maxusr{0}", i)); ;
                 context.Database.ExecuteSqlCommand(@"exec [dbo].[P_remotelabdb_reserve] {0}, {1}", String.Format("IST-{0:00}", i), String.Format("istusr{0}", i));
-                context.Database.ExecuteSqlCommand(@"exec [dbo].[P_remotelabdb_reserve] {0}, {1}", String.Format("ECS-{0:00}", i), String.Format("ecsusr{0}", i));
             }
 
             for (int i = 11; i <= 15; i++)
             {
                 context.Database.ExecuteSqlCommand(@"exec [dbo].[P_remotelabdb_reserve] {0}, {1}", String.Format("MAX-{0:00}", i), String.Format("maxusr{0}", i)); ;
                 context.Database.ExecuteSqlCommand(@"exec [dbo].[P_remotelabdb_reserve] {0}, {1}", String.Format("IST-{0:00}", i), String.Format("istusr{0}", i));
-                context.Database.ExecuteSqlCommand(@"exec [dbo].[P_remotelabdb_reserve] {0}, {1}", String.Format("ECS-{0:00}", i), String.Format("ecsusr{0}", i));
             }
             for (int i = 13; i <= 20; i++)
             {
@@ -106,14 +173,11 @@ namespace RemoteLab.Migrations
 
         protected override void Seed(RemoteLabContext context)
         {
-            //  This method will be called after migrating to the latest version.
 
+#if (DEBUG)
             DataCleanup(context);
-
-            //if (!this.PendingMigrations) return; 
-
             DataInit(context);
-
+#endif
 
         }
     }

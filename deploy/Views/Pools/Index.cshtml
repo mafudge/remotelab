@@ -1,0 +1,63 @@
+﻿@model IEnumerable<RemoteLab.Models.PoolSummary>
+
+@{
+    ViewBag.Title = "Remote Lab - Administer Pools";
+    bool admin = HttpContext.Current.User.IsInRole(RemoteLab.Properties.Settings.Default.AdministratorADGroup); 
+}
+
+<h2><i class="fa fa-gears"></i> Administer Pools</h2>
+
+<p>
+    @if (admin) {
+    <a href="@Url.Action("Create")" class="btn btn-link"><i class="fa fa-plus-circle"></i> New Pool</a>
+    }
+</p>
+<table class="table" >
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.PoolName)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.PoolCount)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.PoolInUse)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.PoolAvailable)
+        </th>
+    </tr>
+
+@foreach (var item in Model)
+{
+    <tr style="font-size:1.5em;">
+        <td>
+            <div class="btn-group">
+                <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
+                    <i class="fa fa-gear"></i> @item.PoolName <b class="caret"></b>
+                </button>
+                <ul class="dropdown-menu" role="menu">
+                    <li><a href="@Url.Action("Dashboard","Pools", new { Id = item.PoolName })"><i class="fa fa-dashboard"></i> Dashboard</a></li>
+                    <li><a href="@Url.Action("DownloadScripts","Pools",new { Id = item.PoolName })"><i class="fa fa-download"></i> Download Scripts</a></li>
+                    <li><a href="@Url.Action("DownloadEvents","Pools",new { Id = item.PoolName })"><i class="fa fa-file-text"></i> Download Events</a></li>
+                    <li><a href="@Url.Action("Edit", "Pools", new { Id = item.PoolName })"><i class="fa fa-edit"></i> Edit Settings</a></li>
+                    @if (admin) {
+                    <li><a href="@Url.Action("Delete","Pools", new { Id = item.PoolName } )"><i class="fa fa-trash-o"></i> Delete</a></li>
+                    }
+                    @*<li><a href="#"><i class="fa fa-gear"></i> Settings</a></li>*@
+                </ul>
+            </div>
+        </td>
+        <td>
+            <span class="label label-primary">@item.PoolCount</span>
+        </td>
+        <td>
+            <span class="label label-success">@item.PoolAvailable</span>
+        </td>
+        <td>
+            <span class="label label-danger">@item.PoolInUse</span>
+        </td>
+    </tr>
+}
+
+</table>

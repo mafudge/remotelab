@@ -6,24 +6,33 @@ using System.Threading.Tasks;
 using System.Web;
 using System.Data.Entity;
 using RemoteLab.Utilities;
+using RemoteLab.ComputerManagement;
 using System.IO;
 using System.Text;
 using System.Security.Claims;
+using Effortless.Net.Encryption;
 
 namespace RemoteLab.Services
 {
     public class RemoteLabService : IDisposable
     {
         private readonly RemoteLabContext Db;
-        private readonly ComputerManagement CompMgmt;
+        private readonly IComputerManagement CompMgmt;
         private readonly SmtpEmail Smtp;
+        private readonly PasswordUtility Pw;
 
-        public RemoteLabService(RemoteLabContext Db, ComputerManagement CompMgmt, SmtpEmail Smtp)
+        public RemoteLabService(RemoteLabContext Db, IComputerManagement CompMgmt, SmtpEmail Smtp, PasswordUtility Pw)
         {
             this.Db = Db;
             this.CompMgmt = CompMgmt;
             this.Smtp = Smtp;
+            this.Pw = Pw;
 
+        }
+
+        public string DatbaseConnectionString()
+        {
+            return this.Db.Database.Connection.ConnectionString;
         }
 
         public async Task<RemoteLabViewModel> PopulateRemoteLabViewModelAsync(String PoolName, String CurrentUser)
@@ -69,13 +78,14 @@ namespace RemoteLab.Services
 
         public async Task<bool> RebootComputerAsync(String ComputerName, String CurrentUser, String PoolName, DateTime Now)
         {
+            var pool = await this.GetPoolByIdAsync(PoolName);
+            var password = this.Pw.Decrypt(pool.RemoteAdminPassword, pool.InitializationVector);
             var RebootResult = await this.CompMgmt.RebootComputerAsync(ComputerName, Properties.Settings.Default.ActiveDirectoryFqdn, 
-                Properties.Settings.Default.RemotePowershellUser, Properties.Settings.Default.RemotePowershellPassword, Properties.Settings.Default.ActiveDirectoryShortName);
+                pool.RemoteAdminUser, password, Properties.Settings.Default.ActiveDirectoryShortName);
             if (!RebootResult) 
             {
                 await this.LogEventAsync("REBOOT FAILED", CurrentUser, ComputerName, PoolName,Now);
                 var msg = String.Format(Properties.Resources.RebootFailedEmailMessage, ComputerName);
-                var pool = await this.GetPoolByIdAsync(PoolName);
                 // TODO: IOC these arguments for testability.
                 await Smtp.SendMailAsync(Properties.Settings.Default.SmtpServer, Properties.Settings.Default.SmtpMessageFromAddress, pool.EmailNotifyList, msg, msg);
             }
@@ -145,8 +155,8 @@ namespace RemoteLab.Services
                     [RdpTcpPort] = {3}, 
                     [CleanupInMinutes] = {4},  
                     [RemoteAdminUser] = {5},
-                    [RemoteAdminPassword] = {6} 
-                    [WelcomeMessage] {7} 
+                    [RemoteAdminPassword] = {6}, 
+                    [WelcomeMessage] = {7} 
                     WHERE [PoolName] = {8}"
                 ,p.ActiveDirectoryUserGroup, p.ActiveDirectoryAdminGroup, p.EmailNotifyList, p.RdpTcpPort, p.CleanupInMinutes, p.RemoteAdminUser, p.RemoteAdminPassword, p.WelcomeMessage, p.PoolName);
         }

@@ -70,24 +70,6 @@ namespace RemoteLab.Properties {
         
         [global::System.Configuration.ApplicationScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("w-ist-labsetup")]
-        public string RemotePowershellUser {
-            get {
-                return ((string)(this["RemotePowershellUser"]));
-            }
-        }
-        
-        [global::System.Configuration.ApplicationScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("6f1HMkW1dB")]
-        public string RemotePowershellPassword {
-            get {
-                return ((string)(this["RemotePowershellPassword"]));
-            }
-        }
-        
-        [global::System.Configuration.ApplicationScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("AD")]
         public string ActiveDirectoryShortName {
             get {
@@ -211,6 +193,16 @@ smart sizing:i:1")]
         public string MacClientDownload {
             get {
                 return ((string)(this["MacClientDownload"]));
+            }
+        }
+        
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("240, 148, 233, 7, 112, 207, 116, 14, 177, 66, 198, 200, 41, 180, 156, 143, 151, 2" +
+            "26, 75, 247, 115, 68, 85, 107, 143, 156, 5, 226, 191, 225, 247, 162")]
+        public string EncryptionKeyForPasswords {
+            get {
+                return ((string)(this["EncryptionKeyForPasswords"]));
             }
         }
     }

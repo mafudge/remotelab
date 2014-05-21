@@ -8,8 +8,9 @@ using System.Web.Mvc;
 using Microsoft.AspNet.Identity;
 using Microsoft.Owin.Security;
 using RemoteLab.Models;
-using RemoteLab.Authentication;
+using RemoteLab.DirectoryServices;
 using RemoteLab.Services;
+using RemoteLab.Utilities;
 
 
 namespace RemoteLab.Controllers
@@ -48,8 +49,8 @@ namespace RemoteLab.Controllers
                 if (Auth.Authenticate(model.UserName, model.Password) )
                 {
                     // Build the set of claims for the authenticated user for the various Pools & application administrator
-                    var identity = BuildClaimsIdentity(Auth, model.UserName, Properties.Settings.Default.AdministratorADGroup, await this.Svc.GetPoolsAsync());
-                   
+                    var ClaimsUtil = new ClaimsUtility(Auth, await this.Svc.GetPoolsAsync(), Properties.Settings.Default.AdministratorADGroup);                   
+                    var identity = ClaimsUtil.BuildClaimsIdentityForUser(model.UserName);
                     await SignInAsync(identity, false);
                     return RedirectToLocal(returnUrl);
 
@@ -90,47 +91,6 @@ namespace RemoteLab.Controllers
 
         #region Helpers
 
-        //TODO:Refactor into its own class for unit testing
-        private ClaimsIdentity BuildClaimsIdentity(IDirectoryServices Auth, string UserName, string AdminGroup, IEnumerable<Pool> pools)
-        {
-            var identity = new ClaimsIdentity( new [] { new Claim(ClaimTypes.Name, UserName) }, 
-                    DefaultAuthenticationTypes.ApplicationCookie,
-                    ClaimTypes.Name, 
-                    ClaimTypes.Role);
-
-            var claims = new List<Claim>();
-
-            // Admin claim check
-            if (Auth.UserIsInGroup(UserName, AdminGroup)) 
-            {
-                claims.Add(new Claim(ClaimTypes.Role, AdminGroup));
-            }
-
-            // Build claims for Pool Users and Admins
-            foreach(Pool p in pools)
-            {
-                var group = p.ActiveDirectoryAdminGroup;
-                if (group != null && 
-                    !claims.Exists( c=>c.Value.Equals(group,StringComparison.InvariantCultureIgnoreCase)) && 
-                    Auth.UserIsInGroup(UserName, group))
-                {
-                            
-                    claims.Add(new Claim( ClaimTypes.Role, group));
-                }
-
-                group = p.ActiveDirectoryUserGroup;
-                if (group != null &&
-                    !claims.Exists(c => c.Value.Equals(group, StringComparison.InvariantCultureIgnoreCase)) && 
-                    Auth.UserIsInGroup(UserName, group))
-                {
-                    claims.Add(new Claim(ClaimTypes.Role, group));
-                }
-            }
-
-            identity.AddClaims( claims );
-
-                return identity;
-        }
    
         private IAuthenticationManager AuthenticationManager
         {

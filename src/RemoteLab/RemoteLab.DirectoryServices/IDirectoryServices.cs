@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-namespace RemoteLab.Authentication
+namespace RemoteLab.DirectoryServices
 {
     /// <summary>
     /// Implement this interface if you desire a different method of forms authentication such as LDAP
@@ -9,5 +9,7 @@ namespace RemoteLab.Authentication
     {
         bool Authenticate(string UserName, string Password);
         bool UserIsInGroup(string UserName, string GroupName);
+
+        bool GroupExists(string GroupName);
     }
 }

@@ -16,12 +16,18 @@
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button>
-                @Html.ActionLink("Remote Lab", "Index", "Home", null, new { @class = "navbar-brand" })
+                <a href="@Url.Action("Index","Home", null)" class="navbar-brand"><i class="glyphicon glyphicon-new-window"></i> @String.Format("{0} {1}",HttpContext.Current.Application["NAME"],HttpContext.Current.Application["VERSION"]) </a>
             </div>
             <div class="navbar-collapse collapse">
                 <ul class="nav navbar-nav">
-                    <li>@Html.ActionLink("Home", "Index", "Home")</li>
-                    <li>@Html.ActionLink("About", "About", "Home")</li>
+                    <li><a href="@Url.Action("Index","Home")"><i class="fa fa-desktop"></i> Connect</a></li>
+                    <li class="dropdown">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown"><i class="fa fa-gears"></i>  Admin <b class="caret"></b></a>
+                        <ul class="dropdown-menu">
+                            <li><a href="@Url.Action("Index","Pools")"><i class="fa fa-dashboard"></i> Pools</a></li>
+                        </ul>
+                    </li>
+                    <li><a href="@Url.Action("About","Home")"><i class="fa fa-info-circle"></i> About</a></li>
                 </ul>
                 @Html.Partial("_LoginPartial")
             </div>
@@ -30,11 +36,15 @@
 
     <div class="container body-content">
         <h1>
-            <i class="glyphicon glyphicon-new-window"></i> Remote Lab 2.0
-            @if (HttpContext.Current.Request.IsAuthenticated) {
+            @if (HttpContext.Current.Request.IsAuthenticated && ViewBag.CurrentPool != null) {
+            @*<i class="glyphicon glyphicon-new-window"></i>*@<button type="button" class="btn btn-lg btn-default" disabled="disabled">@String.Format("Pool: {0}",ViewBag.CurrentPool)</button>
             <button type="button" class="btn btn-lg  btn-primary" disabled="disabled">Total Seats: @ViewBag.Total</button>
             <button type="button" class="btn btn-lg btn-success" disabled="disabled">Available:@ViewBag.Available</button>
             <button type="button" class="btn btn-lg btn-danger" disabled="disabled">In Use: @ViewBag.InUse</button>
+            }
+            else
+            { 
+             @*<i class="glyphicon glyphicon-new-window"></i> @:Remote Lab*@
             }
         </h1>
         <div class="row">
@@ -56,13 +66,13 @@
                     <div class="panel-body">
                         <h4><i class="glyphicon glyphicon-book"></i> Documentation</h4>
                         <ul>
-                            <li><a id="youtube" href="https://www.youtube.com/embed/fyM2OHUS6O4?autoplay=1" class="various fancybox.iframe"><i class="glyphicon glyphicon-facetime-video"></i> What is Remote Lab?</a></li>
-                            <li><a target="_RemoteLabDocs" href="https://answers.syr.edu/display/ischool/iSchool+Remote+Lab"><i class="fa fa-file-text"></i> Official Documentation</a></li>
+                            <li><a id="youtube" href="@RemoteLab.Properties.Settings.Default.RemoteLabIntroVideoLink" class="various fancybox.iframe"><i class="glyphicon glyphicon-facetime-video"></i> What is Remote Lab?</a></li>
+                            <li><a target="_RemoteLabDocs" href="@RemoteLab.Properties.Settings.Default.OfficialDocumentationLink"><i class="fa fa-file-text"></i> Official Documentation</a></li>
                         </ul>
                         <h4><i class="glyphicon glyphicon-download-alt"></i> Download - Remote Desktop Client</h4>
                         <ul>
-                            <li><a target="_RemoteLabDownload" href="http://support.microsoft.com/kb/2592687"><i class="fa fa-windows"></i> Windows </a></li>
-                            <li><a target="_RemoteLabDownload" href="https://itunes.apple.com/us/app/microsoft-remote-desktop/id715768417?mt=12"><i class="fa fa-apple"></i> Mac OSX</a></li>
+                            <li><a target="_RemoteLabDownload" href="@RemoteLab.Properties.Settings.Default.WindowsClientDownload"><i class="fa fa-windows"></i> Windows </a></li>
+                            <li><a target="_RemoteLabDownload" href="@RemoteLab.Properties.Settings.Default.MacClientDownload"><i class="fa fa-apple"></i> Mac OSX</a></li>
                         </ul>
                     </div>
                 </div>

@@ -7,7 +7,7 @@ using System.DirectoryServices;
 using System.DirectoryServices.AccountManagement;
 
 
-namespace RemoteLab.Authentication  
+namespace RemoteLab.DirectoryServices  
 {
     /// <summary>
     /// Active Directory Authentication
@@ -70,6 +70,17 @@ namespace RemoteLab.Authentication
 	            }
             }
             return groups;
+        }
+
+
+        public bool GroupExists(string GroupName)
+        {
+            using (var context = new PrincipalContext(ContextType.Domain, this.Domain))
+            using (var group = GroupPrincipal.FindByIdentity(context, GroupName))
+            {
+                return (group != null); 
+            }
+
         }
     }
 }

@@ -16,13 +16,16 @@
 // --------------------------------------------------------------------------------------------------------------------
 
 
-using RemoteLab.Authentication;
+using RemoteLab.DirectoryServices;
+using RemoteLab.ComputerManagement;
 using RemoteLab.Models;
 using RemoteLab.Services;
 using RemoteLab.Utilities;
 using StructureMap;
 using StructureMap.Graph;
 using System.Data.Entity;
+using System.Web;
+
 namespace RemoteLab.DependencyResolution {
     public static class IoC {
         public static IContainer Initialize() {
@@ -34,13 +37,19 @@ namespace RemoteLab.DependencyResolution {
                                         scan.WithDefaultConventions();
                                     });
                             x.For<IDirectoryServices>().Use( ctx => new ActiveDirectory(Properties.Settings.Default.ActiveDirectoryFqdn));
+                            x.For<PasswordUtility>().Use( ctx => new PasswordUtility(Properties.Settings.Default.EncryptionKeyForPasswords));
                             x.For<RemoteLabContext>().Use( ctx => new RemoteLabContext("RemoteLabContext"));
-                            x.For<ComputerManagement>().Use( ctx => new ComputerManagement()); 
+#if (DEBUG)
+                            x.For<IComputerManagement>().Use(ctx => new FakeComputerManagement()); 
+#else
+                            x.For<IComputerManagement>().Use( ctx => new WindowsComputerManagement(Elmah.ErrorLog.GetDefault(HttpContext.Current))); 
+#endif
                             x.For<SmtpEmail>().Use( ctx => new SmtpEmail());
                             x.For<RemoteLabService>().Use(ctx => new RemoteLabService(
                                 ctx.GetInstance<RemoteLabContext>(), 
-                                ctx.GetInstance<ComputerManagement>(), 
-                                ctx.GetInstance<SmtpEmail>() 
+                                ctx.GetInstance<IComputerManagement>(), 
+                                ctx.GetInstance<SmtpEmail>(),
+                                ctx.GetInstance<PasswordUtility>()
                                 ));
                         });
             return ObjectFactory.Container;

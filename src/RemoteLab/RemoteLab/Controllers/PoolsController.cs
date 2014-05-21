@@ -11,18 +11,21 @@ using RemoteLab.Models;
 using RemoteLab.Services;
 using RemoteLab.Utilities;
 using System.Security.Claims;
+using Effortless.Net.Encryption;
 
 namespace RemoteLab.Controllers
 {
     public class PoolsController : Controller
     {
-        private RemoteLabContext db = new RemoteLabContext();
 
         public RemoteLabService Svc {get; private set; }
 
-        public PoolsController(RemoteLabService Svc)
+        public PasswordUtility Pw { get; private set; }
+
+        public PoolsController(RemoteLabService Svc, PasswordUtility Pw)
         {
             this.Svc = Svc;
+            this.Pw = Pw;
         }
 
         // GET: Pools
@@ -128,8 +131,8 @@ namespace RemoteLab.Controllers
             if (stats == null) { return HttpNotFound(); }
             
             var buff= String.Format(Properties.Settings.Default.RemoteLabSettingsFileContent,
-                            this.db.Database.Connection.ConnectionString, 
-                            Properties.Settings.Default.RemotePowershellUser, 
+                            this.Svc.DatbaseConnectionString(),
+                            stats.RemoteAdminUser, 
                             PoolName);
             var contentType = "text/plain";
             
@@ -173,8 +176,11 @@ namespace RemoteLab.Controllers
         [AdministratorAuthorize]
         public async Task<ActionResult> Create([Bind(Include = "PoolName,ActiveDirectoryUserGroup,Logo,ActiveDirectoryAdminGroup,EmailNotifyList,RdpTcpPort,CleanupInMinutes,RemoteAdminUser,RemoteAdminPassword,WelcomeMessage")] Pool pool)
         {
+
             if (ModelState.IsValid)
             {
+                pool.InitializationVector = this.Pw.NewInitializationVector();
+                pool.RemoteAdminPassword =  this.Pw.Encrypt(pool.RemoteAdminPassword, pool.InitializationVector);
                 await this.Svc.AddPoolAsync(pool);
                 return RedirectToAction("Index");
             }
@@ -183,6 +189,7 @@ namespace RemoteLab.Controllers
         }
 
         // GET: Pools/Edit/5
+        [HttpGet]
         [PoolAdministratorAuthorize]
         public async Task<ActionResult> Edit(string id)
         {
@@ -195,7 +202,10 @@ namespace RemoteLab.Controllers
             {
                 return HttpNotFound();
             }
+
+            pool.RemoteAdminPassword = this.Pw.Decrypt(pool.RemoteAdminPassword, pool.InitializationVector);
             TempData["id"] = id;
+            TempData["vector"] = pool.InitializationVector;
             return View(pool);
         }
 
@@ -209,6 +219,8 @@ namespace RemoteLab.Controllers
         {
             if (ModelState.IsValid)
             {
+                string vector = (String)TempData["vector"];
+                pool.RemoteAdminPassword = this.Pw.Encrypt(pool.RemoteAdminPassword,vector);
                 await this.Svc.UpdatePoolAsync(pool);
                 return RedirectToAction("Index");
             }

@@ -61,7 +61,7 @@ namespace RemoteLab.Controllers
         [Authorize]
         public async Task<ActionResult> ChoosePool()
         {
-            var userPools = this.Svc.GetPoolSummaryByUserClaims((ClaimsPrincipal)HttpContext.User);
+            var userPools = this.Svc.GetPoolSummaryByUserClaims((ClaimsPrincipal)HttpContext.User).Where( p=> p.PoolCount >0);
             HttpContext.Session[POOL_COUNT] = userPools.Count();
             switch (userPools.Count())
             {
@@ -121,6 +121,7 @@ namespace RemoteLab.Controllers
             if (rvm == null || rvm.ReservationStatus != ReservationStatus.NewReservation) return RedirectToAction("Index");
 
             var stats = await Svc.GetPoolSummaryAsync(rvm.Pool.PoolName);
+            ViewBag.WelcomeMessage = rvm.Pool.WelcomeMessage;
             ViewBag.CurrentPool = rvm.Pool.PoolName;
             ViewBag.Available = stats.PoolAvailable;
             ViewBag.Total = stats.PoolCount;

@@ -18,12 +18,6 @@
     <Setting Name="SmtpMessageFromAddress" Type="System.String" Scope="Application">
       <Value Profile="(Default)">remotelabadmin@syr.edu</Value>
     </Setting>
-    <Setting Name="RemotePowershellUser" Type="System.String" Scope="Application">
-      <Value Profile="(Default)">w-ist-labsetup</Value>
-    </Setting>
-    <Setting Name="RemotePowershellPassword" Type="System.String" Scope="Application">
-      <Value Profile="(Default)">6f1HMkW1dB</Value>
-    </Setting>
     <Setting Name="ActiveDirectoryShortName" Type="System.String" Scope="Application">
       <Value Profile="(Default)">AD</Value>
     </Setting>
@@ -100,6 +94,9 @@ poolName = "{2}" </Value>
     </Setting>
     <Setting Name="MacClientDownload" Type="System.String" Scope="Application">
       <Value Profile="(Default)">https://itunes.apple.com/us/app/microsoft-remote-desktop/id715768417?mt=12</Value>
+    </Setting>
+    <Setting Name="EncryptionKeyForPasswords" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">240, 148, 233, 7, 112, 207, 116, 14, 177, 66, 198, 200, 41, 180, 156, 143, 151, 226, 75, 247, 115, 68, 85, 107, 143, 156, 5, 226, 191, 225, 247, 162</Value>
     </Setting>
   </Settings>
 </SettingsFile>

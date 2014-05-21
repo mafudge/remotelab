@@ -1,32 +1,31 @@
 ﻿
 @{
     ViewBag.Title = "Remote Lab - New Reservation";
+
+    int userPoolCount = (int)HttpContext.Current.Session["POOL-COUNT"];
 }
 
 <h2>New Reservation</h2>
 
-<h2>Welcome - Please Read</h2>
+@Html.Raw(ViewBag.WelcomeMessage)
 
-<p>You are about to connect to another computer over the internet. By clicking the button below you agree that will be using this service to complete class assignments / school work.</p>
-<p>Take Note:</p>
-<ul class="list-unstyled" style="margin-bottom:0.5em;">
-    <li><i class="glyphicon glyphicon-check"></i> Network issues can cause disconnects. Save your work often.</li>
-    <li><i class="glyphicon glyphicon-check"></i> Just like the campus labs, do NOT save to the local C:. <strong>Save to your H:</strong> or other network location.</li>
-    <li><i class="glyphicon glyphicon-check"></i> You will be <strong>automatically logged off</strong> of Remote Lab after 1 hour of idle time. </li>
-    <li><i class="glyphicon glyphicon-check"></i> The only way to connect to Remote Lab is through this website.</li>
-    <li><i class="glyphicon glyphicon-check"></i> You are responsible for lost work. <strong>Save your work often.</strong></li>
-</ul>
-<p>Thank you and Enjoy! - iSchool Technology  Services</p>
-
-<form method="post" role="form" id="rezform" action="@Url.Action("NewRez")">
+<form method="post" role="form" id="rezform" action="@Url.Action("MakeRez")">
     @Html.AntiForgeryToken()
     <button id="agree" type="submit" class="btn btn-lg btn-success" title="Make My Reservation" value="Make My Reservation">Make My Reservation</button>
+    @if (userPoolCount>1)
+    { 
+        <a href="@Url.Action("ChooseDifferentPool")" id="differentpool" class="btn btn-lg btn-primary" title="Choose A Different Pool">Choose A Different Pool</a>
+    }
 </form>
 
 @section Scripts {
 <script type="text/javascript">
     $(document).ready(function () {
         $("#agree").click(function () {
+            var btn2 = $("#differentpool");
+            btn2.attr("class", "btn btn-lg btn-default");
+            btn2.attr("disabled", "disabled");
+
             var btn = $("#agree");
             var msg = " Verifying Remote Lab Availability ";
             var cog = "<i class=\"fa fa-cog fa-spin\"></i>";

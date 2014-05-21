@@ -7,6 +7,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RemoteLab", "RemoteLab\Remo
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RemoteLab.DirectoryServices", "RemoteLab.DirectoryServices\RemoteLab.DirectoryServices.csproj", "{4F9FD602-625D-401B-8B15-944361EF36DE}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RemoteLab.ComputerManagement", "RemoteLab.ComputerManagement\RemoteLab.ComputerManagement.csproj", "{61D0698F-9912-4DEA-AC2F-221D528CC770}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -21,6 +23,10 @@ Global
 		{4F9FD602-625D-401B-8B15-944361EF36DE}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{4F9FD602-625D-401B-8B15-944361EF36DE}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{4F9FD602-625D-401B-8B15-944361EF36DE}.Release|Any CPU.Build.0 = Release|Any CPU
+		{61D0698F-9912-4DEA-AC2F-221D528CC770}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{61D0698F-9912-4DEA-AC2F-221D528CC770}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{61D0698F-9912-4DEA-AC2F-221D528CC770}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{61D0698F-9912-4DEA-AC2F-221D528CC770}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
