@@ -132,7 +132,7 @@ namespace RemoteLab.Controllers
             if (stats == null) { throw new HttpException((int)HttpStatusCode.NotFound, "PoolName was Not found"); }
             
             var buff= String.Format(Properties.Settings.Default.RemoteLabSettingsFileContent,
-                            this.Svc.DatbaseConnectionString(),
+                            String.Format("{0};{1}","Provider=sqloledb",this.Svc.DatbaseConnectionString()),
                             stats.RemoteAdminUser, 
                             PoolName);
             var contentType = "text/plain";

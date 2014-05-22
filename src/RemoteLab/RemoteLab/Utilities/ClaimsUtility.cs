@@ -45,37 +45,33 @@ namespace RemoteLab.Utilities
             }
 
             // Build claims for Pool Users and Admins
+            var adminCount = 0;
+            var userCount = 0;
+            var group = String.Empty;
             foreach (Pool p in this.Pools)
             {
-                var group = p.ActiveDirectoryAdminGroup;
-                var count = 0;
-                if (group != null &&
+                group = p.ActiveDirectoryAdminGroup;
+                if (group != null && 
                     !claims.Exists(c => c.Value.Equals(group, StringComparison.InvariantCultureIgnoreCase)) &&
                     this.Auth.UserIsInGroup(UserName, group))
                 {
 
                     claims.Add(new Claim(ClaimTypes.Role, group));
-                    count++;
+                    adminCount++;
                 }
-                if (count>0)
-                {
-                    claims.Add( new Claim(ClaimTypes.UserData, APPLICATION_POOL_ADMINISTRATOR) );
-                }
+
                 group = p.ActiveDirectoryUserGroup;
-                count = 0;
                 if (group != null &&
                     !claims.Exists(c => c.Value.Equals(group, StringComparison.InvariantCultureIgnoreCase)) &&
                     this.Auth.UserIsInGroup(UserName, group))
                 {
                     claims.Add(new Claim(ClaimTypes.Role, group));
-                    count++;
-                }
-                if (count > 0)
-                {
-                    claims.Add(new Claim(ClaimTypes.UserData, APPLICATION_POOL_USER));
+                    userCount++;
                 }
 
             }
+            if (adminCount> 0) { claims.Add(new Claim(ClaimTypes.UserData, APPLICATION_POOL_ADMINISTRATOR)); }
+            if (userCount> 0) { claims.Add(new Claim(ClaimTypes.UserData, APPLICATION_POOL_USER)); }
 
             identity.AddClaims(claims);
 
