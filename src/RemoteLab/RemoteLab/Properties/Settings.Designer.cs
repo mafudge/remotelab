@@ -79,61 +79,6 @@ namespace RemoteLab.Properties {
         
         [global::System.Configuration.ApplicationScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute(@"screen mode id:i:2
-desktopwidth:i: {0} 
-desktopheight:i: {1}
-session bpp:i:32
-winposstr:s:0,1,614,156,1654,963
-full address:s: {2}
-username:s: {3}
-compression:i:1
-keyboardhook:i:2
-audiomode:i:0
-redirectprinters:i:1
-redirectcomports:i:0
-redirectsmartcards:i:0
-redirectclipboard:i:1
-redirectposdevices:i:0
-redirectdrives:i:1
-drivestoredirect: s()
-displayconnectionbar:i:1
-pinconnectionbar:i:1
-autoreconnection enabled:i:1
-authentication level:i:0
-prompt for credentials:i:0
-negotiate security layer:i:1
-remoteapplicationmode:i:0
-alternate shell:s:
-shell working directory:s:
-disable wallpaper:i:1
-disable full window drag:i:0
-allow desktop composition:i:1
-allow font smoothing:i:1
-disable menu anims:i:1
-disable themes:i:0
-disable cursor setting:i:0
-bitmapcachepersistenable:i:1
-gatewayhostname:s:
-gatewayusagemethod:i:0
-gatewaycredentialssource:i:4
-gatewayprofileusagemethod:i:0
-promptcredentialonce:i:1
-use multimon:i:0
-audiocapturemode:i:0
-videoplaybackmode:i:1
-connection type:i:6
-redirectdirectx:i:1
-use redirection server name:i:0
-devicestoredirect:s:*
-smart sizing:i:1")]
-        public string RdpFileSettings {
-            get {
-                return ((string)(this["RdpFileSettings"]));
-            }
-        }
-        
-        [global::System.Configuration.ApplicationScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("NetID")]
         public string LoginFormUsernameLabel {
             get {
@@ -147,16 +92,6 @@ smart sizing:i:1")]
         public string LoginFormPasswordLabel {
             get {
                 return ((string)(this["LoginFormPasswordLabel"]));
-            }
-        }
-        
-        [global::System.Configuration.ApplicationScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("on error resume next\r\ndim connstr, remotepowershelluser, poolName\r\nconnstr = \"{0}" +
-            "\"\r\nremotepowershelluser = \"{1}\"\r\npoolName = \"{2}\" ")]
-        public string RemoteLabSettingsFileContent {
-            get {
-                return ((string)(this["RemoteLabSettingsFileContent"]));
             }
         }
         
@@ -203,6 +138,45 @@ smart sizing:i:1")]
         public string EncryptionKeyForPasswords {
             get {
                 return ((string)(this["EncryptionKeyForPasswords"]));
+            }
+        }
+        
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("\r\n          screen mode id:i:2\r\n          desktopwidth:i: {0}\r\n          desktoph" +
+            "eight:i: {1}\r\n          session bpp:i:32\r\n          winposstr:s:0,1,614,156,1654" +
+            ",963\r\n          full address:s: {2}\r\n          username:s: {3}\r\n          compre" +
+            "ssion:i:1\r\n          keyboardhook:i:2\r\n          audiomode:i:0\r\n          redire" +
+            "ctprinters:i:1\r\n          redirectcomports:i:0\r\n          redirectsmartcards:i:0" +
+            "\r\n          redirectclipboard:i:1\r\n          redirectposdevices:i:0\r\n          r" +
+            "edirectdrives:i:1\r\n          drivestoredirect: s()\r\n          displayconnectionb" +
+            "ar:i:1\r\n          pinconnectionbar:i:1\r\n          autoreconnection enabled:i:1\r\n" +
+            "          authentication level:i:0\r\n          prompt for credentials:i:0\r\n      " +
+            "    negotiate security layer:i:1\r\n          remoteapplicationmode:i:0\r\n         " +
+            " alternate shell:s:\r\n          shell working directory:s:\r\n          disable wal" +
+            "lpaper:i:1\r\n          disable full window drag:i:0\r\n          allow desktop comp" +
+            "osition:i:1\r\n          allow font smoothing:i:1\r\n          disable menu anims:i:" +
+            "1\r\n          disable themes:i:0\r\n          disable cursor setting:i:0\r\n         " +
+            " bitmapcachepersistenable:i:1\r\n          gatewayhostname:s:\r\n          gatewayus" +
+            "agemethod:i:0\r\n          gatewaycredentialssource:i:4\r\n          gatewayprofileu" +
+            "sagemethod:i:0\r\n          promptcredentialonce:i:1\r\n          use multimon:i:0\r\n" +
+            "          audiocapturemode:i:0\r\n          videoplaybackmode:i:1\r\n          conne" +
+            "ction type:i:6\r\n          redirectdirectx:i:1\r\n          use redirection server " +
+            "name:i:0\r\n          devicestoredirect:s:*\r\n          smart sizing:i:1\r\n        ")]
+        public string RdpFileSettings {
+            get {
+                return ((string)(this["RdpFileSettings"]));
+            }
+        }
+        
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("\r\n          on error resume next\r\n          dim connstr, remotepowershelluser, po" +
+            "olName\r\n          connstr = \"{0}\"\r\n          remotepowershelluser = \"{1}\"\r\n     " +
+            "     poolName = \"{2}\"\r\n        ")]
+        public string RemoteLabSettingsFileContent {
+            get {
+                return ((string)(this["RemoteLabSettingsFileContent"]));
             }
         }
     }

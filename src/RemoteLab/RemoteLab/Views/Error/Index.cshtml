@@ -1,10 +1,8 @@
-﻿@model System.Web.Mvc.HandleErrorInfo
+﻿@model Exception
 
 @{
     ViewBag.Title = "Error";
-    ViewBag.Message = "An internal server error occurred while processing your request.";
 }
-
 
 <div class="panel panel-danger">
     <div class="panel-heading">
@@ -13,10 +11,11 @@
     <div class="panel-body">
         <h2 class="text-danger"><i class="fa fa-exclamation-triangle"></i> @ViewBag.Message</h2>
 
-        @Model.Exception.Message.ToString()
+        @(Model!= null ? Model.Message.ToString() : "")
         <br />
         <br />
-        <br/>
+        <br />
         <p>Details of the error, including a stack trace, have been recorded to the web application error log.</p>
     </div>
 </div>
+

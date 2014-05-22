@@ -49,6 +49,9 @@
     <Reference Include="Elmah">
       <HintPath>..\packages\elmah.corelibrary.1.2.2\lib\Elmah.dll</HintPath>
     </Reference>
+    <Reference Include="Elmah.Mvc">
+      <HintPath>..\packages\Elmah.MVC.2.1.1\lib\net40\Elmah.Mvc.dll</HintPath>
+    </Reference>
     <Reference Include="EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\EntityFramework.6.1.0\lib\net45\EntityFramework.dll</HintPath>
@@ -188,6 +191,7 @@
     <Compile Include="App_Start\Startup.Auth.cs" />
     <Compile Include="App_Start\StructuremapMvc.cs" />
     <Compile Include="Controllers\AccountController.cs" />
+    <Compile Include="Controllers\ErrorController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\PoolsController.cs" />
     <Compile Include="DependencyResolution\IoC.cs" />
@@ -246,8 +250,8 @@
     <Compile Include="Utilities\PasswordUtility.cs" />
     <Compile Include="Utilities\EnumUtils.cs" />
     <Compile Include="Utilities\PoolAdministratorAuthorize.cs" />
-    <Compile Include="Utilities\PoolUserAuthorize.cs" />
     <Compile Include="Utilities\SmtpEmail.cs" />
+    <Compile Include="Utilities\ClaimsPrincipalExtensions.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="App_Data\aspnet-RemoteLab-20140507044750.mdf" />
@@ -286,6 +290,9 @@
     <Content Include="fonts\fontawesome-webfont.eot" />
     <Content Include="fonts\FontAwesome.otf" />
     <Content Include="Content\Scripts.zip" />
+    <Content Include="Content\Errors\internal.html" />
+    <Content Include="Content\Errors\notfound.html" />
+    <Content Include="Content\Errors\notallowed.html" />
     <None Include="Properties\PublishProfiles\IIS On-Premisis.pubxml" />
     <None Include="Properties\Settings.settings">
       <Generator>PublicSettingsSingleFileGenerator</Generator>
@@ -525,11 +532,11 @@
     <Content Include="Scripts\tinymce\skins\lightgray\fonts\readme.md" />
     <Content Include="Scripts\tinymce\langs\readme.md" />
     <Content Include="Views\Shared\EditorTemplates\Password.cshtml" />
+    <Content Include="Views\Error\Index.cshtml" />
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>
     <Content Include="packages.config" />
-    <None Include="Project_Readme.html" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Migrations\201405181825319_InitialSchema.resx">

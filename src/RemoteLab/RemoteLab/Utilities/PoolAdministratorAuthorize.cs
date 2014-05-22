@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using RemoteLab.Models;
 using System.Security.Claims;
 using System.Web.Http;
+using RemoteLab.Utilities;
 
 
 namespace RemoteLab.Utilities
@@ -17,6 +18,7 @@ namespace RemoteLab.Utilities
         {
 
             var Svc = ((RemoteLab.Controllers.PoolsController)filterContext.Controller).Svc;
+            var User = ((ClaimsPrincipal)filterContext.HttpContext.User);
             String PoolName = String.Empty;
             bool valid = false;
             try
@@ -25,11 +27,8 @@ namespace RemoteLab.Utilities
                                 ? filterContext.ActionParameters["id"].ToString()
                                 : filterContext.Controller.TempData["id"].ToString();
                 Pool pool = Svc.GetPoolById(PoolName);
-                valid = (pool != null) &&
-                            (((ClaimsPrincipal)filterContext.HttpContext.User).Claims.Any(c =>
-                                c.Value.Equals(pool.ActiveDirectoryAdminGroup, StringComparison.InvariantCultureIgnoreCase) &&
-                                c.Type == ClaimTypes.Role
-                            ));
+                valid = (pool != null) && User.IsAdministratorOfPool(pool);
+                            
             }
             catch (NullReferenceException)
             {
@@ -37,17 +36,11 @@ namespace RemoteLab.Utilities
             }
 
             // check the Admin Claim
-            valid = valid || (((ClaimsPrincipal)filterContext.HttpContext.User).Claims.Any(c =>
-                c.Value.Equals(Properties.Settings.Default.AdministratorADGroup, StringComparison.InvariantCultureIgnoreCase) &&
-                c.Type == ClaimTypes.Role
-                ));
+            valid = valid || User.IsAdministrator();
 
-
-            if (!valid)  //TODO: Redirect or show unauthorize page??
+            if (!valid)  // Forbidden
             {
-                filterContext.HttpContext.Response.StatusCode= (int)System.Net.HttpStatusCode.Unauthorized;
-                filterContext.HttpContext.Response.End();
-                return;
+                throw new HttpException((int)System.Net.HttpStatusCode.Forbidden,"Not permitted to access this resource");
             }
 
             base.OnActionExecuting(filterContext);

@@ -16,10 +16,7 @@ namespace RemoteLab.Utilities
             if (!httpContext.User.Identity.IsAuthenticated) return false;
 
             // return whether based on user having admin claim
-            return (((ClaimsPrincipal)httpContext.User).Claims.Any(c => 
-                c.Value.Equals(Properties.Settings.Default.AdministratorADGroup, StringComparison.InvariantCultureIgnoreCase) &&
-                c.Type == ClaimTypes.Role
-                ));
+            return ((ClaimsPrincipal)httpContext.User).IsAdministrator();
 
         }
     }

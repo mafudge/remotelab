@@ -78,9 +78,10 @@ namespace RemoteLab.Controllers
         }
 
         [Authorize]
-        public ActionResult Roles()
+        public async Task<ActionResult> Roles()
         {
-            return View();
+            var pools = await this.Svc.GetPoolsAsync();
+            return View(pools);
         }
 
 

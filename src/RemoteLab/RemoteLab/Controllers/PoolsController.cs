@@ -37,12 +37,12 @@ namespace RemoteLab.Controllers
 
         // GET: Pools/Events/PoolName
         [PoolAdministratorAuthorize]
-        public async Task<ActionResult> Events(string id, string ComputerName="", string UserName="")
+        public async Task<ActionResult> Events(string id, string ComputerName="", string UserName="")        
         {
-            if (id == null) { return new HttpStatusCodeResult(HttpStatusCode.BadRequest); }
+            if (id == null) { throw new HttpException((int)HttpStatusCode.BadRequest, "Missing PoolName"); }
 
             var stats = await Svc.GetPoolSummaryAsync(PoolName: id);
-            if (stats == null) { return HttpNotFound(); }
+            if (stats == null) { throw new HttpException((int)HttpStatusCode.NotFound, "PoolName was Not found"); }
 
             var Events = await Svc.GetEventsAsync(PoolName:id);
             if (!String.IsNullOrEmpty(ComputerName))
@@ -66,10 +66,11 @@ namespace RemoteLab.Controllers
         [HttpGet]
         public async Task<ActionResult> DownloadEvents(string id)
         {
-            if (id == null) { return new HttpStatusCodeResult(HttpStatusCode.BadRequest); }
+            if (id == null) { throw new HttpException((int)HttpStatusCode.BadRequest, "Missing PoolName"); }
             TempData["id"] = id;
+
             var stats = await Svc.GetPoolSummaryAsync(PoolName: id);
-            if (stats == null) { return HttpNotFound(); }
+            if (stats == null) { throw new HttpException((int)HttpStatusCode.NotFound, "PoolName was Not found"); }
 
             ViewBag.CurrentPool = id;
             ViewBag.Available = stats.PoolAvailable;
@@ -84,10 +85,10 @@ namespace RemoteLab.Controllers
         public async Task<ActionResult> DownloadEvents([Bind(Include = "PoolName,StartDate,EndDate,Format")] DownloadEventsViewModel devm)
         {
             
-            if (String.IsNullOrEmpty(devm.PoolName)) { return new HttpStatusCodeResult(HttpStatusCode.BadRequest); }
+            if (devm.PoolName == null) { throw new HttpException((int)HttpStatusCode.BadRequest, "Missing PoolName"); }
 
             var stats = await Svc.GetPoolSummaryAsync(devm.PoolName);
-            if (stats == null) { return HttpNotFound(); }
+            if (stats == null) { throw new HttpException((int)HttpStatusCode.NotFound, "PoolName was Not found"); }
 
             var downloadEvents= await this.Svc.GetEventsAsync(devm.PoolName, devm.StartDate, devm.EndDate);
 
@@ -107,10 +108,11 @@ namespace RemoteLab.Controllers
         [HttpGet]
         public async Task<ActionResult> DownloadScripts(string id)
         {
-            if (id == null) { return new HttpStatusCodeResult(HttpStatusCode.BadRequest); }
+            if (id == null) { throw new HttpException((int)HttpStatusCode.BadRequest, "Missing PoolName"); }
             TempData["id"] = id;
+
             var stats = await Svc.GetPoolSummaryAsync(PoolName: id);
-            if (stats == null) { return HttpNotFound(); }
+            if (stats == null) { throw new HttpException((int)HttpStatusCode.NotFound, "PoolName was Not found"); }
 
             ViewBag.CurrentPool = id;
             ViewBag.Available = stats.PoolAvailable;
@@ -125,10 +127,9 @@ namespace RemoteLab.Controllers
         public async Task<ActionResult> DownloadScripts(FormCollection from)
         {
             String PoolName = (String)TempData["id"];
-            if (String.IsNullOrEmpty(PoolName)) { return new HttpStatusCodeResult(HttpStatusCode.BadRequest); }
-
-            var stats = await Svc.GetPoolSummaryAsync(PoolName);
-            if (stats == null) { return HttpNotFound(); }
+            if (PoolName == null) { throw new HttpException((int)HttpStatusCode.BadRequest, "Missing PoolName"); }
+            var stats = await Svc.GetPoolSummaryAsync(PoolName: PoolName);
+            if (stats == null) { throw new HttpException((int)HttpStatusCode.NotFound, "PoolName was Not found"); }
             
             var buff= String.Format(Properties.Settings.Default.RemoteLabSettingsFileContent,
                             this.Svc.DatbaseConnectionString(),
@@ -146,10 +147,9 @@ namespace RemoteLab.Controllers
         [PoolAdministratorAuthorize]
         public async Task<ActionResult> Dashboard(string id)
         {
-            if (id == null) { return new HttpStatusCodeResult(HttpStatusCode.BadRequest); }
-
-            var stats = await Svc.GetPoolSummaryAsync(PoolName:id);
-            if (stats == null) { return HttpNotFound(); }
+            if (id == null) { throw new HttpException((int)HttpStatusCode.BadRequest, "Missing PoolName"); }
+            var stats = await Svc.GetPoolSummaryAsync(PoolName: id);
+            if (stats == null) { throw new HttpException((int)HttpStatusCode.NotFound, "PoolName was Not found"); }
 
             var Computers = await Svc.GetComputersByPoolNameAsync(PoolName:id);
 
@@ -193,15 +193,9 @@ namespace RemoteLab.Controllers
         [PoolAdministratorAuthorize]
         public async Task<ActionResult> Edit(string id)
         {
-            if (id == null)
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
+            if (id == null) { throw new HttpException((int)HttpStatusCode.BadRequest, "Missing PoolName"); }
             Pool pool = await this.Svc.GetPoolByIdAsync(PoolName:id);
-            if (pool == null)
-            {
-                return HttpNotFound();
-            }
+            if (pool == null) { throw new HttpException((int)HttpStatusCode.NotFound, "PoolName was Not found"); }
 
             pool.RemoteAdminPassword = this.Pw.Decrypt(pool.RemoteAdminPassword, pool.InitializationVector);
             TempData["id"] = id;
@@ -231,15 +225,9 @@ namespace RemoteLab.Controllers
         [AdministratorAuthorize]
         public async Task<ActionResult> Delete(string id)
         {
-            if (id == null)
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
+            if (id == null) { throw new HttpException((int)HttpStatusCode.BadRequest, "Missing PoolName"); }
             Pool pool = await this.Svc.GetPoolByIdAsync(PoolName:id);
-            if (pool == null)
-            {
-                return HttpNotFound();
-            }
+            if (pool == null) { throw new HttpException((int)HttpStatusCode.NotFound, "PoolName was Not found"); }
             TempData["id"] = id;
             return View(pool);
         }

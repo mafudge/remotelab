@@ -16,6 +16,10 @@ namespace RemoteLab.Utilities
         private IDirectoryServices Auth;
         private string AdminGroup;
 
+        public const string APPLICATION_ADMINISTRATOR = "APPLICATION_ADMINISTRATOR";            // Admin of this app
+        public const string APPLICATION_POOL_ADMINISTRATOR = "APPLICATION_POOL_ADMINISTRATOR";  // Admin of at least 1 pool
+        public const string APPLICATION_POOL_USER = "APPLICATION_POOL_USER";                    // User of at least 1 pool
+
         public ClaimsUtility( IDirectoryServices Auth, IEnumerable<Pool> Pools, string AdministratorGroup) 
         {
             this.Pools = Pools;
@@ -37,27 +41,40 @@ namespace RemoteLab.Utilities
             if (Auth.UserIsInGroup(UserName, this.AdminGroup))
             {
                 claims.Add(new Claim(ClaimTypes.Role, this.AdminGroup));
+                claims.Add(new Claim(ClaimTypes.UserData, APPLICATION_ADMINISTRATOR));
             }
 
             // Build claims for Pool Users and Admins
             foreach (Pool p in this.Pools)
             {
                 var group = p.ActiveDirectoryAdminGroup;
+                var count = 0;
                 if (group != null &&
                     !claims.Exists(c => c.Value.Equals(group, StringComparison.InvariantCultureIgnoreCase)) &&
                     this.Auth.UserIsInGroup(UserName, group))
                 {
 
                     claims.Add(new Claim(ClaimTypes.Role, group));
+                    count++;
                 }
-
+                if (count>0)
+                {
+                    claims.Add( new Claim(ClaimTypes.UserData, APPLICATION_POOL_ADMINISTRATOR) );
+                }
                 group = p.ActiveDirectoryUserGroup;
+                count = 0;
                 if (group != null &&
                     !claims.Exists(c => c.Value.Equals(group, StringComparison.InvariantCultureIgnoreCase)) &&
                     this.Auth.UserIsInGroup(UserName, group))
                 {
                     claims.Add(new Claim(ClaimTypes.Role, group));
+                    count++;
                 }
+                if (count > 0)
+                {
+                    claims.Add(new Claim(ClaimTypes.UserData, APPLICATION_POOL_USER));
+                }
+
             }
 
             identity.AddClaims(claims);
