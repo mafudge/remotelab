@@ -19,15 +19,16 @@ namespace RemoteLab.ComputerManagement
             this.Logger = Logger;
         }
 
-        public async Task<bool> RebootComputerAsync(String ComputerName, String ComputerDomain, String AdminUser, String AdminPassword, String AdminDomain)
+        public async Task<bool> RebootComputerAsync(string ComputerName, string AdminUser, string AdminPassword, string UserDomain, string UserDNSDomain)
+
         {
-            var ManagementPath = new ManagementPath(String.Format(@"\\{0}.{1}\root\cimv2", ComputerName, ComputerDomain));
+            var ManagementPath = new ManagementPath(String.Format(@"\\{0}.{1}\root\cimv2", ComputerName, UserDNSDomain));
             var Options = new ConnectionOptions()
             {
                 EnablePrivileges = true,
                 Username = AdminUser,
                 Password = AdminPassword,
-                Authority = "ntlmdomain:" + AdminDomain,
+                Authority = "ntlmdomain:" + UserDomain,
                 Timeout = new TimeSpan(0, 0, 5),
                 Authentication = AuthenticationLevel.Default
             };
@@ -38,12 +39,14 @@ namespace RemoteLab.ComputerManagement
                 Scope.Connect();
                 var Query = new SelectQuery("Win32_OperatingSystem");
                 using (var Searcher = new ManagementObjectSearcher(Scope, Query))
-                using (ManagementObject OS = (ManagementObject)Searcher.Get().GetEnumerator().Current)
-                using (ManagementBaseObject InParams = OS.GetMethodParameters("Win32Shutdown"))
+                foreach( ManagementObject OS in Searcher.Get())
                 {
-                    InParams["Flags"] = 6;
-                    ManagementBaseObject OutParams = await Task.Run(() => OS.InvokeMethod("Win32Shutdown", InParams, null));
-                    OutParams.Dispose();
+                    using (ManagementBaseObject InParams = OS.GetMethodParameters("Win32Shutdown"))
+                    {
+                        InParams["Flags"] = 6;
+                        ManagementBaseObject OutParams = await Task.Run(() => OS.InvokeMethod("Win32Shutdown", InParams, null));
+                        OutParams.Dispose();
+                    }
                 }
 
             }
@@ -56,10 +59,10 @@ namespace RemoteLab.ComputerManagement
             return true;
         }
 
-        public async Task<bool> ConnectToTcpPortAsync(String ComputerName, String ComputerDomain, int TcpPort)
+        public async Task<bool> ConnectToTcpPortAsync(string ComputerName, string UserDNSDomain, int TcpPort)
         {
 
-            var Hostname = String.Format(@"{0}.{1}", ComputerName, ComputerDomain);
+            var Hostname = String.Format(@"{0}.{1}", ComputerName, UserDNSDomain);
             var TcpClient = new TcpClient();
             try
             {

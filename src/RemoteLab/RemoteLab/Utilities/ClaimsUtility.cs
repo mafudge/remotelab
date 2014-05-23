@@ -9,6 +9,9 @@ using System.Web;
 
 namespace RemoteLab.Utilities
 {
+    /// <summary>
+    /// Utility class to build a ClaimsIdentity for an authenticated user
+    /// </summary>
     public class ClaimsUtility
     {
 
@@ -36,13 +39,6 @@ namespace RemoteLab.Utilities
                     ClaimTypes.Role);
 
             var claims = new List<Claim>();
-
-            // Admin claim check
-            if (Auth.UserIsInGroup(UserName, this.AdminGroup))
-            {
-                claims.Add(new Claim(ClaimTypes.Role, this.AdminGroup));
-                claims.Add(new Claim(ClaimTypes.UserData, APPLICATION_ADMINISTRATOR));
-            }
 
             // Build claims for Pool Users and Admins
             var adminCount = 0;
@@ -72,6 +68,13 @@ namespace RemoteLab.Utilities
             }
             if (adminCount> 0) { claims.Add(new Claim(ClaimTypes.UserData, APPLICATION_POOL_ADMINISTRATOR)); }
             if (userCount> 0) { claims.Add(new Claim(ClaimTypes.UserData, APPLICATION_POOL_USER)); }
+
+            // Last Check: Is the User An Administrator of the Application?
+            if (Auth.UserIsInGroup(UserName, this.AdminGroup))
+            {
+                claims.Add(new Claim(ClaimTypes.Role, this.AdminGroup));
+                claims.Add(new Claim(ClaimTypes.UserData, APPLICATION_ADMINISTRATOR));
+            }
 
             identity.AddClaims(claims);
 

@@ -9,6 +9,9 @@ using System.Web;
 
 namespace RemoteLab.Utilities
 {
+    /// <summary>
+    /// Extension Method Class on Top of the ClaimsPrincipal Class
+    /// </summary>
     public static  class ClaimsPrincipalExtensions
     {
 

@@ -7,13 +7,16 @@ using RemoteLab.DirectoryServices;
 
 namespace RemoteLab.Utilities
 {
-    public class ADGroupValid : ValidationAttribute
+    /// <summary>
+    /// For model validation, determines if value is an Active Directory Group
+    /// </summary>
+    public class ADGroupValidationAttribute : ValidationAttribute
     {
         IDirectoryServices Auth {get; set;}
 
-        public ADGroupValid()
+        public ADGroupValidationAttribute()
         {
-            this.Auth = new ActiveDirectory(Properties.Settings.Default.ActiveDirectoryFqdn);
+            this.Auth = new ActiveDirectory(Properties.Settings.Default.ActiveDirectoryDNSDomain);
         }
         public  override bool IsValid(object value)
         {                

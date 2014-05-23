@@ -6,6 +6,9 @@ using Effortless.Net.Encryption;
 
 namespace RemoteLab.Utilities
 {
+     /// <summary>
+     /// Deals with the reversable encryption requirement for secure password storage.
+     /// </summary>
     public class PasswordUtility
     {
 

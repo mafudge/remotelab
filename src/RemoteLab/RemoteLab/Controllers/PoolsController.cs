@@ -58,7 +58,7 @@ namespace RemoteLab.Controllers
             ViewBag.Available = stats.PoolAvailable;
             ViewBag.Total = stats.PoolCount;
             ViewBag.InUse = stats.PoolInUse;
-            return View(Events.OrderByDescending( e => e.DtStamp ));
+            return View(Events.OrderByDescending( e => e.DtStamp ).Take(Properties.Settings.Default.DashboardMaxEvents));
         }
 
         // GET: Pools/DownloadEvents/PoolName

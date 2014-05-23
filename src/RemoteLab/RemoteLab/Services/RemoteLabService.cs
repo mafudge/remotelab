@@ -80,8 +80,7 @@ namespace RemoteLab.Services
         {
             var pool = await this.GetPoolByIdAsync(PoolName);
             var password = this.Pw.Decrypt(pool.RemoteAdminPassword, pool.InitializationVector);
-            var RebootResult = await this.CompMgmt.RebootComputerAsync(ComputerName, Properties.Settings.Default.ActiveDirectoryFqdn, 
-                pool.RemoteAdminUser, password, Properties.Settings.Default.ActiveDirectoryShortName);
+            var RebootResult = await this.CompMgmt.RebootComputerAsync(ComputerName, pool.RemoteAdminUser, password, Properties.Settings.Default.ActiveDirectoryDomain, Properties.Settings.Default.ActiveDirectoryDNSDomain);
             if (!RebootResult) 
             {
                 await this.LogEventAsync("REBOOT FAILED", CurrentUser, ComputerName, PoolName,Now);
@@ -144,6 +143,11 @@ namespace RemoteLab.Services
         public async Task RemovePoolByIdAsync(String PoolName)
         {
             await this.Db.Database.ExecuteSqlCommandAsync(@"DELETE FROM [dbo].[Computers] WHERE [Pool_PoolName] = {0}; DELETE FROM [dbo].[Pools] WHERE [PoolName] = {0}", PoolName);
+        }
+
+        public async Task RemoveComputerFromPoolByIdAsync(String ComputerName)
+        {
+            await this.Db.Database.ExecuteSqlCommandAsync(@"DELETE FROM [dbo].[Computers] WHERE [ComputerName] = {0}",ComputerName);
         }
 
         public async Task UpdatePoolAsync(Pool p)

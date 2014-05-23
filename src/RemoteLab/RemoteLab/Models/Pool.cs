@@ -18,12 +18,12 @@ namespace RemoteLab.Models
 
         [MaxLength(100)]
         [Display(Name = "Active Directory User Group", ShortName = "AD User Grp", Description="Members of this group can connect to computers in this pool.", Prompt="AD Group name for users allowed to connect to this pool")]
-        [ADGroupValid(ErrorMessage="The Active Directory group does not exist.")]
+        [ADGroupValidationAttribute(ErrorMessage="The Active Directory group does not exist.")]
         public String ActiveDirectoryUserGroup { get; set; }
 
         [MaxLength(100)]
         [Display(Name = "Active Directory Pool Admin Group", ShortName = "AD Admin Grp", Description = "Members of this group can administer this pool.", Prompt = "AD Group name for users allowed to admin this pool")]
-        [ADGroupValid(ErrorMessage = "The Active Directory group does not exist.")]
+        [ADGroupValidationAttribute(ErrorMessage = "The Active Directory group does not exist.")]
         public String ActiveDirectoryAdminGroup { get; set; }
 
         [MaxLength(100)]

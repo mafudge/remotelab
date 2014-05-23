@@ -7,6 +7,9 @@ using System.Security.Claims;
 
 namespace RemoteLab.Utilities
 {
+    /// <summary>
+    /// Authorization attribute - to check if user is an administrator
+    /// </summary>
     public class AdministratorAuthorize : AuthorizeAttribute 
     {
         protected override Boolean AuthorizeCore(HttpContextBase httpContext)

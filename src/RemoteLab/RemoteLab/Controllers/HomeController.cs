@@ -145,7 +145,7 @@ namespace RemoteLab.Controllers
 
                 if (rvm == null || rvm.ReservationStatus != ReservationStatus.NewReservation) return RedirectToAction("Index");
 
-                success = await Svc.CheckRdpPortAndRebootIfUnresponsiveAsync(rvm.RemoteLabComputer.ComputerName, Properties.Settings.Default.ActiveDirectoryFqdn,
+                success = await Svc.CheckRdpPortAndRebootIfUnresponsiveAsync(rvm.RemoteLabComputer.ComputerName, Properties.Settings.Default.ActiveDirectoryDNSDomain,
                     rvm.CurrentUser, rvm.Pool.PoolName, rvm.Pool.RdpTcpPort);
 
             } while (!success);
@@ -228,8 +228,8 @@ namespace RemoteLab.Controllers
             if (rezComputer == null)  return RedirectToAction("Index");
             var poolName = (String) HttpContext.Session[CHOSEN_POOL];
             var pool = await Svc.GetPoolByIdAsync(poolName);
-            var rdpComputer = String.Format("{0}.{1}:{2}",rezComputer, Properties.Settings.Default.ActiveDirectoryFqdn, pool.RdpTcpPort).ToLowerInvariant();
-            var userName = String.Format("{0}@{1}",HttpContext.User.Identity.Name, Properties.Settings.Default.ActiveDirectoryFqdn).ToLowerInvariant();
+            var rdpComputer = String.Format("{0}.{1}:{2}",rezComputer, Properties.Settings.Default.ActiveDirectoryDNSDomain, pool.RdpTcpPort).ToLowerInvariant();
+            var userName = String.Format("{0}@{1}",HttpContext.User.Identity.Name, Properties.Settings.Default.ActiveDirectoryDNSDomain).ToLowerInvariant();
             var contentType = "application/rdp";
             var buff = Svc.GenerateRdpFileContents(Properties.Settings.Default.RdpFileSettings, rdpComputer, userName);
 

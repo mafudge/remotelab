@@ -244,7 +244,7 @@
     <Compile Include="Services\RemoteLabService.cs" />
     <Compile Include="Settings.cs" />
     <Compile Include="Startup.cs" />
-    <Compile Include="Utilities\ADGroupValid.cs" />
+    <Compile Include="Utilities\ADGroupValidationAttribute.cs" />
     <Compile Include="Utilities\AdministratorAuthorize.cs" />
     <Compile Include="Utilities\ClaimsUtility.cs" />
     <Compile Include="Utilities\PasswordUtility.cs" />
@@ -533,6 +533,7 @@
     <Content Include="Scripts\tinymce\langs\readme.md" />
     <Content Include="Views\Shared\EditorTemplates\Password.cshtml" />
     <Content Include="Views\Error\Index.cshtml" />
+    <Content Include="Views\Account\RolesCheck.cshtml" />
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>

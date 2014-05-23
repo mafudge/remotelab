@@ -5,7 +5,7 @@ namespace RemoteLab.ComputerManagement
 {
     public interface IComputerManagement
     {
-        Task<bool> ConnectToTcpPortAsync(string ComputerName, string ComputerDomain, int TcpPort);
-        Task<bool> RebootComputerAsync(string ComputerName, string ComputerDomain, string AdminUser, string AdminPassword, string AdminDomain);
+        Task<bool> ConnectToTcpPortAsync(string ComputerName, string UserDNSDomain, int TcpPort);
+        Task<bool> RebootComputerAsync(string ComputerName, string AdminUser, string AdminPassword, string UserDomain, string UserDNSDomain);
     }
 }

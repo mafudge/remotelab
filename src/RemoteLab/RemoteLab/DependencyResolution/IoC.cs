@@ -36,11 +36,12 @@ namespace RemoteLab.DependencyResolution {
                                         scan.TheCallingAssembly();
                                         scan.WithDefaultConventions();
                                     });
-                            x.For<IDirectoryServices>().Use( ctx => new ActiveDirectory(Properties.Settings.Default.ActiveDirectoryFqdn));
+                            x.For<IDirectoryServices>().Use( ctx => new ActiveDirectory(Properties.Settings.Default.ActiveDirectoryDNSDomain));
                             x.For<PasswordUtility>().Use( ctx => new PasswordUtility(Properties.Settings.Default.EncryptionKeyForPasswords));
                             x.For<RemoteLabContext>().Use( ctx => new RemoteLabContext("RemoteLabContext"));
 #if (DEBUG)
-                            x.For<IComputerManagement>().Use(ctx => new FakeComputerManagement()); 
+//                            x.For<IComputerManagement>().Use(ctx => new FakeComputerManagement()); 
+                            x.For<IComputerManagement>().Use(ctx => new WindowsComputerManagement(Elmah.ErrorLog.GetDefault(HttpContext.Current))); 
 #else
                             x.For<IComputerManagement>().Use( ctx => new WindowsComputerManagement(Elmah.ErrorLog.GetDefault(HttpContext.Current))); 
 #endif

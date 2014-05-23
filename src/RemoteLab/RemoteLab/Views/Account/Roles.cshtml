@@ -5,10 +5,10 @@
 @model IEnumerable<Pool>
 @{
     ViewBag.Title = "Remote Lab - My Roles";
-    var ClaimsUser = (ClaimsPrincipal)HttpContext.Current.User;
+    var ClaimsUser = (ClaimsPrincipal)ViewBag.User;
 }
 
-<h2><i class="fa fa-user"></i> User Information For: @User.Identity.Name</h2>
+<h2><i class="fa fa-user"></i> User Information For: @ClaimsUser.Identity.Name</h2>
 <hr />
 <div>
     @if (ClaimsUser.IsAdministrator())
@@ -21,7 +21,7 @@
             </tr>
             <tr>
                 <td>@ClaimsUtility.APPLICATION_ADMINISTRATOR</td>
-                <td>@RemoteLab.Properties.Settings.Default.AdministratorADGroup</td>
+                <td><i class="fa fa-group"></i> @RemoteLab.Properties.Settings.Default.AdministratorADGroup</td>
             </tr>
         </table>
     }
@@ -38,7 +38,7 @@
                 if(ClaimsUser.IsAdministratorOfPool(p)) {                    
             <tr>
                 <td>@p.PoolName</td>
-                <td>@p.ActiveDirectoryAdminGroup</td>
+                <td><i class="fa fa-group"></i> @p.ActiveDirectoryAdminGroup</td>
             </tr>
                 }
             }
@@ -59,10 +59,25 @@
                 {
                     <tr>
                         <td>@p.PoolName</td>
-                        <td>@p.ActiveDirectoryUserGroup</td>
+                        <td><i class="fa fa-group"></i> @p.ActiveDirectoryUserGroup</td>
                     </tr>
                 }
             }
         </table>
     }
+    
+    <h4>Complete List Of Claims</h4>
+    <table class="table table-condensed table-striped table-bordered">
+        <tr>
+            <th>Claim Type</th>
+            <th>Claim Value</th>
+        </tr>
+        @foreach (var c in ClaimsUser.Claims)
+        {
+            <tr>
+                <td>@c.Type</td>
+                <td>@c.Value</td>
+            </tr>
+        }
+    </table>
 </div>

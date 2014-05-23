@@ -77,13 +77,38 @@ namespace RemoteLab.Controllers
             return RedirectToAction("Index", "Home");
         }
 
+
+        // GET: /Account/Roles
         [Authorize]
         public async Task<ActionResult> Roles()
         {
             var pools = await this.Svc.GetPoolsAsync();
+            ViewBag.User = (ClaimsPrincipal)HttpContext.User;
             return View(pools);
         }
 
+        // Post: /Account/RolesCheck
+        [AdministratorAuthorize]
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<ActionResult> RolesCheck(FormCollection form)
+        {
+            var UserName = (String)form["UserName"];
+            var pools = await this.Svc.GetPoolsAsync();
+            var ClaimsUtil = new ClaimsUtility(Auth, await this.Svc.GetPoolsAsync(), Properties.Settings.Default.AdministratorADGroup);
+            var identity = ClaimsUtil.BuildClaimsIdentityForUser(UserName);
+            ViewBag.User = new ClaimsPrincipal(identity);
+            return View("Roles",pools);
+        }
+
+
+        // Post: /Account/RolesCheck
+        [AdministratorAuthorize]
+        [HttpGet]
+        public async Task<ActionResult> RolesCheck()
+        {
+            return View();
+        }
 
         protected override void Dispose(bool disposing)
         {

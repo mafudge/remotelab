@@ -9,7 +9,7 @@
     <Setting Name="AdministratorADGroup" Type="System.String" Scope="Application">
       <Value Profile="(Default)">IST-Users-ITServices</Value>
     </Setting>
-    <Setting Name="ActiveDirectoryFqdn" Type="System.String" Scope="Application">
+    <Setting Name="ActiveDirectoryDNSDomain" Type="System.String" Scope="Application">
       <Value Profile="(Default)">ad.syr.edu</Value>
     </Setting>
     <Setting Name="SmtpServer" Type="System.String" Scope="Application">
@@ -18,7 +18,7 @@
     <Setting Name="SmtpMessageFromAddress" Type="System.String" Scope="Application">
       <Value Profile="(Default)">remotelabadmin@syr.edu</Value>
     </Setting>
-    <Setting Name="ActiveDirectoryShortName" Type="System.String" Scope="Application">
+    <Setting Name="ActiveDirectoryDomain" Type="System.String" Scope="Application">
       <Value Profile="(Default)">AD</Value>
     </Setting>
     <Setting Name="LoginFormUsernameLabel" Type="System.String" Scope="Application">
@@ -101,6 +101,9 @@
           remotepowershelluser = "{1}"
           poolName = "{2}"
         </Value>
+    </Setting>
+    <Setting Name="DashboardMaxEvents" Type="System.Int32" Scope="Application">
+      <Value Profile="(Default)">50</Value>
     </Setting>
   </Settings>
 </SettingsFile>

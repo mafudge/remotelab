@@ -12,6 +12,10 @@ using RemoteLab.Utilities;
 
 namespace RemoteLab.Utilities
 {
+
+    /// <summary>
+    /// Authorization attribute check for user an administrator of the pool 
+    /// </summary>
     public class PoolAdministratorAuthorize : ActionFilterAttribute
     {
         public override void OnActionExecuting(ActionExecutingContext filterContext)

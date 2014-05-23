@@ -8,6 +8,9 @@ using System.Text;
 
 namespace RemoteLab.Utilities
 {
+    /// <summary>
+    /// Utility Class for sending SMTP mail 
+    /// </summary>
     public class SmtpEmail
     {
       

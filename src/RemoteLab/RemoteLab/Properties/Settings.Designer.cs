@@ -44,9 +44,9 @@ namespace RemoteLab.Properties {
         [global::System.Configuration.ApplicationScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("ad.syr.edu")]
-        public string ActiveDirectoryFqdn {
+        public string ActiveDirectoryDNSDomain {
             get {
-                return ((string)(this["ActiveDirectoryFqdn"]));
+                return ((string)(this["ActiveDirectoryDNSDomain"]));
             }
         }
         
@@ -71,9 +71,9 @@ namespace RemoteLab.Properties {
         [global::System.Configuration.ApplicationScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("AD")]
-        public string ActiveDirectoryShortName {
+        public string ActiveDirectoryDomain {
             get {
-                return ((string)(this["ActiveDirectoryShortName"]));
+                return ((string)(this["ActiveDirectoryDomain"]));
             }
         }
         
@@ -177,6 +177,15 @@ namespace RemoteLab.Properties {
         public string RemoteLabSettingsFileContent {
             get {
                 return ((string)(this["RemoteLabSettingsFileContent"]));
+            }
+        }
+        
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("50")]
+        public int DashboardMaxEvents {
+            get {
+                return ((int)(this["DashboardMaxEvents"]));
             }
         }
     }
