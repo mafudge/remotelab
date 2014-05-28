@@ -14,15 +14,18 @@ namespace RemoteLab.Utilities
 
         public byte[] Key {get; private set; }
 
-        public PasswordUtility( string key )
+        public PasswordUtility(string key)
         {
             try
             {
                 this.Key = this.StringToByteArray(key);
             }
-            catch (Exception e) 
+            catch (Exception e)
             {
-                throw new Exception("Invalid Encryption Key. Please make sure to run setup.");
+                var Logger = new EventLogger();
+                var message = "RemoteLab Error: Invalid Encryption Key. Please make sure to run setup.";
+                Logger.WriteToLog(message);
+                throw new Exception(message);
             }
         }
 

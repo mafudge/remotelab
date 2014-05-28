@@ -1,4 +1,5 @@
-# Setup Powershell script
+# Setup Powershell script 
+$version ="1.0.1"
 
 function Prompt-YesNo ($title)
 {
@@ -48,9 +49,9 @@ function Generate-PasswordKey()
 
 ############### MAIN ######################
 Clear-Host
-$webConfig = "web.config"
+$webConfig = "..\web.config"
 $webConfigBackup = "web-backup-" + (get-date -Format "yyyyMMdd-hhmmss").ToString() + ".config"
-Write-Host "`n`n***** Remote Lab Web Application Setup Script *****`n`n"
+Write-Host "`n`n***** Remote Lab Web Application Setup Script ver $version*****`n`n"
 
 Write-Host "`nBacking up your $webConfig file to $webConfigBackup ..."
 Copy-Item -Path $webConfig $webConfigBackup 
@@ -84,7 +85,7 @@ if ($AdDNSDomain -eq "ActiveDirectoryDNSDomain" )
 if ($AdDomain -eq "ActiveDirectoryDomain" )  
 { 
     $AdDomain = $env:USERDOMAIN.ToLowerInvariant() 
-    $doc.SelectSingleNode("//configuration/applicationSettings/RemoteLab.Properties.Settings/setting[@name='ActiveDirectoryDomain']/value")."#text" = $AdDomain 
+    $doc.SelectSingleNode("//configuration/applicationSettings/RemoteLab.Properties.Settings/setting[@name='ActiveDirectoryDomain']/value")."#text" = $AdDomain
 }
 
 # Datbase Settings - Connection String
@@ -93,10 +94,10 @@ if(Prompt-YesNo -Title "`nYour Connection String is `n`t$connStr `nChange It? [y
     do
     {
         $connStr = "Persist Security Info=True;Data Source=ServerName;Initial Catalog=DbName;User Id=DbUser;Password=DbPassword"
-        $DbServer = (Read-Host "Enter Your SQL Server Hostname (eg. sqlserver.mydomain.com ) ").ToString()
-        $DbName = (Read-Host "Enter The SQL Server Database Name for the Remote Lab Database (eg. RemoteLabDb) ").ToString()
-        $DbUser = (Read-Host "Enter The SQL Server User Account with Full rights to $DbName ").ToString()
-        $DbPassword = (Read-Host "Enter the Password for $DbUser ").ToString()
+        $DbServer = (Read-Host "Enter Your SQL Server Hostname (eg. sqlserver.mydomain.com )`n:> ").ToString()
+        $DbName = (Read-Host "Enter The SQL Server Database Name for the Remote Lab Database (eg. RemoteLabDb)`n:> ").ToString()
+        $DbUser = (Read-Host "Enter The SQL Server User Account with Full rights to $DbName `n:> ").ToString()
+        $DbPassword = (Read-Host "Enter the Password for $DbUser `n:> ").ToString()
         $connStr = $connStr -replace "ServerName", $DbServer
         $connStr = $connStr -replace "DbName", $DbName
         $connStr = $connStr -replace "DbUser", $DbUser
@@ -110,15 +111,14 @@ if(Prompt-YesNo -Title "`nYour Connection String is `n`t$connStr `nChange It? [y
         }
     }
     until ( $success)
-    $doc = (Get-Content $webConfig) -as [xml]
     $doc.configuration.connectionStrings.add.connectionString = $connStr
 }
 
 #Active Directory Settings
 if(Prompt-YesNo -Title "`nYour Active Directory Setup `n`tAD DNS Domain: $AdDNSDomain`n`tAD Domain: $AdDomain`n Change These Settings? [y,n]")
 {
-        $AdDNSDomain = (Read-Host "Enter Your Active Directory DNS Name (eg. ad.yourdomain.com ) ").ToString()
-        $AdDomain = (Read-Host "Enter Active Directory Domain Name (Lanman compatible) (eg. AD) ").ToString()
+        $AdDNSDomain = (Read-Host "Enter Your Active Directory DNS Name (eg. ad.yourdomain.com )`n:> ").ToString()
+        $AdDomain = (Read-Host "Enter Active Directory Domain Name (Lanman compatible) (eg. AD) `n:> ").ToString()
         $doc.SelectSingleNode("//configuration/applicationSettings/RemoteLab.Properties.Settings/setting[@name='ActiveDirectoryDNSDomain']/value")."#text" = $AdDNSDomain 
         $doc.SelectSingleNode("//configuration/applicationSettings/RemoteLab.Properties.Settings/setting[@name='ActiveDirectoryDomain']/value")."#text" = $AdDomain 
 }
@@ -126,19 +126,17 @@ if(Prompt-YesNo -Title "`nYour Active Directory Setup `n`tAD DNS Domain: $AdDNSD
 #SMTP Settings
 if(Prompt-YesNo -Title "`nYour SMTP Server Settings `n`tSMTP Server: $SmtpServer`n`tSMTP FROM Email Address: $SmtpFromAddress`n Change These Settings? [y,n]")
 {
-        $SmtpServer = (Read-Host "Enter Your SMTP Server Name (eg. smtp-host.yourdomain.com ) ").ToString()
-        $SmtpFromAddress = (Read-Host "Enter Your SMTP From Email Address (eg. remotelab@yourdomain.com) ").ToString()
+        $SmtpServer = (Read-Host "Enter Your SMTP Server Name (eg. smtp-host.yourdomain.com )`n:> ").ToString()
+        $SmtpFromAddress = (Read-Host "Enter Your SMTP From Email Address (eg. remotelab@yourdomain.com)`n:> ").ToString()
         $doc.SelectSingleNode("//configuration/applicationSettings/RemoteLab.Properties.Settings/setting[@name='SmtpMessageFromAddress']/value")."#text" = $SmtpFromAddress 
         $doc.SelectSingleNode("//configuration/applicationSettings/RemoteLab.Properties.Settings/setting[@name='SmtpServer']/value")."#text" = $SmtpServer
-
 }
 
 #Active Directory Admin Group
 if(Prompt-YesNo -Title "`nYour Active Directory Admin Group for this Application is`n`t$AdAdminGroup `n Change It? [y,n]")
 {
-        $AdAdminGroup= (Read-Host "Enter the AD Group for which members of this group will be able to administer this application ").ToString()
+        $AdAdminGroup= (Read-Host "Enter the AD Group for administering this application`n:> ").ToString()
         $doc.SelectSingleNode("//configuration/applicationSettings/RemoteLab.Properties.Settings/setting[@name='AdministratorADGroup']/value")."#text" = $AdAdminGroup 
-
 }
 
 
