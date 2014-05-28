@@ -15,20 +15,40 @@
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
-using System.Web.Http;
-using System.Web.Mvc;
-using StructureMap;
-using RemoteLab.DependencyResolution;
+using RemoteLab;
 
-//[assembly: WebActivator.PreApplicationStartMethod(typeof(RemoteLab.App_Start.StructuremapMvc), "Start")]
-// namespace RemoteLab.App_Start {
+using WebActivatorEx;
+
+[assembly: PreApplicationStartMethod(typeof(StructuremapMvc), "Start")]
 
 namespace RemoteLab {
-    public static class StructuremapMvc {
+	using System.Web.Mvc;
+
+    using Microsoft.Web.Infrastructure.DynamicModuleHelper;
+
+	using RemoteLab.DependencyResolution;
+
+    using StructureMap;
+    using RemoteLab.Utilities;
+    
+	public static class StructuremapMvc {
+        #region Public Properties
+
+        public static StructureMapDependencyScope StructureMapDependencyScope { get; set; }
+
+        #endregion
+		
+		#region Public Methods and Operators
+
         public static void Start() {
-			IContainer container = IoC.Initialize();
-            DependencyResolver.SetResolver(new StructureMapDependencyResolver(container));
-            GlobalConfiguration.Configuration.DependencyResolver = new StructureMapDependencyResolver(container);
+            IContainer container = IoC.Initialize();
+            StructureMapDependencyScope = new StructureMapDependencyScope(container);
+            DependencyResolver.SetResolver(StructureMapDependencyScope);
+            DynamicModuleUtility.RegisterModule(typeof(StructureMapScopeModule));
+            var Log = new EventLogger();
+            Log.WriteToLog("StructureMap.Start()");
         }
+
+        #endregion
     }
 }

@@ -12,6 +12,7 @@ using RemoteLab.Services;
 using RemoteLab.Utilities;
 using System.Security.Claims;
 using Effortless.Net.Encryption;
+using StructureMap;
 
 namespace RemoteLab.Controllers
 {
@@ -28,7 +29,12 @@ namespace RemoteLab.Controllers
             this.Pw = Pw;
         }
 
-        public PoolsController() { }
+
+        public PoolsController() 
+        {
+            this.Pw = ObjectFactory.GetInstance<PasswordUtility>();
+            this.Svc = ObjectFactory.GetInstance<RemoteLabService>();
+        }
 
         // GET: Pools
         [Authorize]

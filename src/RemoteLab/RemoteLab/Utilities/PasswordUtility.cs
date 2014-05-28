@@ -16,7 +16,14 @@ namespace RemoteLab.Utilities
 
         public PasswordUtility( string key )
         {
-            this.Key = this.StringToByteArray(key);
+            try
+            {
+                this.Key = this.StringToByteArray(key);
+            }
+            catch (Exception e) 
+            {
+                throw new Exception("Invalid Encryption Key. Please make sure to run setup.");
+            }
         }
 
 

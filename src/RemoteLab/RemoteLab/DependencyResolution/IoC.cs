@@ -16,44 +16,49 @@
 // --------------------------------------------------------------------------------------------------------------------
 
 
-using RemoteLab.DirectoryServices;
-using RemoteLab.ComputerManagement;
-using RemoteLab.Models;
-using RemoteLab.Services;
-using RemoteLab.Utilities;
-using StructureMap;
-using StructureMap.Graph;
-using System.Data.Entity;
-using System.Web;
-
 namespace RemoteLab.DependencyResolution {
+    using RemoteLab.ComputerManagement;
+    using RemoteLab.DirectoryServices;
+    using RemoteLab.Models;
+    using RemoteLab.Services;
+    using RemoteLab.Utilities;
+    using StructureMap;
+    using StructureMap.Graph;
+    using StructureMap.Web;
+    using StructureMap.Web.Pipeline;
+    using System.Web;
+    using System.Web.Mvc;
+	
     public static class IoC {
         public static IContainer Initialize() {
             ObjectFactory.Initialize(x =>
-                        {
-                            x.Scan(scan =>
-                                    {
-                                        scan.TheCallingAssembly();
-                                        scan.WithDefaultConventions();
-                                    });
-                            x.For<IDirectoryServices>().Use( ctx => new ActiveDirectory(Properties.Settings.Default.ActiveDirectoryDNSDomain));
-                            x.For<PasswordUtility>().Use( ctx => new PasswordUtility(Properties.Settings.Default.EncryptionKeyForPasswords));
-                            x.For<RemoteLabContext>().Use( ctx => new RemoteLabContext("RemoteLabContext"));
+            {
+                x.Scan(scan =>
+                {
+                    scan.TheCallingAssembly();
+                    scan.WithDefaultConventions();
+                    scan.LookForRegistries();
+                });
+                x.For<IDirectoryServices>().Use(ctx => new ActiveDirectory(Properties.Settings.Default.ActiveDirectoryDNSDomain));
+                x.For<PasswordUtility>().Use(ctx => new PasswordUtility(Properties.Settings.Default.EncryptionKeyForPasswords));
+                x.For<RemoteLabContext>().Use(ctx => new RemoteLabContext("RemoteLabContext"));
 #if (DEBUG)
 //                            x.For<IComputerManagement>().Use(ctx => new FakeComputerManagement()); 
                             x.For<IComputerManagement>().Use(ctx => new WindowsComputerManagement(Elmah.ErrorLog.GetDefault(HttpContext.Current))); 
 #else
-                            x.For<IComputerManagement>().Use( ctx => new WindowsComputerManagement(Elmah.ErrorLog.GetDefault(HttpContext.Current))); 
+                x.For<IComputerManagement>().Use(ctx => new WindowsComputerManagement(Elmah.ErrorLog.GetDefault(HttpContext.Current)));
 #endif
-                            x.For<SmtpEmail>().Use( ctx => new SmtpEmail());
-                            x.For<RemoteLabService>().Use(ctx => new RemoteLabService(
-                                ctx.GetInstance<RemoteLabContext>(), 
-                                ctx.GetInstance<IComputerManagement>(), 
-                                ctx.GetInstance<SmtpEmail>(),
-                                ctx.GetInstance<PasswordUtility>()
-                                ));
-                        });
+                x.For<SmtpEmail>().Use(ctx => new SmtpEmail());
+                x.For<RemoteLabService>().Use(ctx => new RemoteLabService(
+                    ctx.GetInstance<RemoteLabContext>(),
+                    ctx.GetInstance<IComputerManagement>(),
+                    ctx.GetInstance<SmtpEmail>(),
+                    ctx.GetInstance<PasswordUtility>()
+                    ));
+            });
             return ObjectFactory.Container;
+
+        
         }
     }
 }

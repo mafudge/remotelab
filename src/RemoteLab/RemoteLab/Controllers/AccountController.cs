@@ -11,6 +11,7 @@ using RemoteLab.Models;
 using RemoteLab.DirectoryServices;
 using RemoteLab.Services;
 using RemoteLab.Utilities;
+using StructureMap;
 
 
 namespace RemoteLab.Controllers
@@ -28,7 +29,11 @@ namespace RemoteLab.Controllers
             this.Svc = Svc;
         }
 
-        public AccountController() { }
+        public AccountController()
+        {
+            this.Auth = ObjectFactory.GetInstance<IDirectoryServices>();
+            this.Svc = ObjectFactory.GetInstance<RemoteLabService>();
+        }
 
         //
         // GET: /Account/Login

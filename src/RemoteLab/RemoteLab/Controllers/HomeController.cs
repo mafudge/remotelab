@@ -1,6 +1,7 @@
 ﻿using RemoteLab.Models;
 using RemoteLab.Services;
 using RemoteLab.Utilities;
+using StructureMap;
 using System;
 using System.Collections.Generic;
 using System.Data.Entity;
@@ -29,7 +30,11 @@ namespace RemoteLab.Controllers
             this.Svc = Svc;
         }
 
-        public HomeController() { }
+        public HomeController()
+        {
+            this.Svc = ObjectFactory.GetInstance<RemoteLabService>();
+        }
+
 
         // GET  /
         [HttpGet]
