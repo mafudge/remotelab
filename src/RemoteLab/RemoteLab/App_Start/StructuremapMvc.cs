@@ -20,9 +20,10 @@ using System.Web.Mvc;
 using StructureMap;
 using RemoteLab.DependencyResolution;
 
-[assembly: WebActivator.PreApplicationStartMethod(typeof(RemoteLab.App_Start.StructuremapMvc), "Start")]
+//[assembly: WebActivator.PreApplicationStartMethod(typeof(RemoteLab.App_Start.StructuremapMvc), "Start")]
+// namespace RemoteLab.App_Start {
 
-namespace RemoteLab.App_Start {
+namespace RemoteLab {
     public static class StructuremapMvc {
         public static void Start() {
 			IContainer container = IoC.Initialize();

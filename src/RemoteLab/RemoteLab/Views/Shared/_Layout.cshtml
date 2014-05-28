@@ -19,28 +19,31 @@
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button>
-                <a href="@Url.Action("Index","Home", null)" class="navbar-brand"><i class="glyphicon glyphicon-new-window"></i> @String.Format("{0} {1}",HttpContext.Current.Application["NAME"],HttpContext.Current.Application["VERSION"]) </a>
+                <a href="@Url.Action("Index","Home", null)" class="navbar-brand">
+                    <img src="~/Content/Images/remotelab.png" style="margin-top: -8px; max-width:100px;" height="35" /> @String.Format("{0} {1}", HttpContext.Current.Application["NAME"], HttpContext.Current.Application["VERSION"])
+                </a>
             </div>
             <div class="navbar-collapse collapse">
                 <ul class="nav navbar-nav">
-                    @if(HttpContext.Current.User.Identity.IsAuthenticated)
+                    @if (HttpContext.Current.User.Identity.IsAuthenticated)
                     {
                         var ClaimsUser = (ClaimsPrincipal)HttpContext.Current.User;
-                        
-                    @:<li><a href="@Url.Action("Index","Home")"><i class="fa fa-desktop"></i> Connect</a></li>
-                    if(ClaimsUser.IsAdministratorOfAnyPool() || ClaimsUser.IsAdministrator())
+
+                        @:
+                        <li><a href="@Url.Action("Index","Home")"><i class="fa fa-desktop"></i> Connect</a></li>
+                    if (ClaimsUser.IsAdministratorOfAnyPool() || ClaimsUser.IsAdministrator())
                     {
-                    <li class="dropdown">                        
-                        <a href="#" class="dropdown-toggle" data-toggle="dropdown"><i class="fa fa-gears"></i>  Admin <b class="caret"></b></a>
-                        <ul class="dropdown-menu">
-                            <li><a href="@Url.Action("Index","Pools")"><i class="fa fa-dashboard"></i> Pools</a></li>
-                            @if (ClaimsUser.IsAdministrator())
-                            {
-                            <li><a href="@Url.Action("RolesCheck","Account")"><i class="fa fa-group"></i> Roles Check</a></li>
-                            <li><a href="~/elmah.axd"><i class="fa fa-file-text-o"></i> Error Logs</a></li>
-                            }
-                        </ul>
-                    </li>
+                        <li class="dropdown">
+                            <a href="#" class="dropdown-toggle" data-toggle="dropdown"><i class="fa fa-gears"></i>  Admin <b class="caret"></b></a>
+                            <ul class="dropdown-menu">
+                                <li><a href="@Url.Action("Index","Pools")"><i class="fa fa-dashboard"></i> Pools</a></li>
+                                @if (ClaimsUser.IsAdministrator())
+                                {
+                                    <li><a href="@Url.Action("RolesCheck","Account")"><i class="fa fa-group"></i> Roles Check</a></li>
+                                    <li><a href="~/elmah.axd"><i class="fa fa-file-text-o"></i> Error Logs</a></li>
+                                }
+                            </ul>
+                        </li>
                     }
                     }
                     <li><a href="@Url.Action("About","Home")"><i class="fa fa-info-circle"></i> About</a></li>
@@ -52,15 +55,16 @@
 
     <div class="container body-content">
         <h1>
-            @if (HttpContext.Current.Request.IsAuthenticated && ViewBag.CurrentPool != null) {
-            @*<i class="glyphicon glyphicon-new-window"></i>*@<button type="button" class="btn btn-lg btn-default" disabled="disabled">@String.Format("Pool: {0}",ViewBag.CurrentPool)</button>
-            <button type="button" class="btn btn-lg  btn-primary" disabled="disabled">Total Seats: @ViewBag.Total</button>
-            <button type="button" class="btn btn-lg btn-success" disabled="disabled">Available:@ViewBag.Available</button>
-            <button type="button" class="btn btn-lg btn-danger" disabled="disabled">In Use: @ViewBag.InUse</button>
+            @if (HttpContext.Current.Request.IsAuthenticated && ViewBag.CurrentPool != null)
+            {
+                @*<i class="glyphicon glyphicon-new-window"></i>*@<button type="button" class="btn btn-lg btn-default" disabled="disabled">@String.Format("Pool: {0}", ViewBag.CurrentPool)</button>
+                <button type="button" class="btn btn-lg  btn-primary" disabled="disabled">Total Seats: @ViewBag.Total</button>
+                <button type="button" class="btn btn-lg btn-success" disabled="disabled">Available:@ViewBag.Available</button>
+                <button type="button" class="btn btn-lg btn-danger" disabled="disabled">In Use: @ViewBag.InUse</button>
             }
             else
-            { 
-             @*<i class="glyphicon glyphicon-new-window"></i> @:Remote Lab*@
+            {
+                @*<i class="glyphicon glyphicon-new-window"></i> @:Remote Lab*@
             }
         </h1>
         <div class="row">

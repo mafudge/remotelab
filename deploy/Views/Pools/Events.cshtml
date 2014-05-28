@@ -4,7 +4,7 @@
     ViewBag.Title = "Events";
 }
 
-<h2><i class="fa fa-dashboard"></i> Events For: @ViewBag.CurrentPool</h2>
+<h2><i class="fa fa-dashboard"></i> Last @RemoteLab.Properties.Settings.Default.DashboardMaxEvents Events For: @ViewBag.CurrentPool</h2>
 <div>
     <a href="javascript:location.reload();" class="btn btn-link"><i class="fa fa-refresh"></i> Refresh Page</a>
     <a href="@Url.Action("Dashboard", "Pools", new { id = ViewBag.CurrentPool} )" class="btn btn-link"><i class="fa fa-dashboard"></i> Dashboard</a>

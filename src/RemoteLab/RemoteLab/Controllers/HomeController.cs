@@ -29,6 +29,8 @@ namespace RemoteLab.Controllers
             this.Svc = Svc;
         }
 
+        public HomeController() { }
+
         // GET  /
         [HttpGet]
         [Authorize]
