@@ -1,1 +1,0 @@
-@Powershell -NoProfile -ExecutionPolicy unrestricted -Command .\Setup.ps1
