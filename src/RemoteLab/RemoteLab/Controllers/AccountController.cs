@@ -28,6 +28,8 @@ namespace RemoteLab.Controllers
             this.Svc = Svc;
         }
 
+        public AccountController() { }
+
         //
         // GET: /Account/Login
         [AllowAnonymous]

@@ -28,6 +28,8 @@ namespace RemoteLab.Controllers
             this.Pw = Pw;
         }
 
+        public PoolsController() { }
+
         // GET: Pools
         [Authorize]
         public async Task<ActionResult> Index()

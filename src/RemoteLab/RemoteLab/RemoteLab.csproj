@@ -254,10 +254,6 @@
     <Compile Include="Utilities\ClaimsPrincipalExtensions.cs" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="App_Data\aspnet-RemoteLab-20140507044750.mdf" />
-    <Content Include="App_Data\aspnet-RemoteLab-20140507044750_log.ldf">
-      <DependentUpon>aspnet-RemoteLab-20140507044750.mdf</DependentUpon>
-    </Content>
     <Content Include="App_Readme\Elmah.txt" />
     <Content Include="Content\bootstrap-theme.css" />
     <Content Include="Content\bootstrap-theme.min.css" />
@@ -542,7 +538,9 @@
       <DependentUpon>Web.config</DependentUpon>
     </None>
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Folder Include="App_Data\" />
+  </ItemGroup>
   <ItemGroup>
     <Content Include="packages.config" />
   </ItemGroup>
