@@ -8,7 +8,7 @@
 
     <link rel="stylesheet" type="text/css" media="screen" href="stylesheets/stylesheet.css">
 
-    <title>Remotelab</title>
+    <title>Remote Lab</title>
   </head>
 
   <body>
@@ -18,12 +18,12 @@
         <header class="inner">
           <a id="forkme_banner" href="https://github.com/mafudge/remotelab">View on GitHub</a>
 
-          <h1 id="project_title">Remotelab</h1>
+          <h1 id="project_title"><img src="images/remotelab-black.png" alt="logo" height="25" style="background: #fff;" /> 
+Remote Lab</h1>
           <h2 id="project_tagline">Remote Lab is a web application to manage Remote Desktop access to computers</h2>
 
             <section id="downloads">
-              <a class="zip_download_link" href="https://github.com/mafudge/remotelab/zipball/master">Download this project as a .zip file</a>
-              <a class="tar_download_link" href="https://github.com/mafudge/remotelab/tarball/master">Download this project as a tar.gz file</a>
+              <a class="zip_download_link" href="https://github.com/mafudge/remotelab/deploy/remotelab.zip">Download this project as a .zip file</a>
             </section>
         </header>
     </div>
@@ -31,45 +31,67 @@
     <!-- MAIN CONTENT -->
     <div id="main_content_wrap" class="outer">
       <section id="main_content" class="inner">
-        <h3>
-<a name="welcome-to-github-pages" class="anchor" href="#welcome-to-github-pages"><span class="octicon octicon-link"></span></a>Welcome to GitHub Pages.</h3>
+        <h3><a name="Overview" class="anchor" href="#Overview"><span class="octicon octicon-link"></span></a>Overview</h3>
+        <p>Remote Lab in a technology which allows you easily create and manage <em>virtual labs</em>. Our definition of <em>virtual lab</em> means a user can connect to the desktop of a computer from anywhere without the requrement of being in a specific physical place.</p>
+        <p>The underlying technology which makes Remote Lab "virtual" is Windows Remote desktop, and fundamentally it is just a system consisting of a website, database, and some scripts to manage the complexities associated with a group of Remote Desktop enabled workstations.</p>
 
-<p>This automatic page generator is the easiest way to create beautiful pages for all of your projects. Author your page content here using GitHub Flavored Markdown, select a template crafted by a designer, and publish. After your page is generated, you can check out the new branch:</p>
+        <h3><a name="Features" class="anchor" href="#Features"><span class="octicon octicon-link"></span></a>Features</h3>
+        <ul>
+            <li> Allows administrators to group workstations into "pools" for ease of management.
+            <li> Authenticates users and determines the pools they have access to. 
+            <li> Tracks the status of workstations, noting which ones are available, in use, rebooting, not responding to RDP packets, etc.
+            <li> Issues reservations to users requesting access to a workstation, and automatically expires that reservation after a specified amount of time.
+            <li> Monitors resource utilitization so that one user cannot occupy more than one computer within a pool.
+            <li> Only allows a user to connect/logon via RDP when they are issued a resevation via the website. 
+            <li> Logs all activity and events (logon, logoff, startup, shutdown, errors, reservations, etc.) for analysis / reporting.
+            <li> Will automatically reboot computers stuck in an unusable state.
+            <li> Lets administrators view comptuer utilitzation / activity in real-time from the website. 
+            <li> Allows users to release their reservations and select another computer.
+            <li> Integrates with Active Directory for authentication and authorization via AD groups.
+            <li> Is customizable without requiring any knowledge of HTML or programming.
+        </ul>
 
-<pre><code>$ cd your_repo_root/repo_name
-$ git fetch origin
-$ git checkout gh-pages
-</code></pre>
+        <h3><a name="Requirements" class="anchor" href="#Requirements"><span class="octicon octicon-link"></span></a>Requirements</h3>
+        <p>To use Remote Lab within your organization you will need 3 things. Windows Active Directory, a server for running the Remote Lab website, and a bunch of computers designated as remote lab workstations. Specifically, you'll need:</p>
+        <ul>
+            <li><strong>Windows Active Directory Domain</strong>. The domain is used to 
+                <ol>
+                  <li>Manage access to the computers running Windows Remote Desktop, which are part of Remote Lab</li>
+                  <li>Manage user accounts and control access within the applicaiton  </li>
+                </ol>
+            </li>
+            <li>A <strong>Windows Server (2008 R2 or Higher)</strong> with the following installed
+                <ol>
+                   <li>Internet Information Services to host the Remote Lab web site</li>
+                   <li>SQL Server to host the Remote Lab Database</li>
+                   <li>The .Net Framework v4.5</li>
+                </ol>
+            </li>
+            <li><strong>Computer workstations (Running Windows 7 or higher)</strong>. These workstations can be physical or virtual and are licensed in the same manner you'd license your physical lab. Furthermore each computer must:
+                <ol>
+                   <li>Be Joined to the Active Directory Domain</li>
+                   <li>Have Windows Remote Desktop enabled.</li>
+                </ol>
+            </li>
+        </ul>
 
-<p>If you're using the GitHub for Mac, simply sync your repository and you'll see the new branch.</p>
+        <h3><a name="Components" class="anchor" href="#Components"><span class="octicon octicon-link"></span></a>Components</h3>
+        <p>There are several components to the Remote Lab system:</p>
+        <ul>
+            <li><strong>Remote Lab Website</strong>. At the most basic level, the website serves as a Windows Remote Desktop Broker. Users log-on to the website with their Active Directory credentials, and then are issued a reservation for an available workstation. Once the reservation is reserved, the user is issued an RDP file they can use to connect to their reservation.</li>  
+            <li><strong>Remote Lab Control Database</strong>. The database maintains the state of the computers in Remote Lab and records all of the events for analytical purposes.</li>  
+            <li><strong>Remote Lab Logon/Logoff/Startup/Shutdown Scripts</strong> These scripts are responsible for reporting workstation status to the control database. Administrators typically deploy these scripts via Windows Group Policy.</li>  
+            <li><strong>Windows Active Directory</strong> is used for managing authentication and authroization (via AD Groups) in Remote Lab. It also manages authentication to the workstations.</li>  
+            <li><strong>Workstations</strong> are similar to your typical lab workstations, except they are only accessible via Windows Remote Desktop. Workstations can be placed into Pools so that they can be controlled and governed by different groups.</li>  
+        </ul>
 
-<h3>
-<a name="designer-templates" class="anchor" href="#designer-templates"><span class="octicon octicon-link"></span></a>Designer Templates</h3>
-
-<p>We've crafted some handsome templates for you to use. Go ahead and continue to layouts to browse through them. You can easily go back to edit your page before publishing. After publishing your page, you can revisit the page generator and switch to another theme. Your Page content will be preserved if it remained markdown format.</p>
-
-<h3>
-<a name="rather-drive-stick" class="anchor" href="#rather-drive-stick"><span class="octicon octicon-link"></span></a>Rather Drive Stick?</h3>
-
-<p>If you prefer to not use the automatic generator, push a branch named <code>gh-pages</code> to your repository to create a page manually. In addition to supporting regular HTML content, GitHub Pages support Jekyll, a simple, blog aware static site generator written by our own Tom Preston-Werner. Jekyll makes it easy to create site-wide headers and footers without having to copy them across every page. It also offers intelligent blog support and other advanced templating features.</p>
-
-<h3>
-<a name="authors-and-contributors" class="anchor" href="#authors-and-contributors"><span class="octicon octicon-link"></span></a>Authors and Contributors</h3>
-
-<p>You can <a href="https://github.com/blog/821" class="user-mention">@mention</a> a GitHub username to generate a link to their profile. The resulting <code>&lt;a&gt;</code> element will link to the contributor's GitHub Profile. For example: In 2007, Chris Wanstrath (<a href="https://github.com/defunkt" class="user-mention">@defunkt</a>), PJ Hyett (<a href="https://github.com/pjhyett" class="user-mention">@pjhyett</a>), and Tom Preston-Werner (<a href="https://github.com/mojombo" class="user-mention">@mojombo</a>) founded GitHub.</p>
-
-<h3>
-<a name="support-or-contact" class="anchor" href="#support-or-contact"><span class="octicon octicon-link"></span></a>Support or Contact</h3>
-
-<p>Having trouble with Pages? Check out the documentation at <a href="http://help.github.com/pages">http://help.github.com/pages</a> or contact <a href="mailto:support@github.com">support@github.com</a> and we’ll help you sort it out.</p>
-      </section>
-    </div>
+        <h3><a name="Installation" class="anchor" href="#Installation"><span class="octicon octicon-link"></span></a>Installation</h3>
+        <p>Installation instructions forthcoming.</p>
 
     <!-- FOOTER  -->
     <div id="footer_wrap" class="outer">
       <footer class="inner">
-        <p class="copyright">Remotelab maintained by <a href="https://github.com/mafudge">mafudge</a></p>
-        <p>Published with <a href="http://pages.github.com">GitHub Pages</a></p>
+        <p class="copyright">Remote Lab maintained by <a href="https://github.com/mafudge">mafudge</a>.<br>Special thanks to <a href="https://ischool.syr.edu">The School of Information Studies at Syracuse University</a>.</p>
       </footer>
     </div>
 
