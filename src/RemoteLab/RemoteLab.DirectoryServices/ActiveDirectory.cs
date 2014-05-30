@@ -33,7 +33,7 @@ namespace RemoteLab.DirectoryServices
                     authenticated = true;
                 }
             }
-            catch (DirectoryServicesCOMException e) 
+            catch (DirectoryServicesCOMException) 
             { 
                 // authentication fail 
             }
@@ -46,30 +46,13 @@ namespace RemoteLab.DirectoryServices
                 using (var user = UserPrincipal.FindByIdentity(context, UserName))
                 using (var group = GroupPrincipal.FindByIdentity(context, GroupName))
                 {
-                    return (group != null && user.IsMemberOf(group));
-                }
-        }
-
-        [Obsolete]
-        public IEnumerable<String> GetGroups(string UserName) 
-        {
-            var groups = new List<String>();
-            using (PrincipalContext context = new PrincipalContext(ContextType.Domain, this.Domain))
-            {
-                try 
-	            {	        
-		            UserPrincipal user = UserPrincipal.FindByIdentity(context,UserName);
-                    foreach (GroupPrincipal g in user.GetAuthorizationGroups())
+                    if (group != null) 
                     {
-                        groups.Add(g.SamAccountName);
+                        var groups = user.GetAuthorizationGroups();
+                        return groups.Contains(group);
                     }
-	            }
-	            catch (Exception)
-	            {		
-		            throw; // for now.
-	            }
-            }
-            return groups;
+                    return false;
+                }
         }
 
 
