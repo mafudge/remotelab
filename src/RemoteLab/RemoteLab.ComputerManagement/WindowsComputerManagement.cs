@@ -69,6 +69,7 @@ namespace RemoteLab.ComputerManagement
                 TcpClient.ReceiveTimeout = 10;
                 TcpClient.SendTimeout = 10;
                 await TcpClient.ConnectAsync(Hostname, TcpPort);
+                if (TcpClient.Connected) { TcpClient.Close(); }
             }
             catch (SocketException e)
             {
