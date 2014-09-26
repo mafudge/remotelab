@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using RemoteLab.CustomValidators;
+using System.ComponentModel.DataAnnotations;
 
 namespace RemoteLab.Models
 {
@@ -7,6 +8,7 @@ namespace RemoteLab.Models
     {
         [Required]
         [Display(Name = "User name")]
+        [NotAnEmail]
         public string UserName { get; set; }
 
         [Required]

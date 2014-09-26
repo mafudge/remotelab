@@ -233,10 +233,12 @@ namespace RemoteLab.Controllers
         {
             var rezComputer = (String) TempData[COMPUTER_RESERVATION];
             if (rezComputer == null)  return RedirectToAction("Index");
+            var identity = HttpContext.User.Identity.Name;
             var poolName = (String) HttpContext.Session[CHOSEN_POOL];
             var pool = await Svc.GetPoolByIdAsync(poolName);
             var rdpComputer = String.Format("{0}.{1}:{2}",rezComputer, Properties.Settings.Default.ActiveDirectoryDNSDomain, pool.RdpTcpPort).ToLowerInvariant();
-            var userName = String.Format("{0}@{1}",HttpContext.User.Identity.Name, Properties.Settings.Default.ActiveDirectoryDNSDomain).ToLowerInvariant();
+            identity = identity.Contains("@") ? identity.Substring(0, identity.IndexOf("@")) : identity;
+            var userName = String.Format("{0}@{1}",identity, Properties.Settings.Default.ActiveDirectoryDNSDomain).ToLowerInvariant();
             var contentType = "application/rdp";
             var buff = Svc.GenerateRdpFileContents(Properties.Settings.Default.RdpFileSettings, rdpComputer, userName);
 
