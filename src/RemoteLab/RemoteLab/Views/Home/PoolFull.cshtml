@@ -1,11 +1,18 @@
 ﻿
 @{
     ViewBag.Title = "PoolFull";
+
+    int userPoolCount = (int)HttpContext.Current.Session["POOL-COUNT"];
 }
 
 <h2>Remote Lab is Full</h2>
 
 <div class="alert alert-danger"><i class="glyphicon glyphicon-exclamation-sign"></i> There are no available computers at this time. Please check back later</div>
 
-<p>No need to file a helpdesk ticket. We are aware and actively monitoring demand.</p>
-<p>Thank you for your patience - iSchool Technology Services</p>
+<p>US:IT Support has been notfied. We are aware and actively monitoring demand between 7 a.m. and 9 p.m.</p>
+<p>Thank you for your patience</p>
+
+@if (userPoolCount > 1)
+{
+    <a href="@Url.Action("ChooseDifferentPool")" id="differentpool" class="btn btn-lg btn-primary" title="Choose A Different Pool">Choose A Different Pool</a>
+}
