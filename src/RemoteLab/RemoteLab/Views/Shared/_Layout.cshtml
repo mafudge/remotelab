@@ -2,7 +2,7 @@
 @using System.Security.Claims;
 
 <!DOCTYPE html>
-<html>
+<html lang="en-us">
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -20,7 +20,7 @@
                     <span class="icon-bar"></span>
                 </button>
                 <a href="@Url.Action("Index","Home", null)" class="navbar-brand">
-                    <img src="~/Content/Images/remotelab.png" style="margin-top: -8px; max-width:100px;" height="35" /> @String.Format("{0} {1}", HttpContext.Current.Application["NAME"], HttpContext.Current.Application["VERSION"])
+                    <img src="~/Content/Images/remotelab.png" style="margin-top: -8px; max-width:100px;" height="35" alt="" /> @String.Format("{0}", HttpContext.Current.Application["NAME"])
                 </a>
             </div>
             <div class="navbar-collapse collapse">
@@ -86,7 +86,6 @@
                     <div class="panel-body">
                         <h4><i class="glyphicon glyphicon-book"></i> Documentation</h4>
                         <ul>
-                            <li><a id="youtube" href="@RemoteLab.Properties.Settings.Default.RemoteLabIntroVideoLink" class="various fancybox.iframe"><i class="glyphicon glyphicon-facetime-video"></i> What is Remote Lab?</a></li>
                             <li><a target="_RemoteLabDocs" href="@RemoteLab.Properties.Settings.Default.OfficialDocumentationLink"><i class="fa fa-file-text"></i> Official Documentation</a></li>
                         </ul>
                         <h4><i class="glyphicon glyphicon-download-alt"></i> Download - Remote Desktop Client</h4>
