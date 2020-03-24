@@ -78,7 +78,7 @@ namespace RemoteLab.Controllers
                     HttpContext.Session[CHOSEN_POOL] = userPools.FirstOrDefault().PoolName;
                     return RedirectToAction("Index");
                 default: //more than one, make the user choose in the view
-                    return View(userPools.OrderBy( s => s.PoolName));
+                    return View(userPools.OrderBy( s => s.SortOrder));
 
             }
         }

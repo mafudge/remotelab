@@ -25,5 +25,8 @@ namespace RemoteLab.Models
         public DateTime? Logon { get; set; }
 
         public Pool Pool { get; set; }
+
+        [Display(Name = "Record Last Modified", ShortName = "LastMod")]
+        public DateTime LastModified { get; set; }
     }
 }

@@ -230,6 +230,14 @@
     <Compile Include="Migrations\201405212004414_PoolChanges.Designer.cs">
       <DependentUpon>201405212004414_PoolChanges.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\202003240114562_ComputersLastModified.cs" />
+    <Compile Include="Migrations\202003240114562_ComputersLastModified.Designer.cs">
+      <DependentUpon>202003240114562_ComputersLastModified.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202003241448422_PoolSortOrder.cs" />
+    <Compile Include="Migrations\202003241448422_PoolSortOrder.Designer.cs">
+      <DependentUpon>202003241448422_PoolSortOrder.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Models\Computer.cs" />
@@ -571,6 +579,12 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201405212004414_PoolChanges.resx">
       <DependentUpon>201405212004414_PoolChanges.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202003240114562_ComputersLastModified.resx">
+      <DependentUpon>202003240114562_ComputersLastModified.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202003241448422_PoolSortOrder.resx">
+      <DependentUpon>202003241448422_PoolSortOrder.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>

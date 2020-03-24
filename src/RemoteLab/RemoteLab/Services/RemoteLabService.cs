@@ -254,7 +254,7 @@ namespace RemoteLab.Services
             return await this.Db.Computers.Where(c =>
                     c.Pool.PoolName.Equals(rvm.Pool.PoolName, StringComparison.InvariantCultureIgnoreCase) &&
                     c.UserName.Equals(rvm.CurrentUser, StringComparison.InvariantCultureIgnoreCase)
-                ).OrderBy(c => c.Last_Modified).FirstOrDefaultAsync();
+                ).OrderBy(c => c.LastModified).FirstOrDefaultAsync();
         }
         
 
@@ -263,7 +263,7 @@ namespace RemoteLab.Services
             return await this.Db.Computers.Where(c =>
                     c.Pool.PoolName.Equals(rvm.Pool.PoolName, StringComparison.InvariantCultureIgnoreCase) &&
                     c.UserName == null
-                ).OrderBy(c => c.Last_Modified).FirstOrDefaultAsync();
+                ).OrderBy(c => c.LastModified).FirstOrDefaultAsync();
         }
 
         public String GenerateRdpFileContents(string rdpFileSettings, string computer, string username,  int width = 1920, int height = 1200)

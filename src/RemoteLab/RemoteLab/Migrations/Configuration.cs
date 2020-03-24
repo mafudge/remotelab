@@ -35,6 +35,8 @@ namespace RemoteLab.Migrations
 
         private void DataInit( RemoteLabContext context ) 
         {
+            return;
+
             PasswordUtility Pass = new PasswordUtility(Properties.Settings.Default.EncryptionKeyForPasswords);
             var stringVector = Pass.NewInitializationVector();
             var prodPool = context.Pools.Add(new Pool() 
@@ -173,7 +175,7 @@ namespace RemoteLab.Migrations
 
         protected override void Seed(RemoteLabContext context)
         {
-
+            return;
 #if (DEBUG)
             DataCleanup(context);
             DataInit(context);
