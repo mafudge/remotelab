@@ -34,60 +34,6 @@ namespace RemoteLab.Properties {
         
         [global::System.Configuration.ApplicationScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("IST-Users-ITServices")]
-        public string AdministratorADGroup {
-            get {
-                return ((string)(this["AdministratorADGroup"]));
-            }
-        }
-        
-        [global::System.Configuration.ApplicationScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("ad.syr.edu")]
-        public string ActiveDirectoryDNSDomain {
-            get {
-                return ((string)(this["ActiveDirectoryDNSDomain"]));
-            }
-        }
-        
-        [global::System.Configuration.ApplicationScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("smtp-host.syr.edu")]
-        public string SmtpServer {
-            get {
-                return ((string)(this["SmtpServer"]));
-            }
-        }
-        
-        [global::System.Configuration.ApplicationScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("remotelabadmin@syr.edu")]
-        public string SmtpMessageFromAddress {
-            get {
-                return ((string)(this["SmtpMessageFromAddress"]));
-            }
-        }
-        
-        [global::System.Configuration.ApplicationScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("AD")]
-        public string ActiveDirectoryDomain {
-            get {
-                return ((string)(this["ActiveDirectoryDomain"]));
-            }
-        }
-        
-        [global::System.Configuration.ApplicationScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("NetID")]
-        public string LoginFormUsernameLabel {
-            get {
-                return ((string)(this["LoginFormUsernameLabel"]));
-            }
-        }
-        
-        [global::System.Configuration.ApplicationScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("Password")]
         public string LoginFormPasswordLabel {
             get {
@@ -133,16 +79,6 @@ namespace RemoteLab.Properties {
         
         [global::System.Configuration.ApplicationScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("240, 148, 233, 7, 112, 207, 116, 14, 177, 66, 198, 200, 41, 180, 156, 143, 151, 2" +
-            "26, 75, 247, 115, 68, 85, 107, 143, 156, 5, 226, 191, 225, 247, 162")]
-        public string EncryptionKeyForPasswords {
-            get {
-                return ((string)(this["EncryptionKeyForPasswords"]));
-            }
-        }
-        
-        [global::System.Configuration.ApplicationScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("\r\n          on error resume next\r\n          dim connstr, remotepowershelluser, po" +
             "olName\r\n          connstr = \"{0}\"\r\n          remotepowershelluser = \"{1}\"\r\n     " +
             "     poolName = \"{2}\"\r\n        ")]
@@ -158,6 +94,97 @@ namespace RemoteLab.Properties {
         public int DashboardMaxEvents {
             get {
                 return ((int)(this["DashboardMaxEvents"]));
+            }
+        }
+        
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("https://play.google.com/store/apps/details?id=com.microsoft.rdc.android&hl=en_US")]
+        public string AndroidClientDownload {
+            get {
+                return ((string)(this["AndroidClientDownload"]));
+            }
+        }
+        
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("https://apps.apple.com/us/app/microsoft-remote-desktop/id714464092")]
+        public string IosClientDownload {
+            get {
+                return ((string)(this["IosClientDownload"]));
+            }
+        }
+        
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("maine.edu")]
+        public string UserPrincipleDomain {
+            get {
+                return ((string)(this["UserPrincipleDomain"]));
+            }
+        }
+        
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("SCCM-UMS-LAB-ADMINS")]
+        public string AdministratorADGroup {
+            get {
+                return ((string)(this["AdministratorADGroup"]));
+            }
+        }
+        
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("uad.maine.edu")]
+        public string ActiveDirectoryDNSDomain {
+            get {
+                return ((string)(this["ActiveDirectoryDNSDomain"]));
+            }
+        }
+        
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("smarthost.maine.edu")]
+        public string SmtpServer {
+            get {
+                return ((string)(this["SmtpServer"]));
+            }
+        }
+        
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("remotelab@maine.edu")]
+        public string SmtpMessageFromAddress {
+            get {
+                return ((string)(this["SmtpMessageFromAddress"]));
+            }
+        }
+        
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("uad")]
+        public string ActiveDirectoryDomain {
+            get {
+                return ((string)(this["ActiveDirectoryDomain"]));
+            }
+        }
+        
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("User Name")]
+        public string LoginFormUsernameLabel {
+            get {
+                return ((string)(this["LoginFormUsernameLabel"]));
+            }
+        }
+        
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("39, 171, 235, 213, 64, 123, 65, 159, 99, 178, 89, 60, 120, 219, 155, 60, 229, 111" +
+            ", 32, 230, 167, 160, 224, 121, 35, 163, 22, 124, 141, 219, 216, 56")]
+        public string EncryptionKeyForPasswords {
+            get {
+                return ((string)(this["EncryptionKeyForPasswords"]));
             }
         }
         
@@ -189,7 +216,7 @@ negotiate security layer:i:1
 remoteapplicationmode:i:0
 alternate shell:s:
 shell working directory:s:
-disable wallpaper:i:0
+disable wallpaper:i:1
 disable full window drag:i:0
 allow desktop composition:i:1
 allow font smoothing:i:1
@@ -214,24 +241,6 @@ smart sizing:i:1
         public string RdpFileSettings {
             get {
                 return ((string)(this["RdpFileSettings"]));
-            }
-        }
-        
-        [global::System.Configuration.ApplicationScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("https://play.google.com/store/apps/details?id=com.microsoft.rdc.android&hl=en_US")]
-        public string AndroidClientDownload {
-            get {
-                return ((string)(this["AndroidClientDownload"]));
-            }
-        }
-        
-        [global::System.Configuration.ApplicationScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("https://apps.apple.com/us/app/microsoft-remote-desktop/id714464092")]
-        public string IosClientDownload {
-            get {
-                return ((string)(this["IosClientDownload"]));
             }
         }
     }
