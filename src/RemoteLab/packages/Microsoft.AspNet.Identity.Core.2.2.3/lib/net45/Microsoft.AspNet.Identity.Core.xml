@@ -4,6 +4,13 @@
         <name>Microsoft.AspNet.Identity.Core</name>
     </assembly>
     <members>
+        <member name="M:Microsoft.AspNet.Identity.IIdentityMessageServiceExtensions.Send(Microsoft.AspNet.Identity.IIdentityMessageService,Microsoft.AspNet.Identity.IdentityMessage)">
+            <summary>
+            Sync method to send the IdentityMessage
+            </summary>
+            <param name="service"></param>
+            <param name="message"></param>
+        </member>
         <member name="T:Microsoft.AspNet.Identity.IIdentityMessageService">
             <summary>
                 Expose a way to send messages (i.e. email/sms)
@@ -981,6 +988,14 @@
             <param name="identity"></param>
             <returns></returns>
         </member>
+        <member name="M:Microsoft.AspNet.Identity.IdentityExtensions.GetUserId``1(System.Security.Principal.IIdentity)">
+            <summary>
+                Return the user id using the UserIdClaimType
+            </summary>
+            <typeparam name="T"></typeparam>
+            <param name="identity"></param>
+            <returns></returns>
+        </member>
         <member name="M:Microsoft.AspNet.Identity.IdentityExtensions.GetUserId(System.Security.Principal.IIdentity)">
             <summary>
                 Return the user id using the UserIdClaimType
@@ -1248,6 +1263,15 @@
             <param name="role"></param>
             <returns></returns>
         </member>
+        <member name="M:Microsoft.AspNet.Identity.UserManagerExtensions.AddToRoles``2(Microsoft.AspNet.Identity.UserManager{``0,``1},``1,System.String[])">
+            <summary>
+                Add a user to several roles
+            </summary>
+            <param name="manager"></param>
+            <param name="userId"></param>
+            <param name="roles"></param>
+            <returns></returns>
+        </member>
         <member name="M:Microsoft.AspNet.Identity.UserManagerExtensions.RemoveFromRole``2(Microsoft.AspNet.Identity.UserManager{``0,``1},``1,System.String)">
             <summary>
                 Remove a user from a role.
@@ -1255,6 +1279,15 @@
             <param name="manager"></param>
             <param name="userId"></param>
             <param name="role"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Microsoft.AspNet.Identity.UserManagerExtensions.RemoveFromRoles``2(Microsoft.AspNet.Identity.UserManager{``0,``1},``1,System.String[])">
+            <summary>
+                Remove a user from the specified roles.
+            </summary>
+            <param name="manager"></param>
+            <param name="userId"></param>
+            <param name="roles"></param>
             <returns></returns>
         </member>
         <member name="M:Microsoft.AspNet.Identity.UserManagerExtensions.GetRoles``2(Microsoft.AspNet.Identity.UserManager{``0,``1},``1)">
@@ -1940,6 +1973,12 @@
             </summary>
             <param name="errors"></param>
         </member>
+        <member name="M:Microsoft.AspNet.Identity.IdentityResult.#ctor(System.Boolean)">
+            <summary>
+            Constructor that takes whether the result is successful
+            </summary>
+            <param name="success"></param>
+        </member>
         <member name="M:Microsoft.AspNet.Identity.IdentityResult.Failed(System.String[])">
             <summary>
                 Failed helper method
@@ -2246,6 +2285,22 @@
             </summary>
             <param name="userId"></param>
             <param name="role"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Microsoft.AspNet.Identity.UserManager`2.AddToRolesAsync(`1,System.String[])">
+            <summary>
+            Method to add user to multiple roles
+            </summary>
+            <param name="userId">user id</param>
+            <param name="roles">list of role names</param>
+            <returns></returns>
+        </member>
+        <member name="M:Microsoft.AspNet.Identity.UserManager`2.RemoveFromRolesAsync(`1,System.String[])">
+            <summary>
+            Remove user from multiple roles
+            </summary>
+            <param name="userId">user id</param>
+            <param name="roles">list of role names</param>
             <returns></returns>
         </member>
         <member name="M:Microsoft.AspNet.Identity.UserManager`2.RemoveFromRoleAsync(`1,System.String)">
