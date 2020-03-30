@@ -243,5 +243,14 @@ smart sizing:i:1
                 return ((string)(this["RdpFileSettings"]));
             }
         }
+        
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        public bool PerformReboots {
+            get {
+                return ((bool)(this["PerformReboots"]));
+            }
+        }
     }
 }

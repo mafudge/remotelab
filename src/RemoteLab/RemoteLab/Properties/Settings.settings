@@ -113,5 +113,8 @@ devicestoredirect:s:*
 smart sizing:i:1
         </Value>
     </Setting>
+    <Setting Name="PerformReboots" Type="System.Boolean" Scope="Application">
+      <Value Profile="(Default)">False</Value>
+    </Setting>
   </Settings>
 </SettingsFile>

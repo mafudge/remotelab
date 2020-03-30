@@ -78,17 +78,23 @@ namespace RemoteLab.Services
 
         public async Task<bool> RebootComputerAsync(String ComputerName, String CurrentUser, String PoolName, DateTime Now)
         {
-            var pool = await this.GetPoolByIdAsync(PoolName);
-            var password = this.Pw.Decrypt(pool.RemoteAdminPassword, pool.InitializationVector);
-            var RebootResult = await this.CompMgmt.RebootComputerAsync(ComputerName, pool.RemoteAdminUser, password, Properties.Settings.Default.ActiveDirectoryDomain, Properties.Settings.Default.ActiveDirectoryDNSDomain);
-            if (!RebootResult) 
+            if (Properties.Settings.Default.PerformReboots)
             {
-                await this.LogEventAsync("REBOOT FAILED", CurrentUser, ComputerName, PoolName,Now);
-                var msg = String.Format(Properties.Resources.RebootFailedEmailMessage, ComputerName);
-                // TODO: IOC these arguments for testability.
-                await Smtp.SendMailAsync(Properties.Settings.Default.SmtpServer, Properties.Settings.Default.SmtpMessageFromAddress, pool.EmailNotifyList, msg, msg);
+                var pool = await this.GetPoolByIdAsync(PoolName);
+                var password = this.Pw.Decrypt(pool.RemoteAdminPassword, pool.InitializationVector);
+                var RebootResult = await this.CompMgmt.RebootComputerAsync(ComputerName, pool.RemoteAdminUser, password, Properties.Settings.Default.ActiveDirectoryDomain, Properties.Settings.Default.ActiveDirectoryDNSDomain);
+                if (!RebootResult)
+                {
+                    await this.LogEventAsync("REBOOT FAILED", CurrentUser, ComputerName, PoolName, Now);
+                    var msg = String.Format(Properties.Resources.RebootFailedEmailMessage, ComputerName);
+                    // TODO: IOC these arguments for testability.
+                    await Smtp.SendMailAsync(Properties.Settings.Default.SmtpServer, Properties.Settings.Default.SmtpMessageFromAddress, pool.EmailNotifyList, msg, msg);
+                }
+                return RebootResult;
+            } else
+            {
+                return true;
             }
-            return RebootResult;
         }
 
         public async Task LogAndEmailPoolFullEventAsync(String PoolName, String ComputerName, String UserName, DateTime Now)
