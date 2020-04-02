@@ -59,5 +59,8 @@ namespace RemoteLab.Models
 
         [MaxLength(255)]
         public string InitializationVector {get; set;}
+
+        [Display( Name = "Sort Order", ShortName = "Sort")]
+        public Byte SortOrder {get; set;}
     }
 }

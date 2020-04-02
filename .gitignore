@@ -154,3 +154,6 @@ $RECYCLE.BIN/
 
 # Mac desktop service store files
 .DS_Store
+/.vs
+/src/RemoteLab/.vs
+/src/RemoteLab/RemoteLab/Properties/PublishProfiles/Project Release Folder.pubxml

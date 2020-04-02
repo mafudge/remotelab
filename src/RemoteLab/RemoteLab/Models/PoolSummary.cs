@@ -59,6 +59,8 @@ namespace RemoteLab.Models
         [Display(Name = "Avaliable", ShortName = "Available")]
         public int PoolAvailable { get; set; }
 
+        [Display(Name = "Sort Order", ShortName = "Sort")]
+        public Byte SortOrder { get; set; }
 
         public IDbAsyncEnumerator GetAsyncEnumerator()
         {

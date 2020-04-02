@@ -2,7 +2,7 @@
 @using System.Security.Claims;
 
 <!DOCTYPE html>
-<html>
+<html lang="en-us">
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -20,7 +20,7 @@
                     <span class="icon-bar"></span>
                 </button>
                 <a href="@Url.Action("Index","Home", null)" class="navbar-brand">
-                    <img src="~/Content/Images/remotelab.png" style="margin-top: -8px; max-width:100px;" height="35" /> @String.Format("{0} {1}", HttpContext.Current.Application["NAME"], HttpContext.Current.Application["VERSION"])
+                    <img src="~/Content/Images/remotelab.png" style="margin-top: -8px; max-width:100px;" height="35" alt="" /> @String.Format("{0}", HttpContext.Current.Application["NAME"])
                 </a>
             </div>
             <div class="navbar-collapse collapse">
@@ -86,13 +86,14 @@
                     <div class="panel-body">
                         <h4><i class="glyphicon glyphicon-book"></i> Documentation</h4>
                         <ul>
-                            <li><a id="youtube" href="@RemoteLab.Properties.Settings.Default.RemoteLabIntroVideoLink" class="various fancybox.iframe"><i class="glyphicon glyphicon-facetime-video"></i> What is Remote Lab?</a></li>
                             <li><a target="_RemoteLabDocs" href="@RemoteLab.Properties.Settings.Default.OfficialDocumentationLink"><i class="fa fa-file-text"></i> Official Documentation</a></li>
                         </ul>
                         <h4><i class="glyphicon glyphicon-download-alt"></i> Download - Remote Desktop Client</h4>
                         <ul>
                             <li><a target="_RemoteLabDownload" href="@RemoteLab.Properties.Settings.Default.WindowsClientDownload"><i class="fa fa-windows"></i> Windows </a></li>
                             <li><a target="_RemoteLabDownload" href="@RemoteLab.Properties.Settings.Default.MacClientDownload"><i class="fa fa-apple"></i> Mac OSX</a></li>
+                            <li><a target="_RemoteLabDownload" href="@RemoteLab.Properties.Settings.Default.AndroidClientDownload"><i class="fa fa-android"></i> Android</a></li>
+                            <li><a target="_RemoteLabDownload" href="@RemoteLab.Properties.Settings.Default.IosClientDownload"><i class="fa fa-apple"></i> iOS</a></li>
                         </ul>
                     </div>
                 </div>
@@ -105,18 +106,5 @@
     @Scripts.Render("~/bundles/bootstrap")
     @Scripts.Render("~/bundles/browserdetect")
     @RenderSection("scripts", required: false)
-    <script type="text/javascript">
-        $(document).ready(function () {
-            var text = "";
-            if (BrowserDetect.OS == 'Mac' && BrowserDetect.browser != 'Firefox') {
-                text += "<b><i class='glyphicon glyphicon-warning-sign'></i> IMPORTANT </b> We noticed you're using " + BrowserDetect.browser + " version " + BrowserDetect.version + " on " + BrowserDetect.OS + ".";
-                text += " This is not compatible with Remotelab. Please <a href='http://getfirefox.com' target='_newfirefox'>download Firefox</a> instead.";
-                $("#browser").html(text);
-                $("#browser").show();
-                $("#remoteLabBody").hide();
-            }
-            $("a#youtube").fancybox();
-        });
-    </script>
 </body>
 </html>

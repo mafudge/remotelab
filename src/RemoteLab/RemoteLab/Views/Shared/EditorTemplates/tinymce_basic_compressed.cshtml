@@ -3,7 +3,7 @@ if(typeof tinymce==='undefined'){document.write('<script src="@Url.Content("~/Sc
 </script>
 
 <script type="text/javascript">
-(function(){tinymce.init({mode:"exact",elements:"@ViewData.TemplateInfo.GetFullHtmlFieldId(string.Empty)",theme:"modern",height:500,width:790,plugins:["advlist autolink lists link image charmap print preview anchor","searchreplace visualblocks code fullscreen","insertdatetime media table contextmenu paste"],toolbar:"insertfile undo redo | styleselect | bold italic | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | link image"});})();
+(function(){tinymce.init({mode:"exact",elements:"@ViewData.TemplateInfo.GetFullHtmlFieldId(string.Empty)",theme:"silver",height:500,width:790,plugins:["advlist autolink lists link image charmap print preview anchor","searchreplace visualblocks code fullscreen","insertdatetime media table contextmenu paste"],toolbar:"insertfile undo redo | styleselect | bold italic | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | link image"});})();
 </script>
 
 @Html.TextArea(string.Empty,ViewData.TemplateInfo.FormattedModelValue)

@@ -6,24 +6,6 @@
       <DesignTimeValue Profile="(Default)" />
       <Value Profile="(Default)" />
     </Setting>
-    <Setting Name="AdministratorADGroup" Type="System.String" Scope="Application">
-      <Value Profile="(Default)">IST-Users-ITServices</Value>
-    </Setting>
-    <Setting Name="ActiveDirectoryDNSDomain" Type="System.String" Scope="Application">
-      <Value Profile="(Default)">ad.syr.edu</Value>
-    </Setting>
-    <Setting Name="SmtpServer" Type="System.String" Scope="Application">
-      <Value Profile="(Default)">smtp-host.syr.edu</Value>
-    </Setting>
-    <Setting Name="SmtpMessageFromAddress" Type="System.String" Scope="Application">
-      <Value Profile="(Default)">remotelabadmin@syr.edu</Value>
-    </Setting>
-    <Setting Name="ActiveDirectoryDomain" Type="System.String" Scope="Application">
-      <Value Profile="(Default)">AD</Value>
-    </Setting>
-    <Setting Name="LoginFormUsernameLabel" Type="System.String" Scope="Application">
-      <Value Profile="(Default)">NetID</Value>
-    </Setting>
     <Setting Name="LoginFormPasswordLabel" Type="System.String" Scope="Application">
       <Value Profile="(Default)">Password</Value>
     </Setting>
@@ -34,64 +16,10 @@
       <Value Profile="(Default)">https://answers.syr.edu/display/ischool/iSchool+Remote+Lab</Value>
     </Setting>
     <Setting Name="WindowsClientDownload" Type="System.String" Scope="Application">
-      <Value Profile="(Default)">http://support.microsoft.com/kb/2592687</Value>
+      <Value Profile="(Default)">https://www.microsoft.com/en-us/p/microsoft-remote-desktop/9wzdncrfj3ps</Value>
     </Setting>
     <Setting Name="MacClientDownload" Type="System.String" Scope="Application">
       <Value Profile="(Default)">https://itunes.apple.com/us/app/microsoft-remote-desktop/id715768417?mt=12</Value>
-    </Setting>
-    <Setting Name="EncryptionKeyForPasswords" Type="System.String" Scope="Application">
-      <Value Profile="(Default)">240, 148, 233, 7, 112, 207, 116, 14, 177, 66, 198, 200, 41, 180, 156, 143, 151, 226, 75, 247, 115, 68, 85, 107, 143, 156, 5, 226, 191, 225, 247, 162</Value>
-    </Setting>
-    <Setting Name="RdpFileSettings" Type="System.String" Scope="Application">
-      <Value Profile="(Default)">
-          screen mode id:i:2
-          desktopwidth:i: {0}
-          desktopheight:i: {1}
-          session bpp:i:32
-          winposstr:s:0,1,614,156,1654,963
-          full address:s: {2}
-          username:s: {3}
-          compression:i:1
-          keyboardhook:i:2
-          audiomode:i:0
-          redirectprinters:i:1
-          redirectcomports:i:0
-          redirectsmartcards:i:0
-          redirectclipboard:i:1
-          redirectposdevices:i:0
-          redirectdrives:i:1
-          drivestoredirect: s()
-          displayconnectionbar:i:1
-          pinconnectionbar:i:1
-          autoreconnection enabled:i:1
-          authentication level:i:0
-          prompt for credentials:i:0
-          negotiate security layer:i:1
-          remoteapplicationmode:i:0
-          alternate shell:s:
-          shell working directory:s:
-          disable wallpaper:i:1
-          disable full window drag:i:0
-          allow desktop composition:i:1
-          allow font smoothing:i:1
-          disable menu anims:i:1
-          disable themes:i:0
-          disable cursor setting:i:0
-          bitmapcachepersistenable:i:1
-          gatewayhostname:s:
-          gatewayusagemethod:i:0
-          gatewaycredentialssource:i:4
-          gatewayprofileusagemethod:i:0
-          promptcredentialonce:i:1
-          use multimon:i:0
-          audiocapturemode:i:0
-          videoplaybackmode:i:1
-          connection type:i:6
-          redirectdirectx:i:1
-          use redirection server name:i:0
-          devicestoredirect:s:*
-          smart sizing:i:1
-        </Value>
     </Setting>
     <Setting Name="RemoteLabSettingsFileContent" Type="System.String" Scope="Application">
       <Value Profile="(Default)">
@@ -104,6 +32,89 @@
     </Setting>
     <Setting Name="DashboardMaxEvents" Type="System.Int32" Scope="Application">
       <Value Profile="(Default)">50</Value>
+    </Setting>
+    <Setting Name="AndroidClientDownload" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">https://play.google.com/store/apps/details?id=com.microsoft.rdc.android&amp;hl=en_US</Value>
+    </Setting>
+    <Setting Name="IosClientDownload" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">https://apps.apple.com/us/app/microsoft-remote-desktop/id714464092</Value>
+    </Setting>
+    <Setting Name="UserPrincipleDomain" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">maine.edu</Value>
+    </Setting>
+    <Setting Name="AdministratorADGroup" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">SCCM-UMS-LAB-ADMINS</Value>
+    </Setting>
+    <Setting Name="ActiveDirectoryDNSDomain" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">uad.maine.edu</Value>
+    </Setting>
+    <Setting Name="SmtpServer" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">smarthost.maine.edu</Value>
+    </Setting>
+    <Setting Name="SmtpMessageFromAddress" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">remotelab@maine.edu</Value>
+    </Setting>
+    <Setting Name="ActiveDirectoryDomain" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">uad</Value>
+    </Setting>
+    <Setting Name="LoginFormUsernameLabel" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">User Name</Value>
+    </Setting>
+    <Setting Name="EncryptionKeyForPasswords" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">39, 171, 235, 213, 64, 123, 65, 159, 99, 178, 89, 60, 120, 219, 155, 60, 229, 111, 32, 230, 167, 160, 224, 121, 35, 163, 22, 124, 141, 219, 216, 56</Value>
+    </Setting>
+    <Setting Name="RdpFileSettings" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">screen mode id:i:2
+desktopwidth:i:{0}
+desktopheight:i:{1}
+session bpp:i:32
+winposstr:s:0,1,614,156,1654,963
+full address:s:{2}
+username:s:{3}
+compression:i:1
+keyboardhook:i:2
+audiomode:i:0
+redirectprinters:i:1
+redirectcomports:i:0
+redirectsmartcards:i:0
+redirectclipboard:i:1
+redirectposdevices:i:0
+redirectdrives:i:1
+drivestoredirect:s()
+displayconnectionbar:i:1
+pinconnectionbar:i:1
+autoreconnection enabled:i:1
+authentication level:i:0
+prompt for credentials:i:0
+negotiate security layer:i:1
+remoteapplicationmode:i:0
+alternate shell:s:
+shell working directory:s:
+disable wallpaper:i:1
+disable full window drag:i:0
+allow desktop composition:i:1
+allow font smoothing:i:1
+disable menu anims:i:1
+disable themes:i:0
+disable cursor setting:i:0
+bitmapcachepersistenable:i:1
+gatewayhostname:s:
+gatewayusagemethod:i:0
+gatewaycredentialssource:i:4
+gatewayprofileusagemethod:i:0
+promptcredentialonce:i:1
+use multimon:i:0
+audiocapturemode:i:0
+videoplaybackmode:i:1
+connection type:i:6
+redirectdirectx:i:1
+use redirection server name:i:0
+devicestoredirect:s:*
+smart sizing:i:1
+        </Value>
+    </Setting>
+    <Setting Name="PerformReboots" Type="System.Boolean" Scope="Application">
+      <Value Profile="(Default)">False</Value>
     </Setting>
   </Settings>
 </SettingsFile>
